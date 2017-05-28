@@ -1,0 +1,35 @@
+; Bamcompile Project file example
+
+; Mainfile for application
+mainfile application.php
+
+; Output exe file
+outfile myapp.exe
+
+; exe Icon
+icon theicon.ico
+
+; Compress the final exe
+compress
+
+; Final exe is a windowed application
+windowed
+
+; Set destination path for embedded files
+destination /
+
+; Embed some files
+embed project_dir
+
+; Change destination path
+destination pngfiles/
+
+; Embed some more files
+embed c:\data\png_files\*.png 
+
+; Add an extension
+extension php_gd2.dll
+
+; Do not encode PHP files
+dontencode
+

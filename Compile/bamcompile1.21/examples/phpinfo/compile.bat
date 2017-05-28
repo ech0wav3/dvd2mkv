@@ -1,0 +1,2 @@
+..\..\bamcompile phpinfo.php
+pause

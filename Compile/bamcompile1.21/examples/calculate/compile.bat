@@ -1,0 +1,2 @@
+..\..\bamcompile calculate.bcp
+pause

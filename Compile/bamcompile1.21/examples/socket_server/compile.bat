@@ -1,0 +1,2 @@
+..\..\bamcompile socket.bcp
+pause

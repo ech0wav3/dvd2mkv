@@ -1,0 +1,8 @@
+; Bamcompile example project file
+mainfile calculate.php
+outfile calculate.exe
+compress
+windowed
+icon calculate\hal.ico
+embed calculate
+extension calculate\php_winbinder.dll

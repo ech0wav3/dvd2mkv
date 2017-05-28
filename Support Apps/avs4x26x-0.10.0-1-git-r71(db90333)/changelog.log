@@ -1,0 +1,520 @@
+commit db903333506b21815996d74c6896689c42535088 - rev71
+Author: MonoS <MonoS94@gmail.com>
+Date:   Sat Sep 13 00:45:42 2014 +0200
+
+    Added a better error message in case the x26x binary is not found
+
+commit 28fdd981dc7389e9f405a7d88db2b36262d218ca - rev70
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Aug 28 15:15:30 2014 +0800
+
+    Cleanup gcc warnings, and build x64 version
+
+commit b7e256f8bb8ac6033a4ee7e93f7f584e4ce3a1e0 - rev69
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Aug 28 14:16:48 2014 +0800
+
+    Support automatically invoke DGSourceIM
+
+commit 36ea2f06f15f3604e570059136fbc74671282ebb - rev68
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Aug 28 13:32:40 2014 +0800
+
+    0.10.0 tagging
+
+commit ea0a81978adfbc920071dea29e2f6cb65271a461 - rev67
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Aug 28 13:28:05 2014 +0800
+
+    Rename avs4x264mod to avs4x26x, as now x265 is officially supported.
+    
+    However, the x265 style "x265 <infile> <outfile>" is not supported and probably never will. You need to use -o or --output before outfile.
+
+commit 6bbebe28af582e66a28b94c3ed0cf79a79724e0a - rev66
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Aug 28 10:50:09 2014 +0800
+
+    Add requirements for some source filters
+
+commit 66d05af4187fb5b980e79a56d250aaa4acac02c6 - rev65
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Aug 28 10:36:04 2014 +0800
+
+    Improve compability with AviSynth+
+    
+    port from BugMaster's patch for x264
+
+commit 105c53abb226c9f9ad6360b4b964fbd38000195f - rev64
+Author: Lucien <astrataro@gmail.com>
+Date:   Sat Aug 31 12:29:34 2013 +0100
+
+    Prefers LSMASHVideoSource/LWLibavVideoSource for supported formats
+
+commit 1de9bb7639e08b61cc2f1ef8cbb716c5872ba2f3 - rev63
+Author: Lucien <astrataro@gmail.com>
+Date:   Sat Aug 31 11:32:25 2013 +0100
+
+    Prefers VSImport to handle vpy files
+
+commit 691c5c41ded7e75cd321fbbb51aa1ead234ad41f - rev62
+Author: Lucien <astrataro@gmail.com>
+Date:   Sat Nov 10 00:06:59 2012 +0000
+
+    Add support for direct .vpy input with vfw access
+
+commit 099ad2f9c7574a68b233ba45aed05497a22c1eec - rev61
+Author: Lucien <astrataro@gmail.com>
+Date:   Mon Jun 4 02:43:38 2012 +0100
+
+    Cleanups for v0.8.0
+
+commit b027e4e46e19afa3def4e84adcd10ca2ce4b5471 - rev60
+Author: Lucien <astrataro@gmail.com>
+Date:   Sun Jun 3 06:19:55 2012 +0100
+
+    Add support for direct normal media file input
+    
+    Supported media formats are (and source filter priority):
+    avi:
+     AviSource->FFMS2(normal)->DSS2->DSS
+    m2ts/mpeg/vob/m2v/mpg/ogm/ogv/ts/tp/ps:
+     FFMS2(demuxer="lavf" and seekmode=-1)->DSS2->DSS
+    mkv/mp4/m4v/mov/flv/webm:
+     FFMS2(normal)->DSS2->DSS
+    rmvb/divx/wmv/wmp/asf/rm/wm:
+     DSS2->DSS
+
+commit 1c3101abd4ca650523310c7942752bb853b4ee62 - rev59
+Author: Lucien <astrataro@gmail.com>
+Date:   Sun Jun 3 03:36:26 2012 +0100
+
+    Check if source filter exists or not
+
+commit 296e0ef5c9f8f5291e7ddd86ab045e44248a8832 - rev58
+Author: Lucien <astrataro@gmail.com>
+Date:   Sun Jun 3 03:14:27 2012 +0100
+
+    Add support for direct .d2v/.dga/.dgi input
+
+commit 88d7a090f0785b3f65fb66fb3e4990ab44a36be5 - rev57
+Author: Lucien <astrataro@gmail.com>
+Date:   Sun Jun 3 02:27:20 2012 +0100
+
+    Update for x264's new style --tff/bff instead of old --interlaced switch
+
+commit 4e74ff1e7b913cf1a4ee12e58c128a475d6ca422 - rev56
+Author: Lucien <astrataro@gmail.com>
+Date:   Sat Jun 2 21:00:28 2012 +0100
+
+    Fix another regression with x264-audio
+
+commit 40a526d638e5806330b48a47200f66a9d57256c9 - rev55
+Author: Lucien <astrataro@gmail.com>
+Date:   Sat Jun 2 21:33:53 2012 +0100
+
+    When one switch has been specified twice, use the latter
+    
+    x264 uses the latter when two switches are conflict, so let avs4x264 follow this logic.
+    Note that this logic does not apply to input file, for which the first one is always used.
+
+commit 3c35c76a2fd5ea51de2b82f67bf3b73816cb969e - rev54
+Author: Lucien <astrataro@gmail.com>
+Date:   Sat Jun 2 19:54:57 2012 +0100
+
+    Remove useless path hack from original avs4x264
+
+commit 9449dca22aa42631c55205d210836f4826f26748 - rev53
+Author: Lucien <astrataro@gmail.com>
+Date:   Fri Jun 1 23:38:07 2012 +0100
+
+    Fix regression in input file name detection with x264-audio
+    
+    In the following command line:
+    avs4x264mod.exe --audiofile "audio.avs" "video.avs" --output "output.mp4"
+    "audio.avs" was detected as input video, and "video.avs" was detected as input audio file. This is because avs4x264 was designed for vanilla x264 without audio encoding support, and took the first "*.avs" parameter as input file without further check, and then "video.avs" was shifted after "--audiofile". Now avs4x264mod checks if the "*.avs" is following "--audiofile" or not, and should work fine with x264-audio and x264_L-SMASH.
+
+commit 1b62b291d688eef87d70e6544290378d654a2bff - rev52
+Author: Lucien <astrataro@gmail.com>
+Date:   Fri Jun 1 20:01:27 2012 +0100
+
+    Correct framerate to proper NTSC fraction if applicable
+
+commit 552ce8c1e92edfa95c8183947fabc4b61a3bc108 - rev51
+Author: Lucien <astrataro@gmail.com>
+Date:   Sat May 19 02:18:43 2012 +0100
+
+    Use VersionString instead of VersionNumber for AviSynth version detect
+
+commit fe09f354050856e0189b192ba7305761fa85df8c - rev50
+Author: Lucien <astrataro@gmail.com>
+Date:   Sat May 19 02:17:05 2012 +0100
+
+    Add --timebase when using --tcfile-in
+
+commit bdcf098b0d4ebce29ea7f3c087583a98dc924425 - rev49
+Author: Lucien <astrataro@gmail.com>
+Date:   Fri Apr 27 19:52:55 2012 +0100
+
+    Update "avisynth_c.h"
+
+commit a15d3758a6191e40a33e6cd161033236f67a33a5 - rev48
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Apr 11 14:24:44 2012 +0100
+
+    Fix my stupid fix
+
+commit a5b12515c0b4dacf4caef7b52ce869912a2038a4 - rev47
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Mar 21 12:04:55 2012 +0000
+
+    0.6.3
+
+commit 1023619761cb44f5ee44e559df4dbd66c2315ec2 - rev46
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Mar 21 11:59:44 2012 +0000
+
+    typos in help
+
+commit ed452f65ee28fe8d0cb3532b07244390f54c0440 - rev45
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Mar 21 11:45:27 2012 +0000
+
+    Do not compile non-laa binary any more
+
+commit f4e17c9db0dfbe4343917bf59c411a7a9c7215fb - rev44
+Author: Masaki Tanaka <maki.rxrz@gmail.com>
+Date:   Sun Mar 18 00:02:47 2012 +0000
+
+    Fix crash on XP
+
+commit 7e0284f979570849a80d353e59a66e33e3c3a9a1 - rev43
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Dec 29 03:11:13 2011 +0000
+
+    more accurate AviSynth version detect
+
+commit 5eaa26e13e8147fbb9e01e0af1a3f6e479e5428b - rev42
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Dec 29 02:51:17 2011 +0000
+
+    Finish seek mode implement
+
+commit 33b758331e1340eae2d1af0c396b32ab5d8231b9 - rev41
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Dec 29 01:07:22 2011 +0000
+
+    treat qpfile as same as tcfile-in for seek
+
+commit f1ce4fef957bba9fbaeb6fc0143d1c40ff569bf8 - rev40
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Dec 28 23:38:53 2011 +0000
+
+    Some workaround for switchable seek-mode
+
+commit ce4d2d42dba6fb835aac7438359c330f36f90412 - rev39
+Author: Lucien <astrataro@gmail.com>
+Date:   Fri Dec 2 23:17:02 2011 +0000
+
+    Fix incorrect message with --seek
+
+commit cfe053ae1ea830841563ec19cde67a54fc15eb7f - rev38
+Author: Lucien <astrataro@gmail.com>
+Date:   Fri Dec 2 20:47:31 2011 +0000
+
+    Add build.sh
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 9b952189291092236d190e84d02e43e3a32597f3 - rev37
+Author: Lucien <astrataro@gmail.com>
+Date:   Fri Dec 2 20:24:44 2011 +0000
+
+    Show more info when opening avs, typo
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 2ffb81e129501427423e2375c29e5e9e0b2045ed - rev36
+Author: Lucien <astrataro@gmail.com>
+Date:   Fri Dec 2 05:52:36 2011 +0000
+
+    Correct --frames when used with --seek, faster --seek if no timecodes defined
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit fa1172e254ae434bee4f502249d35679df2261ec - rev35
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Dec 1 22:26:43 2011 +0000
+
+    Forgot to add -ffast-math for ~4.5.x gcc, just for fun
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 66fe6f73673ba8f55b4537986910906e4f043773 - rev34
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Dec 1 22:15:34 2011 +0000
+
+    typo for v0.6's changes
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 137592c77da87825465c4a254deeea0d1ec995d9 - rev33
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Dec 1 16:53:46 2011 +0000
+
+    Move help info to README
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit d78c5f0d88052871960ff6e4e5c3e97f7dad9401 - rev32
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Dec 1 16:50:47 2011 +0000
+
+    More compiling help
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit ede9a69933fed2c4ca035d43b56ee181818c4c6d - rev31
+Author: Lucien <astrataro@gmail.com>
+Date:   Thu Dec 1 16:34:22 2011 +0000
+
+    Add -Wl,--large-address-aware in build help
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 56e9db5658b50b148cce860852609d7496c1014c - rev30
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 17:10:43 2011 +0000
+
+    Update version
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit ca2ef1eb272c307960e2ce9ad9570ab7b834d692 - rev29
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 17:06:04 2011 +0000
+
+    typo
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 51e7178a5e1904aa80337ac22f6ab6421f8951a3 - rev28
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 17:05:11 2011 +0000
+
+    Correct number of processed frames when --frames defined
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit a79331ebad866ab1a1e455245ae9c8466b35fb8e - rev27
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 16:15:15 2011 +0000
+
+    Fix error messages of writing frames
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit ccaca676d6be0c66c987b4a37e350cc5870e5762 - rev26
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 16:11:40 2011 +0000
+
+    Always add input-csp when not defined
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 3b846c33267ae40e4d2636ab9ad221a5740d2a64 - rev25
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 16:02:12 2011 +0000
+
+    typo
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 54fad9793a14d300a1b4bfbe734ffa6c0fa58c37 - rev24
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 16:00:50 2011 +0000
+
+    Do not add --frames if it is already defined
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 0e22744fb43318b464a35d197a85effcde2f6c4a - rev23
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 15:44:49 2011 +0000
+
+    Do not add --input-res if it is already defined
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit cd9ebe4b83b7a2228c3a98633f43ae0e3b6e1118 - rev22
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 15:41:31 2011 +0000
+
+    Do not add --input-csp if it is already defined
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 9552ff95188208894a9b9f66882db9e46e229993 - rev21
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 15:38:05 2011 +0000
+
+    Do not add --fps if it is already defined
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 59d3613b76f316b6ef213d936d2d49609f7f569b - rev20
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 15:18:59 2011 +0000
+
+    Fix pipe error with YV12
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 2de6d67b6fa8211de6e2a33d6698e0496aa9468a - rev19
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 14:12:55 2011 +0000
+
+    Improve capability with more styles of parameters in x264
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit b7456b3849b12a909d568c10e45e3f1aeaf57ccf - rev18
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 14:10:57 2011 +0000
+
+    Minor typo
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 924198cc23be6585822edf450d3a91e61768cecf - rev17
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 14:04:27 2011 +0000
+
+    Update version
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 2f8897d952a53fb912538dac65125162c667b15e - rev16
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 14:01:51 2011 +0000
+
+    Display version and help info when run with no options
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 2f33e1d1bfeb138325a6a1959301729d58d4aa7c - rev15
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 14:01:17 2011 +0000
+
+    Directly output i422/i444 with avs 2.6 new csp YV16/YV24
+    
+    Signed-off-by: SAPikachu <sapikachu@gmail.com>
+
+commit de91b4a4e4b4632b12b8e0502a01c7e46421a4db - rev14
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:59:51 2011 +0000
+
+    Revert "Display version and help info when run with no options"
+    
+    This reverts commit ceef30b432787b6a8614b2898c5300a49e99355e.
+
+commit 5e6d06f19cb6aa7f0571b21ab3d1add47e3d2378 - rev13
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:59:33 2011 +0000
+
+    Revert "Directly output i422/i444 with avs 2.6 new csp YV16/YV24"
+    
+    This reverts commit 7f3ab59fea425653ae09afc123374d49ba125b3d.
+
+commit 7f3ab59fea425653ae09afc123374d49ba125b3d - rev12
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:56:25 2011 +0000
+
+    Directly output i422/i444 with avs 2.6 new csp YV16/YV24
+    
+    Signed-off-by: Joe Hu <sapikachu@gmail.com>
+
+commit c5493851b463a6ce1e26263155fe0a349a56f07c - rev11
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:49:21 2011 +0000
+
+    Revert "Directly output i422/i444 with avs 2.6 new csp YV16/YV24"
+    
+    This reverts commit a985127356f390d121e7a1fa3022dd8ac355c119.
+
+commit ceef30b432787b6a8614b2898c5300a49e99355e - rev10
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:43:09 2011 +0000
+
+    Display version and help info when run with no options
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit a985127356f390d121e7a1fa3022dd8ac355c119 - rev9
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:38:41 2011 +0000
+
+    Directly output i422/i444 with avs 2.6 new csp YV16/YV24
+    
+    Signed-off-by: Joe Hu <sapikachu@gmail.com>
+
+commit ed9cd83bdfc6b83558ae85f1b9376610eaf312ae - rev8
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:23:14 2011 +0000
+
+    Add switch -L as a short name of --x264-binary
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 57b1024d57610eeb8294e2758e4977e836dd4400 - rev7
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:22:34 2011 +0000
+
+    Delete extension of default binary path
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit f2fe6bcd8c06382373352792100ffb9cb38e7a80 - rev6
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:21:39 2011 +0000
+
+    Fix invalid x264 binary path when both avs4x264 and x264 binary is given by full path
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 3cd185d6c0870d1887ecbc137102cc8e4e862dd8 - rev5
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:16:41 2011 +0000
+
+    Delete blankspace in cmdline when x264 path is customized
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit bb1e7477f3fff33fb7952feedf2db6df29948652 - rev4
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:09:10 2011 +0000
+
+    Make x264_64.exe path changeable
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit b5a03628585743a29932135563f6dca5749c75b9 - rev3
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:08:05 2011 +0000
+
+    Print full command-line piped to x264_64.exe to screen
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit 9c3530dd67e747b36301462cd5405dbdf95d3d1a - rev2
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 13:04:46 2011 +0000
+
+    first version, capable with high bit Avisynth input file
+    
+    Signed-off-by: Lucien <astrataro@gmail.com>
+
+commit fb09446f1ebdd96715d8567812a6c2ce6631508b - rev1
+Author: Lucien <astrataro@gmail.com>
+Date:   Wed Nov 30 12:55:26 2011 +0000
+
+    first version, capable with high bit Avisynth input file
