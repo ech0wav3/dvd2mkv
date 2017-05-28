@@ -1,10 +1,17 @@
 <?php
 
+## Load program location variables from outside source
+if (file_exists("settings.conf")) {
+	include('settings.conf');
+} else {
+	echo "The required settings.conf file cannot be found. Please create it and try running this script again.";
+	exit;
+}
+
 ###### Version #######
-$d2m_ver = "0.4";
+$d2m_ver = "0.5";
 
 ## Delcare global variables
-$win = 1;
 if ($win == 1) {
 	# Start bold tag
 	$sb = " [";
@@ -29,46 +36,155 @@ if ($win == 1) {
 	$et = "\033[0m";
 }
 
-## Default Secondary Audio location
-$def_saud_stream = "0x81";
-
 # Disable file writing until all questions have been answered
 $cont = 0;
 
-## Load program location variables from outside source
-if (file_exists("locations.php")) {
-	include('locations.php');
-} else {
-	echo "The required locations.php file cannot be found. Please create it and try running this script again.";
-	exit;
+## Function to edit the output chapters
+function ChapEdit($filename) {
+	$chapfile = file($filename);
+	$chap_outfile = fopen($filename, 'w');
+	$i = 0;
+	$line_total = count($chapfile);
+
+	while ($i <= ($line_total - 3)) {
+		$output = $chapfile[$i];
+		fwrite($chap_outfile, $output);
+		$i++;
+	}
+
+	fclose($chap_outfile);
+}
+
+## Function to edit the subtitle parameters
+function ParamEdit($filefolder, $filename) {
+	$parmfile = file($filefolder . $filename);
+	$param_outfile = fopen($filefolder . $filename, 'w');
+
+	foreach($parmfile as $line) {
+		if (substr($line, -13) == "IFO_REPLACE\r\n") {
+			exec("cmd /c dir /b \"" . $filefolder . "*.ifo\"", $ifo_file);
+			$output = str_replace("IFO_REPLACE", $ifo_file[0], $line);
+			fwrite($param_outfile, $output);
+		} else {
+			$output = $line;
+			fwrite($param_outfile, $output);
+		}
+	}
+
+	fclose($param_outfile);
+}
+
+## Function to calculate video bitrate
+function VidBitrate($type, $framerate, $folder, $vs_loc) {
+	$i = 0;
+	list($type, $ratio) = explode(":", $type);
+	$folder = $folder . "\\";
+	exec("cmd /c dir /b \"" . $folder . "*.ifo\"", $ifo_file);
+	exec("cmd /c dir /b \"" . $folder . "*.m2v\"", $m2v_file);
+	exec("cmd /c dir /b \"" . $folder . "*.bat\"", $bat_file);
+	exec("cmd /c \"" . $vs_loc . "\" null -i" . $folder . $ifo_file[0], $ifo_output);
+	$total = count($ifo_output);
+	
+	while ($i <= $total) {
+		if ($ifo_output[$i] == "Program Chain(s):") {
+			$j = $i + 1;
+		}
+		$i++;
+	}
+	
+	$time_start = strpos($ifo_output[$j], ": ");
+	$time_end = strpos($ifo_output[$j], " ", $time_start);
+	$time_str = substr($ifo_output[$j], $time_start + 2, $time_end - 1);
+	$time = explode(":", $time_str);
+	
+	$hours = $time[0] * 60 * 60;
+	$minutes = $time[1] * 60;
+	if ($time[3] < 15) {
+		$frames = 0;
+	} else {
+		$frames = 1;
+	}
+	$seconds = $hours + $minutes + $frames + $time[2];
+	
+	clearstatcache();
+	$file_size = (float)true_filesize($folder . $m2v_file[0]) / 1024;
+	$bitrate = ($file_size / $seconds) * 8;
+	
+	if ($type == "oq") {
+		$frame_size = $file_size / ($seconds * $framerate);
+		$optm_frame_size = $frame_size * ((((640 * 360) * 100) / (720 * 480)) / 100);
+		$optm_file_size = $optm_frame_size * ($seconds * 23.97);
+		$optm_bitrate = ($optm_file_size / $seconds) * 8;
+		
+		$out_bitrate = round($optm_bitrate * $ratio);
+	} elseif ($type == "fq") {
+		$out_bitrate = round($bitrate * $ratio);
+	}
+	
+	$encfile = file($folder . $bat_file[0]);
+	$outfile = fopen($folder . $bat_file[0], 'w');
+	
+	foreach($encfile as $line) {
+		if (substr($line, -14) == "-progress 24\r\n") {
+			$output = str_replace("BITRATE_REPLACE", $out_bitrate, $line);
+			fwrite($outfile, $output);
+		} else {
+			$output = $line;
+			fwrite($outfile, $output);
+		}
+	}
+	
+	fclose($outfile);
+}
+
+## Not my code. This is used to get the proper size of a given file, even if it is larger than 2 GB
+## Retrieved from the filesize() page on the php.net website
+## The code was posted by jbudpro at comcast dot net in a comment on that page
+## Renamed the function from ntfs_filesize() to true_filesize()
+function true_filesize($filename)
+{
+    return exec("
+            for %v in (\"".$filename."\") do @echo %~zv
+    ");
 }
 
 ## Not my code. This is used to replace unusable characters in the final file name
 function filename($filename) {
-$temp = $filename;
+	$temp = $filename;
 
-// Lower case
-$temp = strtolower($temp);
+	// Lower case
+	$temp = strtolower($temp);
 
-// Replace spaces with a '_'
-$temp = str_replace(" ", "_", $temp);
+	// Replace spaces with a '_'
+	$temp = str_replace(" ", "_", $temp);
 
-// Loop through string
-$result = '';
-for ($i=0; $i<strlen($temp); $i++) {
-	if (preg_match('([0-9]|[a-z]|_)', $temp[$i])) {
-		$result = $result . $temp[$i];
+	// Loop through string
+	$result = '';
+	for ($i=0; $i<strlen($temp); $i++) {
+		if (preg_match('([0-9]|[a-z]|_)', $temp[$i])) {
+			$result = $result . $temp[$i];
+		}
 	}
+
+	// Replace triple underscores with a single underscore
+	$result = str_replace("___", "_", $result);
+
+	// Replace double underscores with a single underscore
+	$result = str_replace("__", "_", $result);
+
+	// Return filename
+	return $result;
 }
 
-// Replace triple underscores with a single underscore
-$result = str_replace("___", "_", $result);
-
-// Replace double underscores with a single underscore
-$result = str_replace("__", "_", $result);
-
-// Return filename
-return $result;
+if ($argv[1] == "--chap") {
+	ChapEdit($argv[2]);
+	exit;
+} elseif ($argv[1] == "--param") {
+	ParamEdit($argv[2], $argv[3]);
+	exit;
+} elseif ($argv[1] == "--vidbit") {
+	VidBitrate($argv[2], $argv[3], $argv[4], $vs_loc);
+	exit;
 }
 
 ## Open user input stream
@@ -143,7 +259,7 @@ if ($dvd_type == 1) {
 $answer = fgets($handle);
 if (trim($answer) == "yes" || trim($answer) == "") {
 	$has_subs = 1;
-} elseif (trim($answer) == "yes") {
+} elseif (trim($answer) == "no") {
 	$has_subs = 0;
 } else {
 	echo "Invalid answer. Defaulting to media containing subtitles.";
@@ -154,12 +270,12 @@ echo "\n";
 
 ## Question 6 (conditional)
 if ($has_subs == 1) {
-	echo "Are the subtitles from a sub-picture stream, or from closed captioning?\n[$sb cc$eb /$sp sp ]: ";
+	echo "Are the subtitles from a sub-picture stream, or from closed captioning?\n[$sb sp$eb /$sp cc ]: ";
 	$answer = fgets($handle);
-	if (trim($answer) == "cc" || trim($answer) == "") {
-		$cc_subs = 1;
-	} elseif (trim($answer) == "sp") {
+	if (trim($answer) == "sp" || trim($answer) == "") {
 		$cc_subs = 0;
+	} elseif (trim($answer) == "cc") {
+		$cc_subs = 1;
 	} else {
 		echo "Invalid answer. Defaulting to closed captioning subtitles.";
 		echo "\n";
@@ -198,14 +314,14 @@ if (trim($answer) == "fs" || trim($answer) == "") {
 echo "\n";
 
 ## Question 9
-echo "Was the video natively progressive?\n[$sb no$eb /$sp yes ]: ";
+echo "What was the native frame rate of the video?\n[$sb 29.97$eb /$sp 23.97 ]: ";
 $answer = fgets($handle);
-if (trim($answer) == "no" || trim($answer) == "") {
+if (trim($answer) == "29.97" || trim($answer) == "" || trim($answer) == "29") {
 	$ivtc = 1;
-} elseif (trim($answer) == "yes") {
+} elseif (trim($answer) == "23.97" || trim($answer) == "23") {
 	$ivtc = 0;
 } else {
-	echo "Invalid answer. Defaulting to interlaced.";
+	echo "Invalid answer. Defaulting to 29.97.";
 	echo "\n";
 	$ivtc = 1;
 }
@@ -247,16 +363,41 @@ while ($i <= $num_items) {
 	}
 	
 	# Question 12
+	$k = $i - 1;
+	$ep_plus = $ep_num[$k] + 1;
+	if ($ep_plus < 10) {
+		$ep_plus_disp = "0" . $ep_plus;
+	} else {
+		$ep_plus_disp = $ep_plus;
+	}
 	if ($dvd_type == 1) {
 		echo "What is the episode's number in this season?\n";
-		echo "(must be two digits, e.g. 01)\n[ ]: ";
-		$answer = fgets($handle);
-		if ((int)trim($answer) != 0 && strlen(trim($answer)) == 2) {
-			$ep_num[$i] = trim($answer);
+		if ($ep_num[$k] == "") {
+			$prev_ep = 0;
+			echo "(must be two digits, e.g. 01)\n[ ]: ";
 		} else {
-			echo "Invalid answer. Defaulting to 01.";
-			echo "\n";
-			$ep_num[$i] = "01";
+			$prev_ep = 1;
+			echo "(must be two digits, e.g. 01)\n[$sb " . $ep_plus_disp . "$eb]: ";
+		}
+		$answer = fgets($handle);
+		if ($prev_ep == 1) {
+			if (trim($answer) == "") {
+				$ep_num[$i] = $ep_plus_disp;
+			} elseif (strlen(trim($answer)) == 2) {
+				$ep_num[$i] = trim($answer);
+			} else {
+				echo "Invalid answer. Defaulting to 01.";
+				echo "\n";
+				$ep_num[$i] = "01";
+			}
+		} else {
+			if ((int)trim($answer) != 0 && strlen(trim($answer)) == 2) {
+				$ep_num[$i] = trim($answer);
+			} else {
+				echo "Invalid answer. Defaulting to 01.";
+				echo "\n";
+				$ep_num[$i] = "01";
+			}
 		}
 		echo "\n";
 	}
@@ -425,12 +566,19 @@ if ($cont == 1) {
 	}
 
 	# Write the rip code to the script
+	fwrite($batfile, "@ECHO OFF\r\n");
+	if ($dvd_type == 1) {
+		fwrite($batfile, "TITLE dvd2mkv - " . $content_title . ": Season " . $season . ", Episodes " . $ep_num[1] . " - " . $ep_num[$num_items] . "\r\n");
+	} else {
+		fwrite($batfile, "TITLE dvd2mkv - " . $content_title . "\r\n");
+	}
 	fwrite($batfile, "REM \r\n");
 	fwrite($batfile, "REM Write the rip code to the script\r\n");
 	fwrite($batfile, "REM \r\n");
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			$vob_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\";
+			$vob_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\";
+			fwrite($batfile, "ECHO Ripping episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
 			fwrite($batfile, "\"" . $dd_loc . "\" /MODE IFO /SRC " . $dl_loc . " /DEST \"" . $vob_dest[$i] . "\" /VTS " . $vts_num[$i] . " /PGC " . $pgc_num[$i] . " /SPLIT NONE /START /CLOSE\r\n");
 			if ($has_chap == 1) {
 				fwrite($batfile, "ren " . $vob_dest[$i] . "*OGG.txt CHAPTERS.txt\r\n");
@@ -442,7 +590,8 @@ if ($cont == 1) {
 		}
 		$i = 1;
 	} else {
-		$vob_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\";
+		$vob_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\";
+		fwrite($batfile, "ECHO Ripping " . $content_title . "...\r\n");
 		fwrite($batfile, "\"" . $dd_loc . "\" /MODE IFO /SRC " . $dl_loc . " /DEST \"" . $vob_dest[1] . "\" /VTS " . $vts_num[1] . " /PGC " . $pgc_num[1] . " /SPLIT NONE /START /CLOSE\r\n");
 		if ($has_chap == 1) {
 			fwrite($batfile, "ren " . $vob_dest[1] . "*OGG.txt CHAPTERS.txt\r\n");
@@ -453,27 +602,28 @@ if ($cont == 1) {
 	}
 	
 	# Write the sub-picture subtitle extraction code to the script
-	if ($cc_subs == 0) {
-		fwrite($batfile, "\r\nREM \r\n");
+	if ($has_subs == 1 && $cc_subs == 0) {
+		fwrite($batfile, "\r\nECHO.\r\n");
+		fwrite($batfile, "REM \r\n");
 		fwrite($batfile, "REM Write the sub-picture subtitle extraction code to the script\r\n");
 		fwrite($batfile, "REM \r\n");
 		if ($dvd_type == 1) {
 			while ($i <= $num_items) {
-				if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-					mkdir($rd_loc . "\\RIPPED\\");
+				if (is_dir($wd_loc . "\\RIPPED\\") == false) {
+					mkdir($wd_loc . "\\RIPPED\\");
 				}
-				if (is_dir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\") == false) {
-					mkdir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\");
+				if (is_dir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\") == false) {
+					mkdir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\");
 				}
-				if (is_dir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\") == false) {
-					mkdir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\");
+				if (is_dir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\") == false) {
+					mkdir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\");
 				}
-				if (is_dir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\") == false) {
-					mkdir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\");
+				if (is_dir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\") == false) {
+					mkdir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\");
 				}
-				$idx_src[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\IFO_REPLACE";
-				$idx_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN";
-				$prm_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.vsparam";
+				$idx_src[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\IFO_REPLACE";
+				$idx_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN";
+				$prm_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.vsparam";
 				$prmfile = fopen($prm_dest[$i], 'w');
 				fwrite($prmfile, $idx_src[$i] . "\r\n");
 				fwrite($prmfile, $idx_dest[$i] . "\r\n");
@@ -482,22 +632,23 @@ if ($cont == 1) {
 				fwrite($prmfile, "en\r\n");
 				fwrite($prmfile, "CLOSE\r\n");
 				fclose($prmfile);
-				fwrite($batfile, $pe_loc . " \"" . $vob_dest[$i] . "\\\" \"MAIN.vsparam\"\r\n");
+				fwrite($batfile, "ECHO Creating subtitles for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+				fwrite($batfile, "\"" . $self_loc . "\" --param \"" . $vob_dest[$i] . "\\\" \"MAIN.vsparam\"\r\n");
 				fwrite($batfile, $vu_loc . " " . $prm_dest[$i] . "\r\n");
 				$i++;
 				echo ".";
 			}
 			$i = 1;
 		} else {
-			if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\");
+			if (is_dir($wd_loc . "\\RIPPED\\") == false) {
+				mkdir($wd_loc . "\\RIPPED\\");
 			}
-			if (is_dir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\");
+			if (is_dir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\") == false) {
+				mkdir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\");
 			}
-			$idx_src[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\IFO_REPLACE";
-			$idx_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN";
-			$idx_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.vsparam";
+			$idx_src[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\IFO_REPLACE";
+			$idx_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN";
+			$prm_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.vsparam";
 			$prmfile = fopen($prm_dest[1], 'w');
 			fwrite($prmfile, $idx_src[1] . "\r\n");
 			fwrite($prmfile, $idx_dest[1] . "\r\n");
@@ -506,42 +657,74 @@ if ($cont == 1) {
 			fwrite($prmfile, "en\r\n");
 			fwrite($prmfile, "CLOSE\r\n");
 			fclose($prmfile);
-			fwrite($batfile, $pe_loc . " \"" . $vob_dest[1] . "\\\" \"MAIN.vsparam\"\r\n");
+			fwrite($batfile, "ECHO Creating subtitles for " . $content_title . "...\r\n");
+			fwrite($batfile, "\"" . $self_loc . "\" --param \"" . $vob_dest[1] . "\\\" \"MAIN.vsparam\"\r\n");
 			fwrite($batfile, $vu_loc . " " . $prm_dest[1] . "\r\n");
 			echo ".";
 		}
 	}
 	
 	# Rename VOBs for demuxing
-	fwrite($batfile, "\r\nREM \r\n");
+	fwrite($batfile, "\r\nECHO.\r\n");
+	fwrite($batfile, "REM \r\n");
 	fwrite($batfile, "REM Rename VOBs for demuxing\r\n");
 	fwrite($batfile, "REM \r\n");
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			$vob_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\";
+			$vob_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\";
+			fwrite($batfile, "ECHO Renaming VOB files for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
 			fwrite($batfile, "ren " . $vob_dest[$i] . "*.vob MAIN.vob\r\n");
 			$i++;
 			echo ".";
 		}
 		$i = 1;
 	} else {
-		$vob_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\";
+		$vob_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\";
+		fwrite($batfile, "ECHO Renaming VOB files for " . $content_title . "...\r\n");
 		fwrite($batfile, "ren " . $vob_dest[1] . "*.vob MAIN.vob\r\n");
 		echo ".";
 	}
 
 	# Write the VOB demux code to the script
-	fwrite($batfile, "\r\nREM \r\n");
+	fwrite($batfile, "\r\nECHO.\r\n");
+	fwrite($batfile, "REM \r\n");
 	fwrite($batfile, "REM Write the VOB demux code to the script\r\n");
 	fwrite($batfile, "REM \r\n");
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			$m2v_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.m2v";
-			$paud_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\PAUD.ac3";
+			$m2v_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.m2v";
+			if (strtolower(substr($stream_paud[$i], 0, 3)) == "0x8") {
+				if ($mp3_encode != 1) {
+					$mp3_encode = 0;
+				}
+				$paud_encode[$i] = 0;
+				$paud_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\PAUD.ac3";
+			} elseif (strtolower(substr($stream_paud[$i], 0, 3)) == "0xa") {
+				if ($mp3_encode != 1) {
+					$mp3_encode = 1;
+				}
+				$paud_encode[$i] = 1;
+				$paud_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\PAUD.raw";
+			}
+			fwrite($batfile, "ECHO Demuxing video information for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
 			fwrite($batfile, "\"" . $vs_loc . "\" \"" . $vob_dest[$i] . "MAIN.vob\" -!do\"" . $m2v_dest[$i] . "\" " . $stream_vid[$i] . "\r\n");
+			fwrite($batfile, "ECHO Demuxing primary audio information for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
 			fwrite($batfile, "\"" . $vs_loc . "\" \"" . $vob_dest[$i] . "MAIN.vob\" -!do\"" . $paud_dest[$i] . "\" 0xBD " . $stream_paud[$i] . "\r\n");
 			if ($saud[$i] == 1) {
-				$saud_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\SAUD.ac3";
+				if (strtolower(substr($stream_saud[$i], 0, 3)) == "0x8") {
+					if ($mp3_encode != 1) {
+						$mp3_encode = 0;
+					}
+					$saud_encode[$i] = 0;
+					$saud_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\SAUD.ac3";
+				} elseif (strtolower(substr($stream_saud[$i], 0, 3)) == "0xa") {
+					if ($mp3_encode != 1) {
+						$mp3_encode = 1;
+					}
+					$saud_encode[$i] = 1;
+					$saud_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\SAUD.raw";
+				}
+				fwrite($batfile, "ECHO Demuxing secondary audio information for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
 				fwrite($batfile, "\"" . $vs_loc . "\" \"" . $vob_dest[$i] . "MAIN.vob\" -!do\"" . $saud_dest[$i] . "\" 0xBD " . $stream_saud[$i] . "\r\n");
 			}
 			$i++;
@@ -549,32 +732,62 @@ if ($cont == 1) {
 		}
 		$i = 1;
 	} else {
-		$m2v_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.m2v";
-		$paud_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\PAUD.ac3";
+		$m2v_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.m2v";
+		if (strtolower(substr($stream_paud[1], 0, 3)) == "0x8") {
+			if ($mp3_encode != 1) {
+				$mp3_encode = 0;
+			}
+			$paud_encode[1] = 0;
+			$paud_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\PAUD.ac3";
+		} elseif (strtolower(substr($stream_paud[1]. 0, 3)) == "0xa") {
+			if ($mp3_encode != 1) {
+				$mp3_encode = 1;
+			}
+			$paud_encode[1] = 1;
+			$paud_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\PAUD.raw";
+		}
+		fwrite($batfile, "ECHO Demuxing video information for " . $content_title . "...\r\n");
 		fwrite($batfile, "\"" . $vs_loc . "\" \"" . $vob_dest[1] . "MAIN.vob\" -!do\"" . $m2v_dest[1] . "\" " . $stream_vid[1] . "\r\n");
-		fwrite($batfile, "\"" . $vs_loc . "\" \"" . $vob_dest[1] . "MAIN.vob\" -!do\"" . $paud_dest[1] . "\" " . $stream_paud[1] . "\r\n");
+		fwrite($batfile, "ECHO Demuxing primary audio information for " . $content_title . "...\r\n");
+		fwrite($batfile, "\"" . $vs_loc . "\" \"" . $vob_dest[1] . "MAIN.vob\" -!do\"" . $paud_dest[1] . "\" 0xBD " . $stream_paud[1] . "\r\n");
 		if ($saud[1] == 1) {
-			$saud_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SAUD.ac3";
-			fwrite($batfile, "\"" . $vs_loc . "\" \"" . $vob_dest[1] . "MAIN.vob\" -!do\"" . $saud_dest[1] . "\" " . $stream_saud[1] . "\r\n");
+			if (strtolower(substr($stream_saud[1], 0, 3)) == "0x8") {
+				if ($mp3_encode != 1) {
+					$mp3_encode = 0;
+				}
+				$saud_encode[1] = 0;
+				$saud_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SAUD.ac3";
+			} elseif (strtolower(substr($stream_saud[1]. 0, 3)) == "0xa") {
+				if ($mp3_encode != 1) {
+					$mp3_encode = 1;
+				}
+				$saud_encode[1] = 1;
+				$saud_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SAUD.raw";
+			}
+			fwrite($batfile, "ECHO Demuxing secondary audio information for " . $content_title . "...\r\n");
+			fwrite($batfile, "\"" . $vs_loc . "\" \"" . $vob_dest[1] . "MAIN.vob\" -!do\"" . $saud_dest[1] . "\" 0xBD " . $stream_saud[1] . "\r\n");
 		}
 		echo ".";
 	}
 
 	# Write the closed captioning subtitle extraction code to the script
-	if ($cc_subs == 1) {
-		fwrite($batfile, "\r\nREM \r\n");
+	if ($has_subs == 1 && $cc_subs == 1) {
+		fwrite($batfile, "\r\nECHO.\r\n");
+		fwrite($batfile, "REM \r\n");
 		fwrite($batfile, "REM Write the closed captioning subtitle extraction code to the script\r\n");
 		fwrite($batfile, "REM \r\n");
 		if ($dvd_type == 1) {
 			while ($i <= $num_items) {
-				$srt_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.srt";
+				$srt_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.srt";
+				fwrite($batfile, "ECHO Creating subtitles from closed-captioning for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
 				fwrite($batfile, "\"" . $cc_loc . "\" -ps -utf8 -trim -out=srt \"" . $vob_dest[$i] . "MAIN.vob\" -o \"" . $srt_dest[$i] . "\"\r\n");
 				$i++;
 				echo ".";
 			}
 			$i = 1;
 		} else {
-			$srt_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.srt";
+			$srt_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.srt";
+			fwrite($batfile, "ECHO Creating subtitles from closed-captioning for " . $content_title . "...\r\n");
 			fwrite($batfile, "\"" . $cc_loc . "\" -ps -utf8 -trim -out=srt \"" . $vob_dest[1] . "MAIN.vob\" -o \"" . $srt_dest[1] . "\"\r\n");
 			echo ".";
 		}
@@ -582,38 +795,44 @@ if ($cont == 1) {
 	
 	# Write the code to correct the chapters to the script
 	if ($has_chap == 1) {
-		fwrite($batfile, "\r\nREM \r\n");
+		fwrite($batfile, "\r\nECHO.\r\n");
+		fwrite($batfile, "REM \r\n");
 		fwrite($batfile, "REM Write the code to correct the chapters to the script\r\n");
 		fwrite($batfile, "REM \r\n");
 		if ($dvd_type == 1) {
 			while ($i <= $num_items) {
-				$chap_file[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\CHAPTERS.txt";
-				fwrite($batfile, "\"" . $ce_loc . "\" \"" . $chap_file[$i] . "\"\r\n");
+				$chap_file[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\CHAPTERS.txt";
+				fwrite($batfile, "ECHO Correcting chapter markers for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+				fwrite($batfile, "\"" . $self_loc . "\" --chap \"" . $chap_file[$i] . "\"\r\n");
 				$i++;
 				echo ".";
 			}
 			$i = 1;
 		} else {
-			$chap_file[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\CHAPTERS.txt";
-			fwrite($batfile, "\"" . $ce_loc . "\" \"" . $chap_file[1] . "\"\r\n");
+			$chap_file[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\CHAPTERS.txt";
+			fwrite($batfile, "ECHO Correcting chapter markers for " . $content_title . "...\r\n");
+			fwrite($batfile, "\"" . $self_loc . "\" --chap \"" . $chap_file[1] . "\"\r\n");
 			echo ".";
 		}
 	}
 
 	# Write the d2v compilation code to the script
-	fwrite($batfile, "\r\nREM \r\n");
+	fwrite($batfile, "\r\nECHO.\r\n");
+	fwrite($batfile, "REM \r\n");
 	fwrite($batfile, "REM Write the d2v compilation code to the script\r\n");
 	fwrite($batfile, "REM \r\n");
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			$d2v_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN";
+			$d2v_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN";
+			fwrite($batfile, "ECHO Creating MPEG summary file for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
 			fwrite($batfile, "\"" . $dg_loc . "\" -i \"" . $m2v_dest[$i] . "\" -o \"" . $d2v_dest[$i] . "\" -ia 5 -fo 0 -yr 1 -om 0 -exit\r\n");
 			$i++;
 			echo ".";
 		}
 		$i = 1;
 	} else {
-		$d2v_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN";
+		$d2v_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN";
+		fwrite($batfile, "ECHO Creating MPEG summary file for " . $content_title . "...\r\n");
 		fwrite($batfile, "\"" . $dg_loc . "\" -i \"" . $m2v_dest[1] . "\" -o \"" . $d2v_dest[1] . "\" -ia 5 -fo 0 -yr 1 -om 0 -exit\r\n");
 		echo ".";
 	}
@@ -621,21 +840,22 @@ if ($cont == 1) {
 	# Write the AviSynth script file
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\");
+			if (is_dir($wd_loc . "\\RIPPED\\") == false) {
+				mkdir($wd_loc . "\\RIPPED\\");
 			}
-			if (is_dir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\");
+			if (is_dir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\") == false) {
+				mkdir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\");
 			}
-			if (is_dir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\");
+			if (is_dir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\") == false) {
+				mkdir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\");
 			}
-			if (is_dir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\");
+			if (is_dir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\") == false) {
+				mkdir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\");
 			}
-			$avs_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.avs";
+			$avs_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.avs";
 			$avsfile = fopen($avs_dest[$i], 'w');
 			fwrite($avsfile, "LoadPlugin(\"" . $gd_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $tc_loc . "\")" . "\r\n");
 			fwrite($avsfile, "MPEG2Source(\"" . $d2v_dest[$i] . ".d2v\")" . "\r\n");
 			if ($ivtc == 1) {
 				fwrite($avsfile, "tfm(d2v=\"" . $d2v_dest[$i] . ".d2v\")" . "\r\n");
@@ -657,15 +877,16 @@ if ($cont == 1) {
 		}
 		$i = 1;
 	} else {
-		if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-			mkdir($rd_loc . "\\RIPPED\\");
+		if (is_dir($wd_loc . "\\RIPPED\\") == false) {
+			mkdir($wd_loc . "\\RIPPED\\");
 		}
-		if (is_dir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\") == false) {
-			mkdir($rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\");
+		if (is_dir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\") == false) {
+			mkdir($wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\");
 		}
-		$avs_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.avs";
+		$avs_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.avs";
 		$avsfile = fopen($avs_dest[1], 'w');
 		fwrite($avsfile, "LoadPlugin(\"" . $gd_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $tc_loc . "\")" . "\r\n");
 		fwrite($avsfile, "MPEG2Source(\"" . $d2v_dest[1] . ".d2v\")" . "\r\n");
 		if ($ivtc == 1) {
 			fwrite($avsfile, "tfm(d2v=\"" . $d2v_dest[1] . ".d2v\")" . "\r\n");
@@ -685,36 +906,134 @@ if ($cont == 1) {
 		echo ".";
 	}
 
+	# Write the commands to encode any WAV audio files
+	if ($mp3_encode == 1) {
+		fwrite($batfile, "\r\nECHO.\r\n");
+		fwrite($batfile, "REM \r\n");
+		fwrite($batfile, "REM Write the commands to encode any WAV audio files\r\n");
+		fwrite($batfile, "REM \r\n");
+		if ($dvd_type == 1) {
+			while ($i <= $num_items) {
+				if ($paud_encode[$i] == 1) {
+					$pwav_dest[$i] = substr($paud_dest[$i], 0, -3) . "wav";
+					$pmp3_dest[$i] = substr($paud_dest[$i], 0, -3) . "mp3";
+					fwrite($batfile, "ECHO Encoding primary audio of episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+					fwrite($batfile, "\"" . $sx_loc . "\" -r 48k -e signed -b 16 -c 2 -B \"" . $paud_dest[$i] . "\" \"" . $pwav_dest[$i] . "\"\r\n");
+					fwrite($batfile, "\"" . $lm_loc . "\" --quiet " . $lame_qual . " \"" . $pwav_dest[$i] . "\" \"" . $pmp3_dest[$i] . "\"\r\n");
+					$paud_dest[$i] = substr($paud_dest[$i], 0, -3) . "mp3";
+				}
+				if ($saud_encode[$i] == 1) {
+					$swav_dest[$i] = substr($saud_dest[$i], 0, -3) . "wav";
+					$smp3_dest[$i] = substr($saud_dest[$i], 0, -3) . "mp3";
+					if ($saud_type[$i] == 0) {
+						fwrite($batfile, "ECHO Encoding secondary audio of episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+					} else {
+						fwrite($batfile, "ECHO Encoding director's commentary of episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+					}
+					fwrite($batfile, "\"" . $sx_loc . "\" -r 48k -e signed -b 16 -c 2 -B \"" . $saud_dest[$i] . "\" \"" . $swav_dest[$i] . "\"\r\n");
+					fwrite($batfile, "\"" . $lm_loc . "\" --quiet " . $lame_qual . " \"" . $swav_dest[$i] . "\" \"" . $smp3_dest[$i] . "\"\r\n");
+					$saud_dest[$i] = substr($saud_dest[$i], 0, -3) . "mp3";
+				}
+				$i++;
+				echo ".";
+			}
+			$i = 1;
+		} else {
+			if ($paud_encode[1] == 1) {
+				$pwav_dest[1] = substr($paud_dest[1], 0, -3) . "wav";
+				$pmp3_dest[1] = substr($paud_dest[1], 0, -3) . "mp3";
+				fwrite($batfile, "ECHO Encoding primary audio of " . $content_title . "...\r\n");
+				fwrite($batfile, "\"" . $sx_loc . "\" -r 48k -e signed -b 16 -c 2 -B \"" . $paud_dest[1] . "\" \"" . $pwav_dest[1] . "\"\r\n");
+				fwrite($batfile, "\"" . $lm_loc . "\" --quiet " . $lame_qual . " \"" . $pwav_dest[1] . "\" \"" . $pmp3_dest[1] . "\"\r\n");
+				$paud_dest[1] = substr($paud_dest[1], 0, -3) . "mp3";
+			}
+			if ($saud_encode[1] == 1) {
+				$swav_dest[1] = substr($saud_dest[1], 0, -3) . "wav";
+				$smp3_dest[1] = substr($saud_dest[1], 0, -3) . "mp3";
+				if ($saud_type[1] == 0) {
+					fwrite($batfile, "ECHO Encoding secondary audio of " . $content_title . "...\r\n");
+				} else {
+					fwrite($batfile, "ECHO Encoding director's commentary of " . $content_title . "...\r\n");
+				}
+				fwrite($batfile, "\"" . $sx_loc . "\" -r 48k -e signed -b 16 -c 2 -B \"" . $paud_dest[1] . "\" \"" . $swav_dest[1] . "\"\r\n");
+				fwrite($batfile, "\"" . $lm_loc . "\" --quiet " . $lame_qual . " \"" . $swav_dest[1] . "\" \"" . $smp3_dest[1] . "\"\r\n");
+				$saud_dest[1] = substr($saud_dest[$i], 0, -3) . "mp3";
+			}
+			echo ".";
+		}
+	}
+	
 	# Write the commands to encode the video to the script
-	fwrite($batfile, "\r\nREM \r\n");
+	fwrite($batfile, "\r\nECHO.\r\n");
+	fwrite($batfile, "REM \r\n");
 	fwrite($batfile, "REM Write the commands to encode the video to the script\r\n");
 	fwrite($batfile, "REM \r\n");
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			$stat_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.stats";
-			$pass_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.pass";
-			$avi_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.avi";
-			fwrite($batfile, "\"" . $xv_loc . "\" -i \"" . $avs_dest[$i] . "\" -type 2 -o \"" . $pass_dest[$i] . "\" -pass1 \"" . $stat_dest[$i] . "\" -framerate 23.976 -progress 24\r\n");
-			fwrite($batfile, "\"" . $xv_loc . "\" -i \"" . $avs_dest[$i] . "\" -type 2 -o \"" . $avi_dest[$i] . "\" -pass2 \"" . $stat_dest[$i] . "\" -framerate 23.976 -bitrate 2109 -quality 6 -vhqmode 1 -bvhq -qtype 0 -imin 1 -imax 31 -bmin 1 -bmax 31 -pmin 1 -pmax 31 -par 1 -progress 24\r\n");
-			fwrite($batfile, "del " . $pass_dest[$i] . "\r\n");
+			$encbat_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\ENCODE.bat";
+			$stat_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.stats";
+			$pass_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.pass";
+			$avi_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\MAIN.avi";
+			$encbatfile = fopen($encbat_dest[$i], 'w');
+			fwrite($batfile, "ECHO Starting to encode episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+			if ($encode_qual == "sq") {
+				$br_qual = $sq;
+			} else {
+				if ($encode_qual == "oq") {
+					$br_ratio = $oq;
+				} elseif ($encode_qual == "fq") {
+					$br_ratio = $fq;
+				}
+				$br_qual = "BITRATE_REPLACE";
+				fwrite($batfile, "\"" . $self_loc . "\" --vidbit " . $encode_qual . ":" . $br_ratio . " 29.97 \"" . $vob_dest[$i] . "\\\"\r\n");
+			}
+			fwrite($batfile, "start /wait \"Encoding episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\" \"" . $encbat_dest[$i] . "\"\r\n");
+			fwrite($encbatfile, "@ECHO OFF\r\n");
+			fwrite($encbatfile, "ECHO Encoding the first pass of episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+			fwrite($encbatfile, "\"" . $xv_loc . "\" -i \"" . $avs_dest[$i] . "\" -type 2 -o \"" . $pass_dest[$i] . "\" -pass1 \"" . $stat_dest[$i] . "\" -framerate 23.976 -progress 24\r\n");
+			fwrite($encbatfile, "ECHO Encoding the second pass of episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+			fwrite($encbatfile, "\"" . $xv_loc . "\" -i \"" . $avs_dest[$i] . "\" -type 2 -o \"" . $avi_dest[$i] . "\" -pass2 \"" . $stat_dest[$i] . "\" -framerate 23.976 -bitrate " . $br_qual . " -quality 6 -vhqmode 1 -bvhq -qtype 0 -imin 1 -imax 31 -bmin 1 -bmax 31 -pmin 1 -pmax 31 -par 1 -progress 24\r\n");
+			fwrite($encbatfile, "del " . $pass_dest[$i] . "\r\n");
+			fwrite($encbatfile, "EXIT\r\n");
 			$i++;
 			echo ".";
+			fclose($encbatfile);
 		}
 		$i = 1;
 	} else {
-		$stat_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.stats";
-		$pass_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.pass";
-		$avi_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.avi";
-		fwrite($batfile, "\"" . $xv_loc . "\" -i \"" . $avs_dest[1] . "\" -type 2 -o \"" . $pass_dest[1] . "\" -pass1 \"" . $stat_dest[1] . "\" -framerate 23.976 -progress 24\r\n");
-		fwrite($batfile, "\"" . $xv_loc . "\" -i \"" . $avs_dest[1] . "\" -type 2 -o \"" . $avi_dest[1] . "\" -pass2 \"" . $stat_dest[1] . "\" -framerate 23.976 -bitrate 2109 -quality 6 -vhqmode 1 -bvhq -qtype 0 -imin 1 -imax 31 -bmin 1 -bmax 31 -pmin 1 -pmax 31 -par 1 -progress 24\r\n");
-		fwrite($batfile, "del " . $pass_dest[1] . "\r\n");
+		$encbat_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\ENCODE.bat";
+		$stat_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.stats";
+		$pass_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.pass";
+		$avi_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\MAIN.avi";
+		$encbatfile = fopen($encbat_dest[1], 'w');
+		fwrite($batfile, "ECHO Starting to encode " . $content_title . "...\r\n");
+		if ($encode_qual == "sq") {
+			$br_qual = $sq;
+		} else {
+			if ($encode_qual == "oq") {
+				$br_ratio = $oq;
+			} elseif ($encode_qual == "fq") {
+				$br_ratio = $fq;
+			}
+			$br_qual = "BITRATE_REPLACE";
+			fwrite($batfile, "\"" . $self_loc . "\" --vidbit " . $encode_qual . ":" . $br_ratio . " 29.97 \"" . $vob_dest[1] . "\\\"\r\n");
+		}
+		fwrite($batfile, "start /wait \"Encoding " . $content_title . "...\" \"" . $encbat_dest[1] . "\"\r\n");
+		fwrite($encbatfile, "@ECHO OFF\r\n");
+		fwrite($encbatfile, "ECHO Encoding the first pass of " . $content_title . "...\r\n");
+		fwrite($encbatfile, "\"" . $xv_loc . "\" -i \"" . $avs_dest[1] . "\" -type 2 -o \"" . $pass_dest[1] . "\" -pass1 \"" . $stat_dest[1] . "\" -framerate 23.976 -progress 24\r\n");
+		fwrite($encbatfile, "ECHO Encoding the second pass of " . $content_title . "...\r\n");
+		fwrite($encbatfile, "\"" . $xv_loc . "\" -i \"" . $avs_dest[1] . "\" -type 2 -o \"" . $avi_dest[1] . "\" -pass2 \"" . $stat_dest[1] . "\" -framerate 23.976 -bitrate " . $br_qual . " -quality 6 -vhqmode 1 -bvhq -qtype 0 -imin 1 -imax 31 -bmin 1 -bmax 31 -pmin 1 -pmax 31 -par 1 -progress 24\r\n");
+		fwrite($encbatfile, "del " . $pass_dest[1] . "\r\n");
+		fwrite($encbatfile, "EXIT\r\n");
 		echo ".";
+		fclose($encbatfile);
 	}
 	
 	# Write version ID files
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			$ver_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\COMPILED_USING_DVD2MKV_" . $d2m_ver;
+			$ver_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\COMPILED_USING_DVD2MKV_" . $d2m_ver;
 			$verfile = fopen($ver_dest[$i], 'w');
 			fwrite($verfile, $content_title . ": Season " . $season . ", Episode " . $ep_num[$i] . "\r\n");
 			fwrite($verfile, "\"" . $episode_title[$i] . "\"\r\n");
@@ -725,7 +1044,7 @@ if ($cont == 1) {
 		}
 		$i = 1;
 	} else {
-		$ver_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\COMPILED_USING_DVD2MKV_" . $d2m_ver;
+		$ver_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\COMPILED_USING_DVD2MKV_" . $d2m_ver;
 		$verfile = fopen($ver_dest[1], 'w');
 		fwrite($verfile, $content_title . "\r\n");
 		fwrite($verfile, "Compiled using dvd2mkv version " . $d2m_ver . "\r\n");
@@ -734,19 +1053,20 @@ if ($cont == 1) {
 	}
 
 	# Write the commands to the script to create the mkv file
-	fwrite($batfile, "\r\nREM \r\n");
+	fwrite($batfile, "\r\nECHO.\r\n");
+	fwrite($batfile, "REM \r\n");
 	fwrite($batfile, "REM Write the commands to the script to create the mkv file\r\n");
 	fwrite($batfile, "REM \r\n");
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			$mkv_dest[$i] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\" . $ep_num[$i] . "-" . filename($episode_title[$i]) . ".mkv\"";
-			$vid_opt = "  \"--track-name\" \"0:Video\" \"--default-track\" \"0:yes\" \"--forced-track\" \"0:no\" \"--aspect-ratio\" \"0:16/9\" \"--fourcc\" \"0:XVID\" \"--default-duration\" \"0:24000/1001fps\" \"-d\" \"0\" \"-A\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $avi_dest[$i] . "\"";
+			$mkv_dest[$i] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\SEASON" . $season . "\\EPISODE" . $ep_num[$i] . "\\" . $ep_num[$i] . "-" . filename($episode_title[$i]) . ".mkv\"";
+			$vid_opt = "  \"--cues\" \"0:all\" \"--track-name\" \"0:Video\" \"--default-track\" \"0:yes\" \"--forced-track\" \"0:no\" \"--aspect-ratio\" \"0:16/9\" \"--fourcc\" \"0:XVID\" \"--default-duration\" \"0:24000/1001fps\" \"-d\" \"0\" \"-A\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $avi_dest[$i] . "\"";
 			$paud_opt = " \"--language\" \"0:" . $paud_lang[$i] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Primary Audio\" \"--default-track\" \"0:yes\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $paud_dest[$i] . "\"";
 			if ($saud[$i] == 1) {
 				if ($saud_type[$i] == 1) {
-					$saud_opt = " \"--language\" \"0:" . $saud_lang[$i] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Director's Comments\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $paud_dest[$i] . "\"";
+					$saud_opt = " \"--language\" \"0:" . $saud_lang[$i] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Director's Comments\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $saud_dest[$i] . "\"";
 				} else {
-					$saud_opt = " \"--language\" \"0:" . $saud_lang[$i] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Secondary Audio\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $paud_dest[$i] . "\"";
+					$saud_opt = " \"--language\" \"0:" . $saud_lang[$i] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Secondary Audio\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $saud_dest[$i] . "\"";
 				}
 			} else {
 				$saud_opt = "";
@@ -766,20 +1086,21 @@ if ($cont == 1) {
 				$sub_opt = "";
 			}
 			$gen_opt = " \"--track-order\" \"0:0,1:0,2:0,3:0\" \"--attachment-mime-type\" \"text/plain\" \"--attachment-description\" \"COMPILED_USING_DVD2MKV_" . $d2m_ver . "\" \"--attachment-name\" \"COMPILED_USING_DVD2MKV_" . $d2m_ver . "\" \"--attach-file\" \"" . $ver_dest[$i] . "\" \"--title\" \"" . $episode_title[$i] . "\"";
+			fwrite($batfile, "ECHO Compiling output for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
 			fwrite($batfile, "\"" . $mk_loc . "\" -o \"" . $mkv_dest[$i] . $vid_opt . $paud_opt . $saud_opt . $sub_opt . $gen_opt . $chap_opt . "\r\n");
 			$i++;
 			echo ".";
 		}
 		$i = 1;
 	} else {
-		$mkv_dest[1] = $rd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\" . filename($content_title) . ".mkv\"";
-		$vid_opt = "  \"--track-name\" \"0:Video\" \"--default-track\" \"0:yes\" \"--forced-track\" \"0:no\" \"--aspect-ratio\" \"0:16/9\" \"--fourcc\" \"0:XVID\" \"--default-duration\" \"0:24000/1001fps\" \"-d\" \"0\" \"-A\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $avi_dest[1] . "\"";
+		$mkv_dest[1] = $wd_loc . "\\RIPPED\\" . str_replace(" ", "_", $content_title) . "\\" . filename($content_title) . ".mkv\"";
+		$vid_opt = "  \"--cues\" \"0:all\" \"--track-name\" \"0:Video\" \"--default-track\" \"0:yes\" \"--forced-track\" \"0:no\" \"--aspect-ratio\" \"0:16/9\" \"--fourcc\" \"0:XVID\" \"--default-duration\" \"0:24000/1001fps\" \"-d\" \"0\" \"-A\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $avi_dest[1] . "\"";
 		$paud_opt = " \"--language\" \"0:" . $paud_lang[1] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Primary Audio\" \"--default-track\" \"0:yes\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $paud_dest[1] . "\"";
 		if ($saud[1] == 1) {
 			if ($saud_type[1] == 1) {
-				$saud_opt = " \"--language\" \"0:" . $saud_lang[1] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Director's Comments\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $paud_dest[1] . "\"";
+				$saud_opt = " \"--language\" \"0:" . $saud_lang[1] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Director's Comments\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $saud_dest[1] . "\"";
 			} else {
-				$saud_opt = " \"--language\" \"0:" . $saud_lang[1] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Secondary Audio\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $paud_dest[1] . "\"";
+				$saud_opt = " \"--language\" \"0:" . $saud_lang[1] . "\" \"--sync\" \"0:0\" \"--track-name\" \"0:Secondary Audio\" \"--forced-track\" \"0:no\" \"-a\" \"0\" \"-D\" \"-S\" \"-T\" \"--no-global-tags\" \"--no-chapters\" \"" . $saud_dest[1] . "\"";
 			}
 		} else {
 			$saud_opt = "";
@@ -799,11 +1120,40 @@ if ($cont == 1) {
 			$sub_opt = "";
 		}
 		$gen_opt = " \"--track-order\" \"0:0,1:0,2:0,3:0\" \"--attachment-mime-type\" \"text/plain\" \"--attachment-description\" \"COMPILED_WITH_DVD2MKV_" . $d2m_ver . "\" \"--attachment-name\" \"COMPILED_WITH_DVD2MKV_" . $d2m_ver . "\" \"--attach-file\" \"" . $ver_dest[1] . "\" \"--title\" \"" . $content_title . "\"";
+		fwrite($batfile, "ECHO Compiling output for " . $content_title . "...\r\n");
 		fwrite($batfile, "\"" . $mk_loc . "\" -o \"" . $mkv_dest[1] . $vid_opt . $paud_opt . $saud_opt . $sub_opt . $gen_opt . $chap_opt . "\r\n");
+		echo ".";
+	}
+	
+	# Write the commands to the script to move the completed files to their final destination
+	fwrite($batfile, "\r\nECHO.\r\n");
+	fwrite($batfile, "REM \r\n");
+	fwrite($batfile, "REM Write the commands to the script to move the completed files to their final destination\r\n");
+	fwrite($batfile, "REM \r\n");
+	if ($dvd_type == 1) {
+		while ($i <= $num_items) {
+			fwrite($batfile, "ECHO Moving episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+			fwrite($batfile, "move \"" . $mkv_dest[$i] . " \"" . $fd_loc . "\\" . $ep_num[$i] . "-" . filename($episode_title[$i]) . ".mkv\"\r\n");
+			if ($del_wf == 1) {
+				fwrite($batfile, "ECHO Deleting working files for episode " . $ep_num[$i] . ": " . $episode_title[$i] . "...\r\n");
+				fwrite($batfile, "del /Q \"" . $vob_dest[$i] . "\"\r\n");
+			}
+			$i++;
+			echo ".";
+		}
+		$i = 1;
+	} else {
+		fwrite($batfile, "ECHO Moving " . $content_title . "...\r\n");
+		fwrite($batfile, "move \"" . $mkv_dest[1] . " \"" . $fd_loc . "\\" . filename($content_title) . ".mkv\"\r\n");
+		if ($del_wf == 1) {
+			fwrite($batfile, "ECHO Deleting working files for " . $content_title . "...\r\n");
+			fwrite($batfile, "del /Q \"" . $vob_dest[1] . "\"\r\n");
+		}
 		echo ".";
 	}
 }
 
+fwrite($batfile, "\r\nECHO.\r\nECHO.\r\nECHO Process complete, shutting down...\r\n");
 echo " Done!";
 sleep (5);
 
