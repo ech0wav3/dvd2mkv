@@ -18,7 +18,7 @@
             <li><a href="#mkvpropedit.edit_selectors">3. Edit selectors</a></li>
             <li><a href="#mkvpropedit.attachment_selectors">4. Attachment selectors</a></li>
             <li><a href="#mkvpropedit.examples">5. Przykłady</a></li>
-            <li><a href="#d4e1426">6. Kody zamknięcia</a></li>
+            <li><a href="#d4e1375">6. Kody zamknięcia</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">7. Text files and character set conversions</a></li>
             <li><a href="#mkvpropedit.escaping">8. Escaping special chars in text</a></li>
             <li><a href="#mkvpropedit.environment_variables">9. Zmienne środowiskowe</a></li>
@@ -665,73 +665,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
-                  <td>
-                     
-                     <p>
-                        Checks online for new releases by downloading the URL <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Four lines will be output in <span class="literal">key=value</span> style: the URL
-                        from where the information was retrieved (key
-                        <span class="literal">version_check_url</span>), the currently running version (key
-                        <span class="literal">running_version</span>), the latest release's version (key
-                        <span class="literal">available_version</span>) and the download URL (key
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Afterwards the program exists with an exit code of 0 if no newer release is
-                        available, with 1 if a newer release is available and with 2 if an error
-                        occured (e.g. if the update information could not be retrieved).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        This option is only available if the program was built with support for
-                        libcurl.
-                        
-                     </p>
-                     
-                  </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">plik-opcji</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file.json</span></td>
                   <td>
                      
                      <p>
                         Reads additional command line arguments from the file
-                        <span class="parameter">options-file</span>.  Lines whose first non-whitespace
-                        character is a hash mark ('<span class="literal">#</span>') are treated as comments
-                        and ignored. White spaces at the start and end of a line will be
-                        stripped. Each line must contain exactly one option.
+                        <span class="parameter">options-file</span>. For a full explanation on the supported
+                        formats for such files see the section called "Option files" in the
+                        <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> man page.
                         
                      </p>
                      
-                     
-                     <p>
-                        Several chars can be escaped, e.g. if you need to start a non-comment line
-                        with '#'. The rules are described in <a href="#mkvpropedit.escaping">the section about escaping text</a>.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        The command line '<span class="command">mkvpropedit source.mkv --edit track:a2 --set
-                           name=Comments</span>' could be converted into the following option file:
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Modyfikuj źródło.mkv
-źródło.mkv
-# Edytuj drugą ścieżkę dźwiękową
---edit
-track:a2
-# i ustaw tytuł jako "Comments"
---set
-name=Comments</pre>
-                     </td>
+                  </td>
                </tr>
             </tbody>
          </table>
@@ -1031,7 +976,7 @@ name=Comments</pre>
          </p>
          
          <pre class="screen">$ mkvpropedit film.mkv --delete-attachment mime-type:application/x-truetype-font</pre>
-         <h1><a name="d4e1426">6. Kody zamknięcia</a></h1>
+         <h1><a name="d4e1375">6. Kody zamknięcia</a></h1>
          
          
          

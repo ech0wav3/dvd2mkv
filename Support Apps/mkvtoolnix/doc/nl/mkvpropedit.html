@@ -21,7 +21,7 @@
             <li><a href="#mkvpropedit.edit_selectors">3. Bewerk selecteurs/kiezers</a></li>
             <li><a href="#mkvpropedit.attachment_selectors">4. Bijlage(n) keuze</a></li>
             <li><a href="#mkvpropedit.examples">5. Voorbeelden</a></li>
-            <li><a href="#d4e1426">6. Verlaat codes</a></li>
+            <li><a href="#d4e1375">6. Verlaat codes</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">7. Tekst bestanden en karakter set conversies</a></li>
             <li><a href="#mkvpropedit.escaping">8. Overslaan van speciale karakter(s) in tekst</a></li>
             <li><a href="#mkvpropedit.environment_variables">9. Omgevingsvariabelen</a></li>
@@ -679,78 +679,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file.json</span></td>
                   <td>
                      
                      <p>
-                        Controleert online op nieuwere versies via ophalen op adres <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Vier regels worden uitgevoerd  in <span class="literal">key=value</span> stijl: het
-                        adres van waar de informatie wordt verkregen (key
-                        <span class="literal">version_check_url</span>), de huidig uitgevoerde versie (key
-                        <span class="literal">running_version</span>), laatst uitgebrachte versie (key
-                        <span class="literal">available_version</span> en het ophaal adres (key
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Nadien sluit het programma af met een afsluitwaarde van 0 als er geen
-                        nieuwere versie beschikbaar is, met een 1 als er een nieuwere beschikbaar is
-                        en 2 indien er een fout ontstond (b.v. als de opwaardeer informatie niet
-                        verkregen kon worden).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Deze optie is alleen beschikbaar indien het gebouwd is met ondersteuning
-                        voor libcurl.
+                        Reads additional command line arguments from the file
+                        <span class="parameter">options-file</span>. For a full explanation on the supported
+                        formats for such files see the section called "Option files" in the
+                        <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> man page.
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file</span></td>
-                  <td>
-                     
-                     <p>
-                        Leest extra commandoregel argumenten in van een bestand
-                        <span class="parameter">options-file</span>. Regels met een spatie (lege ruimte) als
-                        eerste karakter, zijn  gemarkeerd als een hash (waarde)
-                        ('<span class="literal">#</span>')  worden behandeld als commentaar en  genegeerd. Een
-                        spatie aan het begin en einde van een regel worden verwijderd. Elke regel
-                        mag exact één waarde bevatten
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Verschillende karakters kunnen worden overgeslagen, b.v. als het nodig is
-                        een niet commandoregel te starten met een '#' de regels worden beschreven in
-                        de sectie over: <a href="#mkvpropedit.escaping">Overslaan van speciale
-                           karakter(s) in tekst</a>.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        De commandoregel '<span class="command">mkvpropedit source.mkv --edit track:a2 --set
-                           name=Comments</span>' kon niet worden geconverteerd naar het volgende
-                        optie bestand:
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Modify source.mkv
-source.mkv
-# Edit the second audio track
---edit
-track:a2
-# and set the title to 'Comments'
---set
-name=Comments</pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -1057,7 +997,7 @@ name=Comments</pre>
          </p>
          
          <pre class="screen">$ mkvpropedit movie.mkv --delete-attachment mime-type:application/x-truetype-font</pre>
-         <h1><a name="d4e1426">6. Verlaat codes</a></h1>
+         <h1><a name="d4e1375">6. Verlaat codes</a></h1>
          
          
          

@@ -17,7 +17,7 @@
             <li><a href="#mkvinfo.description">2. Опис</a></li>
             <li><a href="#mkvinfo.verbosity_levels">3. Verbosity levels</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">4. Text files and character set conversions</a></li>
-            <li><a href="#d4e592">5. Коди завершення</a></li>
+            <li><a href="#d4e542">5. Коди завершення</a></li>
             <li><a href="#mkvinfo.escaping">6. Виокремлення спеціальних символів у тексті</a></li>
             <li><a href="#mkvinfo.environment_variables">7. Environment variables</a></li>
             <li><a href="#mkvinfo.seealso">8. Дивіться також</a></li>
@@ -270,73 +270,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file.json</span></td>
                   <td>
                      
                      <p>
-                        Відбувається перевірка на наявність нової версії шляхом завантаження з URL
-                        <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Буде відображено чотири рядка у <span class="literal">key=value</span> стилі: URL,
-                        звідки отримана інформація (key <span class="literal">version_check_url</span>),
-                        поточна запущена версія (key <span class="literal">running_version</span>), остання
-                        випущена версія (key <span class="literal">available_version</span>) і URL для
-                        завантаження (key <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Після чого додаток завершує роботу з кодом повернення 0, якщо немає нової
-                        версії, і з кодом 2, якщо виникла помилка (наприклад, коли не було отримано
-                        інформації про оновлення взагалі).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Дана опція наявна лише тоді, коли додаток компілювався з підтримкою libcurl.
+                        Reads additional command line arguments from the file
+                        <span class="parameter">options-file</span>. For a full explanation on the supported
+                        formats for such files see the section called "Option files" in the
+                        <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> man page.
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file</span></td>
-                  <td>
-                     
-                     <p>
-                        Зчитує додаткові параметри командного рядка з файла
-                        <span class="parameter">options-file</span>. Рядки, які містять зразу після символу
-                        переносу рядка мітку хеша ('<span class="literal">#</span>') сприймаються як коментарі
-                        і ігноруються. Символи переносу на початку і в кінці рядка
-                        опускаються. Кожний рядок має містити лише один параметр.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Several chars can be escaped, e.g. if you need to start a non-comment line
-                        with '#'. The rules are described in <a href="#mkvinfo.escaping">the
-                           section about escaping text</a>.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        The command line '<span class="command">mkvinfo -v -v input.mkv --redirect-output
-                           info.txt</span>' could be converted into the following option file:
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Be more verbose
--v
--v
-# Parse input.mkv
-input.mkv
-# and write the output to info.txt
---redirect-output
-info.txt</pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -401,7 +346,7 @@ info.txt</pre>
             
          </p>
          
-         <h1><a name="d4e592">5. Коди завершення</a></h1>
+         <h1><a name="d4e542">5. Коди завершення</a></h1>
          
          
          

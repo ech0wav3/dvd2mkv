@@ -17,7 +17,7 @@
             <li><a href="#mkvinfo.description">2. Beschreibung</a></li>
             <li><a href="#mkvinfo.verbosity_levels">3. Detailstufen</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">4. Umwandlungen von Textdateien und Zeichensätzen</a></li>
-            <li><a href="#d4e604">5. Rückgabewerte</a></li>
+            <li><a href="#d4e554">5. Rückgabewerte</a></li>
             <li><a href="#mkvinfo.escaping">6. Sonderzeichen in Text maskieren</a></li>
             <li><a href="#mkvinfo.environment_variables">7. Umgebungsvariablen</a></li>
             <li><a href="#mkvinfo.seealso">8. Siehe auch</a></li>
@@ -273,76 +273,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">Optionsdatei.json</span></td>
                   <td>
                      
                      <p>
-                        prüft online durch Herunterladen der URL <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>,
-                        ob es neue Veröffentlichungen gibt. Vier Zeilen werden im Stil
-                        <span class="literal">Schlüssel=Wert</span> ausgegeben: die URL, von der die
-                        Informationen bezogen wurden (Schlüssel
-                        <span class="literal">version_check_url</span>), die aktuell laufende Version
-                        (Schlüssel <span class="literal">running_version</span>), die Version der neusten
-                        Veröffentlichung (Schlüssel <span class="literal">available_version</span>) und die
-                        Download-URL (Schlüssel <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Anschließend beendet sich das Programm mit einem Rückgabewert von 0, falls
-                        keine neuere Veröffentlichung verfügbar ist, mit 1, wenn eine neuere
-                        Veröffentlichung verfügbar ist und mit 2, falls ein Fehler auftritt (z.B.,
-                        wenn die Aktualisierungsinformationen nicht abgefragt werden konnten).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Diese Option ist nur verfügbar, falls das Programm mit Unterstützung für
-                        Libcurl gebaut wurde.
+                        Liest zusätzliche Befehlszeilenargumente aus der Datei
+                        <span class="parameter">Optionsdatei</span>. Eine ausführliche Erläuterunge über die
+                        unterstützten Formate finden Sie im Abschnitt "Optionsdateien" in der
+                        Handbuchseite zu <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>.
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">Optionsdatei</span></td>
-                  <td>
-                     
-                     <p>
-                        liest zusätzliche Befehlszeilenargumente aus der Datei
-                        <span class="parameter">Optionsdatei</span>. Zeilen, deren erstes
-                        Nichtleerraumzeichen ein Rautenzeichen (»<span class="literal">#</span>«) ist, werden
-                        als Kommentare betrachtet und ignoriert. Leerräume am Anfang und Ende einer
-                        Zeile werden abgeschnitten. Jede Zeile darf genau eine Option enthalten.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Verschiedene Zeichen können maskiert werden, z.B. falls Sie möchten, dass
-                        eine Nichtkommentarzeile mit einem »#« beginnt. Die Regeln werden im <a href="#mkvinfo.escaping">Abschnitt über Maskieren von Text</a>
-                        beschrieben.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Die Befehlszeile »<span class="command">mkvinfo -v -v Eingabe.mkv --redirect-output
-                           Info.txt</span> kann in die folgende Optionsdatei umgewandelt werden:
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Detailstufe erhöhen
--v
--v
-# Eingabe.mkv auswerten
-Eingabe.mkv
-# und die Ausgabe in Info.txt schreiben
---redirect-output
-Info.txt</pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -411,7 +353,7 @@ Info.txt</pre>
             
          </p>
          
-         <h1><a name="d4e604">5. Rückgabewerte</a></h1>
+         <h1><a name="d4e554">5. Rückgabewerte</a></h1>
          
          
          

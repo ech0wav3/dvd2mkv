@@ -30,7 +30,7 @@
             <li><a href="#mkvmerge.tags">15. Markeringen</a></li>
             <li><a href="#mkvmerge.segmentinfo">16. Het segment informatie XML bestanden</a></li>
             <li><a href="#mkvmerge.file_layout">17. Matroska bestand layout</a></li>
-            <li><a href="#mkvmerge.external_timecode_files">18. Externe tijd code bestanden</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">18. Externe tijd code bestanden</a></li>
             <li><a href="#mkvmerge.exit_codes">19. Verlaat codes</a></li>
             <li><a href="#mkvmerge.environment_variables">20. Omgevingsvariabelen</a></li>
             <li><a href="#mkvmerge.seealso">21. Zie ook</a></li>
@@ -42,7 +42,7 @@
          
          
          <div class="cmdsynopsis"><span class="commandname">mkvmerge</span> global options {-o
-            out} options1 {file1} options2 {file2} @optionsfile
+            out} options1 {file1} options2 {file2} @options-file.json
          </div>
          
          <h1><a name="mkvmerge.description">2. Beschrijving</a></h1>
@@ -116,8 +116,14 @@
                      <p>Create a WebM compliant file. This is also turned on if the output file
                         name's extension is "webm". This mode enforces several
                         restrictions. The only allowed codecs are VP8, VP9 video and Opus, Vorbis
-                        audio tracks. Neither chapters nor tags are allowed. The DocType header item
-                        is changed to "webm".
+                        audio tracks. The DocType header item is changed to "webm".
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        For chapters and tags only a subset of elements are allowed. <span class="productname">mkvmerge</span>(1) will
+                        automatically remove all elements not allowed by the specification.
                         
                      </p>
                      
@@ -151,7 +157,7 @@
          
          
          
-         <h2><a name="d4e252">2.2. Hanteren van segment informatie (globale opties)</a></h2>
+         <h2><a name="d4e261">2.2. Hanteren van segment informatie (globale opties)</a></h2>
          
          
          
@@ -221,7 +227,7 @@
          
          
          
-         <h2><a name="d4e321">2.3. Hanteren hoofdstuk en markeringen (globale opties)</a></h2>
+         <h2><a name="d4e330">2.3. Hanteren hoofdstuk en markeringen (globale opties)</a></h2>
          
          
          
@@ -567,7 +573,7 @@
          
          
          
-         <h2><a name="d4e754">2.4. Algemene uitvoer controle (geavanceerde globale opties)</a></h2>
+         <h2><a name="d4e763">2.4. Algemene uitvoer controle (geavanceerde globale opties)</a></h2>
          
          
          
@@ -722,7 +728,7 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.timecode_scale"><span class="option">--timecode-scale</span> <span class="parameter">factor</span></a></td>
+                  <td class="varlistoption"><a name="mkvmerge.description.timestamp_scale"><span class="option">--timestamp-scale</span> <span class="parameter">factor</span></a></td>
                   <td>
                      
                      <p>
@@ -759,7 +765,7 @@
          
          
          
-         <h2><a name="d4e1040">2.5. Bestand splitsen, linken en toevoegen (meer globale opties)</a></h2>
+         <h2><a name="d4e1049">2.5. Bestand splitsen, linken en toevoegen (meer globale opties)</a></h2>
          
          
          
@@ -776,11 +782,9 @@
                   <td>
                      
                      <p>
-                        Splits de uitvoer bestand na een opgegeven grootte of tijd. Opmerking,
-                        sporen kunnen alléén direct voor een sleutel beeld gesplitst worden. Vanwege
-                        het bufferen zal <span class="productname">mkvmerge</span>(1) als een splitspunt wordt bereikt, direct voor
-                        het volgende sleutel beeld gaan splitsen. Daarom kunnen de splitspunten
-                        enigszins afwijken van wat de gebruiker op gaf.
+                        Splits the output file after a given size or a given time.  Please note that
+                        tracks can only be split right before a key frame.  Therefore the split
+                        point may be a bit off from what the user has specified.
                         
                      </p>
                      
@@ -891,13 +895,13 @@
                            
                            <p>
                               Ingaven: <span class="option">--split</span>
-                              <span class="literal">timecodes:</span><span class="parameter">A</span>[,<span class="parameter">B</span>[,<span class="parameter">C</span>...]]
+                              <span class="literal">timestamps:</span><span class="parameter">A</span>[,<span class="parameter">B</span>[,<span class="parameter">C</span>...]]
                               
                            </p>
                            
                            
                            <p>
-                              Voorbeeld: <span class="code">--split timecodes:00:45:00.000,01:20:00.250,6300s</span>
+                              Voorbeeld: <span class="code">--split timestamps:00:45:00.000,01:20:00.250,6300s</span>
                               
                            </p>
                            
@@ -914,7 +918,7 @@
                            
                            
                            <p>
-                              Het '<span class="literal">timecodes:</span>' voorvoegsel mag niet wegelaten worden.
+                              Het '<span class="literal">timestamps:</span>' voorvoegsel mag niet wegelaten worden.
                               
                            </p>
                            
@@ -1485,6 +1489,29 @@ $ mkvmerge -o full.mkv file1.mkv +file2.mkv</pre>
                      </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><span class="option">[</span> <span class="parameter">file1</span> <span class="parameter">file2</span>
+                     <span class="option">]</span></td>
+                  <td>
+                     
+                     <p>
+                        If multiple file names are contained in a pair of square brackets then the
+                        second and all following files will be appended to the first file named
+                        within the brackets.
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        This is an alternative syntax to using '+' between the file names. Therefore
+                        the following two commands are equivalent:
+                        
+                     </p>
+                     
+                     <pre class="screen">$ mkvmerge -o full.mkv file1.mkv + file2.mkv
+$ mkvmerge -o full.mkv '[' file1.mkv file2.mkv ']'</pre>
+                     </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.prevent_concatenation"><span class="option">=</span></a></td>
                   <td>
                      
@@ -1590,7 +1617,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2079">2.6. Bijlage ondersteuning (meer globale opties)</a></h2>
+         <h2><a name="d4e2110">2.6. Bijlage ondersteuning (meer globale opties)</a></h2>
          
          
          
@@ -1679,7 +1706,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2220">2.7. Opties welke gebruikt kunnen worden voor elk invoer bestand</a></h2>
+         <h2><a name="d4e2251">2.7. Opties welke gebruikt kunnen worden voor elk invoer bestand</a></h2>
          
          
          
@@ -2248,13 +2275,13 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--timecodes</span> <span class="parameter">TID:file-name</span></td>
+                  <td class="varlistoption"><span class="option">--timestamps</span> <span class="parameter">TID:file-name</span></td>
                   <td>
                      
                      <p>
                         Leest de te gebruiken tijd codes in voor een specifiek spoor ID van
                         <span class="parameter">file-name</span>. Deze krachtige tijd codes heffen de tijd
-                        codes die <span class="productname">mkvmerge</span>(1) normaal berekend op. Lees de sectie over: <a href="#mkvmerge.external_timecode_files">Externe tijd code
+                        codes die <span class="productname">mkvmerge</span>(1) normaal berekend op. Lees de sectie over: <a href="#mkvmerge.external_timestamp_files">Externe tijd code
                            bestanden</a>.
                         
                      </p>
@@ -2374,7 +2401,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e3307">2.8. Opties die alleen op video sporen van toepassing zijn</a></h2>
+         <h2><a name="d4e3338">2.8. Opties die alleen op video sporen van toepassing zijn</a></h2>
          
          
          
@@ -2727,8 +2754,91 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the mininum luminance in candelas per square meter (cd/m²). The value
+                        Sets the minimum luminance in candelas per square meter (cd/m²). The value
                         should be less than 999.9999.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-type</span> <span class="parameter">TID:method</span></td>
+                  <td>
+                     
+                     <p>
+                        Sets the video projection method used. Valid values are 0 (rectangular
+                        projection), 1 (equirectangular projection), 2 (cubemap projection) and 3
+                        (mesh projection).
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-private</span> <span class="parameter">TID:data</span></td>
+                  <td>
+                     
+                     <p>
+                        Sets private data that only applies to a specific projection. Data must be
+                        given as hex numbers with or without the "0x" prefix, with or
+                        without spaces.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-yaw</span> <span class="parameter">TID:float</span></td>
+                  <td>
+                     
+                     <p>
+                        Specifies a yaw rotation to the projection.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-pitch</span> <span class="parameter">TID:float</span></td>
+                  <td>
+                     
+                     <p>
+                        Specifies a pitch rotation to the projection.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-roll</span> <span class="parameter">TID:float</span></td>
+                  <td>
+                     
+                     <p>
+                        Specifies a roll rotation to the projection.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.field_order"><span class="option">--field-order</span> <span class="parameter">TID:n</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Sets the field order for the video track with the track ID
+                        <span class="parameter">TID</span>.  The order must be one of the following numbers:
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        <span class="constant">0</span>: progressive; <span class="constant">1</span>: interlaced with
+                        top field displayed first and top field stored first;
+                        <span class="constant">2</span>: undetermined field order; <span class="constant">6</span>:
+                        interlaced with bottom field displayed first and bottom field stored first;
+                        <span class="constant">9</span>: interlaced with bottom field displayed first and top
+                        field stored first; <span class="constant">14</span>: interlaced with top field
+                        displayed first and bottom field stored first
                         
                      </p>
                      
@@ -2772,7 +2882,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4009">2.9.  Opties alleen geldig voor tekst ondertitel sporen</a></h2>
+         <h2><a name="d4e4162">2.9.  Opties alleen geldig voor tekst ondertitel sporen</a></h2>
          
          
          
@@ -2815,7 +2925,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4049">2.10. Andere opties</a></h2>
+         <h2><a name="d4e4202">2.10. Andere opties</a></h2>
          
          
          
@@ -2846,15 +2956,43 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.identify_json"><span class="option">-J</span> <span class="parameter">file-name</span></a></td>
+                  <td>
+                     
+                     <p>
+                        This is a convenient alias for "<span class="literal">--identification-format json
+                           --identify file-name</span>".
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
                         <span class="parameter">file-name</span></a></td>
                   <td>
                      
                      <p>
-                        This option is deprecated. Use <a href="#mkvmerge.description.identification_format">--identification-format
-                           verbose-text --identify …</a> instead.
+                        Zal <span class="productname">mkvmerge</span>(1) (met een sonde) een enkel bestand aftasten en het type
+                        rapporteren, de sporen in het bestand en hun spoor ID's. Als deze optie
+                        wordt gebruikt dan is de enige andere toegestane optie de bestandsnaam.
                         
                      </p>
+                     
+                     
+                     <p>
+                        The output will also contain properties for all items found, e.g. the file
+                        title or the track language.
+                        
+                     </p>
+                     
+                     
+                     <div class="note">
+                        <p class="note-title">Note:</p>
+                        
+                        <p>This option is deprecated. It will be removed in 2018.</p>
+                        
+                     </div>
                      
                   </td>
                </tr>
@@ -2912,6 +3050,14 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                               the language <span class="productname">mkvmerge</span>(1) uses (see also <a href="#mkvmerge.description.ui_language">--ui-language</a>).
                            </p>
                            
+                           
+                           <div class="note">
+                              <p class="note-title">Note:</p>
+                              
+                              <p>This option is deprecated. It will be removed in 2018.</p>
+                              
+                           </div>
+                           
                         </li>
                         
                         
@@ -2919,8 +3065,21 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                            
                            <p>
                               The <span class="literal">json</span> format outputs a machine-readable JSON
-                              representation. This format follows the JSON schema described in the file
-                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema.json">mkvmerge-identification-output-schema.json</a>.
+                              representation. This format follows the JSON schema described in the
+                              following file:
+                              
+                           </p>
+                           
+                           
+                           <p>
+                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v10.json">mkvmerge-identification-output-schema-v10.json</a>
+                              
+                           </p>
+                           
+                           
+                           <p>
+                              All versions of the JSON schema are available both online and in the
+                              released source code archives.
                               
                            </p>
                            
@@ -3104,7 +3263,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file.json</span></td>
                   <td>
                      
                      <p>
@@ -3163,39 +3322,6 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                      
                      <p>
                         Toon versie informatie en sluit af.
-                        
-                     </p>
-                     
-                  </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
-                  <td>
-                     
-                     <p>
-                        Controleert online op nieuwere versies via ophalen op adres <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Vier regels worden uitgevoerd  in <span class="literal">key=value</span> stijl: het
-                        adres van waar de informatie wordt verkregen (key
-                        <span class="literal">version_check_url</span>), de huidig uitgevoerde versie (key
-                        <span class="literal">running_version</span>), laatst uitgebrachte versie (key
-                        <span class="literal">available_version</span> en het ophaal adres (key
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Nadien sluit het programma af met een afsluitwaarde van 0 als er geen
-                        nieuwere versie beschikbaar is, met een 1 als er een nieuwere beschikbaar is
-                        en 2 indien er een fout ontstond (b.v. als de opwaardeer informatie niet
-                        verkregen kon worden).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Deze optie is alleen beschikbaar indien het gebouwd is met ondersteuning
-                        voor libcurl.
                         
                      </p>
                      
@@ -3822,6 +3948,57 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
+            There are two formats for option files: a JSON format and a proprietary
+            legacy format. The legacy format is deprecated, and support for it will
+            likely be removed in 2018.
+            
+         </p>
+         
+         
+         <h2><a name="mkvmerge.option_files.json_format">8.1. The JSON format</a></h2>
+         
+         
+         
+         <p>
+            A JSON option file's name must end in '<span class="filename">.json</span>'. Its
+            content must be a valid JSON array consisting solely of JSON strings. The
+            file's encoding must be UTF-8. The file should not start with a
+            <span class="foreignphrase">byte order marker</span> (<span class="abbrev">BOM</span>), but
+            if one exists, it will be skipped.
+            
+         </p>
+         
+         
+         <p>
+            The rules for escaping special characters inside JSON are the ones in the
+            official JSON specification, <a href="https://tools.ietf.org/html/rfc7159">RFC 7159</a>.
+            
+         </p>
+         
+         
+         <p>
+            The command line '<span class="command">mkvmerge -o "my file.mkv" -A "a movie.avi"
+               sound.ogg</span>' could be converted into the following JSON option file
+            called e.g. '<span class="filename">options.json</span>':
+            
+         </p>
+         
+         <pre class="programlisting">[
+  "-o",
+  "c:\\Matroska\\my file.mkv",
+  "--title",
+  "#65",
+  "-A",
+  "a movie.avi",
+  "sound.ogg"
+]</pre>
+         
+         
+         <h2><a name="mkvmerge.option_files.legacy_format">8.2. The legacy format</a></h2>
+         
+         
+         
+         <p>
             Er zijn verschillende regels betreffende bestand opties. Regels waarvan de
             eerste niet-scheidingsteken een hekje is ('<span class="literal">#</span>') worden
             afgehandeld als commentaar en worden genegeerd. Een spatie aan het eind en
@@ -3856,9 +4033,9 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
-            De commandoregel '<span class="command">mkvmerge -o "mijn bestand.mkv" -A "een film.avi"
-               geluid.ogg</span>' kan geconverteerd worden naar het volgende optie
-            bestand:
+            The command line '<span class="command">mkvmerge -o "my file.mkv" -A "a movie.avi"
+               sound.ogg</span>' could be converted into the following legacy option
+            file called e.g. '<span class="filename">options.txt</span>':
             
          </p>
          
@@ -3872,6 +4049,7 @@ c:\\Matroska\\my file.mkv
 -A
 een film.avi
 geluid.ogg</pre>
+         
          
          <h1><a name="mkvmerge.escaping">9. Overslaan van speciale karakter(s) in tekst</a></h1>
          
@@ -4257,7 +4435,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
           ChapterProcessData (binary)</pre>
          
          
-         <h2><a name="d4e5805">14.3. Algemene opmerkingen</a></h2>
+         <h2><a name="d4e6010">14.3. Algemene opmerkingen</a></h2>
          
          
          <p>
@@ -4291,7 +4469,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="d4e5871">15.1. Introductie</a></h2>
+         <h2><a name="d4e6076">15.1. Introductie</a></h2>
          
          
          
@@ -4498,7 +4676,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
             Overige "segment informatie" kopvelden kunnen gezet worden via de
             commandoregel opties maar niet via een XML bestand. Inclusief b.v. de
             <span class="option"><a href="#mkvmerge.description.title">--title</a></span>
-            en de <span class="option"><a href="#mkvmerge.description.timecode_scale">--timecode-scale</a></span>
+            en de <span class="option"><a href="#mkvmerge.description.timestamp_scale">--timestamp-scale</a></span>
             opties.
             
          </p>
@@ -4605,7 +4783,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timecode_files">18. Externe tijd code bestanden</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">18. Externe tijd code bestanden</a></h1>
          
          
          <p>
@@ -4629,7 +4807,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
             
          </p>
          
-         <pre class="screen">$ mkvmerge ... --timecodes 0:my_timecodes.txt v1.avi +v2.avi</pre>
+         <pre class="screen">$ mkvmerge ... --timestamps 0:my_timestamps.txt v1.avi +v2.avi</pre>
          
          <p>
             Er zijn vier formaten die worden herkend door <span class="productname">mkvmerge</span>(1). De eerste regel
@@ -4639,7 +4817,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          </p>
          
          
-         <h2><a name="d4e6322">18.1. Tijd code bestandsformaat v1</a></h2>
+         <h2><a name="d4e6527">18.1. Tijd code bestandsformaat v1</a></h2>
          
          
          <p>
@@ -4653,13 +4831,13 @@ CHAPTER03NAME=Baby rocks the house</pre>
             
          </p>
          
-         <pre class="screen"># timecode format v1
+         <pre class="screen"># timestamp format v1
 assume 27.930
 800,1000,25
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6346">18.2. Tijd code bestandsformaat v2</a></h2>
+         <h2><a name="d4e6551">18.2. Tijd code bestandsformaat v2</a></h2>
          
          
          
@@ -4673,13 +4851,13 @@ assume 27.930
             
          </p>
          
-         <pre class="screen"># timecode format v2
+         <pre class="screen"># timestamp format v2
 0
 40
 80</pre>
          
          
-         <h2><a name="d4e6361">18.3. Tijd code bestandsformaat v3</a></h2>
+         <h2><a name="d4e6566">18.3. Tijd code bestandsformaat v3</a></h2>
          
          
          <p>
@@ -4695,7 +4873,7 @@ assume 27.930
             
          </p>
          
-         <pre class="screen"># timecode format v3
+         <pre class="screen"># timestamp format v3
 assume 0.0
 25.325
 7.530,38.236
@@ -4703,7 +4881,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6379">18.4. Tijd code bestandsformaat v4</a></h2>
+         <h2><a name="d4e6584">18.4. Tijd code bestandsformaat v4</a></h2>
          
          
          <p>

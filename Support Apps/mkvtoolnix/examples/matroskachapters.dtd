@@ -21,11 +21,13 @@
           ChapterTrack?,
           ChapterFlagHidden?,
           ChapterFlagEnabled?,
-          ChapterDisplay+,
+          ChapterDisplay*,
           ChapterProcess*,
           ChapterAtom*)>
 
 <!ELEMENT ChapterTrack (ChapterTrackNumber)>
+<!ELEMENT ChapterTrackNumber (#PCDATA)>
+
 <!ELEMENT ChapterDisplay (
           ChapterString,
           ChapterLanguage+,

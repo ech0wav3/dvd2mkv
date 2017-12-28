@@ -29,7 +29,7 @@
             <li><a href="#mkvmerge.tags">15. Tags</a></li>
             <li><a href="#mkvmerge.segmentinfo">16. Archivos XML de información del segmento</a></li>
             <li><a href="#mkvmerge.file_layout">17. Diseño de archivo matroska</a></li>
-            <li><a href="#mkvmerge.external_timecode_files">18. Archivos de códigos de tiempo externos</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">18. Archivos de códigos de tiempo externos</a></li>
             <li><a href="#mkvmerge.exit_codes">19. Códigos de salida</a></li>
             <li><a href="#mkvmerge.environment_variables">20. Variables de entorno</a></li>
             <li><a href="#mkvmerge.seealso">21. Vea también</a></li>
@@ -40,7 +40,7 @@
          <h1><a name="mkvmerge.synopsis">1. Sinopsis</a></h1>
          
          
-         <div class="cmdsynopsis"><span class="commandname">mkvmerge</span> opciones globales {-o salida} opciones1 {archivo1} opciones2 {archivo2} @archivo-opciones
+         <div class="cmdsynopsis"><span class="commandname">mkvmerge</span> opciones globales {-o salida} opciones1 {archivo1} opciones2 {archivo2} @archivo-opciones.json
          </div>
          
          <h1><a name="mkvmerge.description">2. Descripción</a></h1>
@@ -111,12 +111,19 @@
                   <td class="varlistoption"><span class="option">-w</span>, <span class="option">--webm</span></td>
                   <td>
                      
-                     <p>Crea un archivo compatible WebM. Esto también lo habilita si el nombre de la
-                        extensión del archivo de salida es "webm". Este modo fuerza obliga
-                        a cumplir ciertas restricciones. Los únicos códecs permitidos son VP8, VP9
-                        para video y Opus, Vorbis para pistas de audio. Ni los capítulos ni las
-                        etiquetas están permitidas. El encabezado DocType se cambia a
-                        "webm". 
+                     <p>Crea un archivo compatible WebM. Esto también se habilita si el nombre de la
+                        extensión del archivo de salida es "webm". Este modo impone
+                        ciertas restricciones. Los únicos códecs permitidos son VP8, VP9 para video
+                        y Opus, Vorbis para pistas de audio. La entrada DocType de la cabecera se
+                        cambia a "webm".
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        Para capítulos y etiquetas sólo se permite un subconjunto de
+                        elementos. <span class="productname">mkvmerge</span>(1) eliminará automáticamente todos los elementos no
+                        permitidos por la especificación. 
                         
                      </p>
                      
@@ -152,7 +159,7 @@
          
          
          
-         <h2><a name="d4e250">2.2. Manipulación de información del segmento (opciones generales)</a></h2>
+         <h2><a name="d4e259">2.2. Manipulación de información del segmento (opciones generales)</a></h2>
          
          
          
@@ -222,7 +229,7 @@
          
          
          
-         <h2><a name="d4e323">2.3. Manipulación de capítulos y etiquetas (opciones generales)</a></h2>
+         <h2><a name="d4e332">2.3. Manipulación de capítulos y etiquetas (opciones generales)</a></h2>
          
          
          
@@ -382,12 +389,12 @@
                      
                      
                      <p>
-                        The strings <span class="literal">'&lt;FILE_NAME&gt;'</span> and
-                        <span class="literal">'&lt;FILE_NAME_WITH_EXT&gt;'</span> are only filled when
-                        generating chapters for appended files.  They will be replaced by the
-                        appended file's name wihtout respectively with its extension.  Note that
-                        only the file's base name and extension are inserted, not its directory or
-                        drive components.
+                        Las cadenas de texto <span class="literal">'&lt;FILE_NAME&gt;'</span> y
+                        <span class="literal">'&lt;FILE_NAME_WITH_EXT&gt;'</span> sólo serán establecidas
+                        cuando se generen capítulos para los archivos anexados. Serán reemplazadas
+                        por el nombre de los archivos anexados sin sus extensiones. Tenga en cuenta,
+                        que sólo se inserta el nombre del archivo y su extensión, descartando la
+                        ruta y la unidad. 
                         
                      </p>
                      
@@ -574,7 +581,7 @@
          
          
          
-         <h2><a name="d4e756">2.4. Control general de salida (opciones generales avanzadas)</a></h2>
+         <h2><a name="d4e765">2.4. Control general de salida (opciones generales avanzadas)</a></h2>
          
          
          
@@ -732,7 +739,7 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.timecode_scale"><span class="option">--timecode-scale</span> <span class="parameter">factor</span></a></td>
+                  <td class="varlistoption"><a name="mkvmerge.description.timestamp_scale"><span class="option">--timestamp-scale</span> <span class="parameter">factor</span></a></td>
                   <td>
                      
                      <p>
@@ -770,7 +777,7 @@
          
          
          
-         <h2><a name="d4e1042">2.5. División, vinculación, unión y concatenación de archivos (más opciones
+         <h2><a name="d4e1051">2.5. División, vinculación, unión y concatenación de archivos (más opciones
                generales)</a></h2>
          
          
@@ -788,13 +795,9 @@
                   <td>
                      
                      <p>
-                        Divide el archivo generado después de un tamaño o tiempo especificado. Por
-                        favor, tenga en cuenta que estas pistas sólo pueden ser divididas justo
-                        antes de un fotograma clave (keyframe). Debido al buffering y tras alcanzar
-                        el punto de división especificado, <span class="productname">mkvmerge</span>(1) realizará la división justo
-                        antes de que se haya alcanzado el siguiente fotograma clave. Por lo tanto,
-                        el punto de división podría ser algo distinto del especificado por el
-                        usuario. 
+                        Splits the output file after a given size or a given time.  Please note that
+                        tracks can only be split right before a key frame.  Therefore the split
+                        point may be a bit off from what the user has specified.
                         
                      </p>
                      
@@ -904,13 +907,13 @@
                            
                            <p>
                               Sintaxis: <span class="option">--split</span>
-                              <span class="literal">timecodes:</span><span class="parameter">A</span>[,<span class="parameter">B</span>[,<span class="parameter">C</span>...]]
+                              <span class="literal">timestamps:</span><span class="parameter">A</span>[,<span class="parameter">B</span>[,<span class="parameter">C</span>...]]
                               
                            </p>
                            
                            
                            <p>
-                              Ejemplo: <span class="code">--split timecodes:00:45:00.000,01:20:00.250,6300s</span>
+                              Ejemplo: <span class="code">--split timestamps:00:45:00.000,01:20:00.250,6300s</span>
                               
                            </p>
                            
@@ -928,7 +931,7 @@
                            
                            
                            <p>
-                              El prefijo '<span class="literal">timecodes:</span>' no puede ser omitido. 
+                              El prefijo '<span class="literal">timestamps:</span>' no puede ser omitido. 
                               
                            </p>
                            
@@ -1502,6 +1505,29 @@ mkvmerge -o completo.mkv archivo1.mkv +archivo2.mkv</pre>
                      </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><span class="option">[</span> <span class="parameter">archivo1</span>
+                     <span class="parameter">archivo2</span> <span class="option">]</span></td>
+                  <td>
+                     
+                     <p>
+                        Si varios nombres de archivos están entre corchetes entonces el segundo y
+                        los restantes archivos serán añadidos al primer archivo que esté editado
+                        entre corchetes.
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        Esta es una sintaxis alternativa a usar '+' entre los nombres de
+                        archivos. Por lo tanto, los dos siguientes comandos son equivalentes:
+                        
+                     </p>
+                     
+                     <pre class="screen">$ mkvmerge -o completo.mkv archivo1.mkv + archivo2.mkv
+$ mkvmerge -o completo.mkv '[' archivo1.mkv archivo2.mkv ']'</pre>
+                     </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.prevent_concatenation"><span class="option">=</span></a></td>
                   <td>
                      
@@ -1612,7 +1638,7 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
          
          
          
-         <h2><a name="d4e2081">2.6. Soporte de adjuntos (más opciones globales)</a></h2>
+         <h2><a name="d4e2112">2.6. Soporte de adjuntos (más opciones globales)</a></h2>
          
          
          
@@ -1702,7 +1728,7 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
          
          
          
-         <h2><a name="d4e2222">2.7. Opciones que se pueden usar para cada archivo de entrada</a></h2>
+         <h2><a name="d4e2253">2.7. Opciones que se pueden usar para cada archivo de entrada</a></h2>
          
          
          
@@ -1951,8 +1977,7 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">-T</span>, <span class="option">--no-track-tags</span>c
-                  </td>
+                  <td class="varlistoption"><span class="option">-T</span>, <span class="option">--no-track-tags</span></td>
                   <td>
                      
                      <p>
@@ -1987,8 +2012,7 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--no-global-tags</span>c
-                  </td>
+                  <td class="varlistoption"><span class="option">--no-global-tags</span></td>
                   <td>
                      
                      <p>
@@ -2089,10 +2113,11 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                      
                      
                      <p>
-                        The default is '<span class="literal">iframes</span>' for video and subtitle tracks
-                        and '<span class="literal">none</span>' for audio tracks.  See also option <a href="#mkvmerge.description.no_cues">--no-cues</a>
-                        which inhibits the creation of cue entries regardless of the
-                        <span class="option">--cues</span> options used.
+                        Por defecto es '<span class="literal">iframes</span>' para pistas de video y
+                        subtítulos, y '<span class="literal">none</span>' para las pistas de audio. Mire
+                        también la opción <a href="#mkvmerge.description.no_cues">--no-cues</a> que
+                        evita la creación de entradas del índice a pesar de las opciones
+                        <span class="option">--cues</span> utilizadas. 
                         
                      </p>
                      
@@ -2289,14 +2314,14 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--timecodes</span> <span class="parameter">TID:nombre-archivo</span></td>
+                  <td class="varlistoption"><span class="option">--timestamps</span> <span class="parameter">TID:nombre-archivo</span></td>
                   <td>
                      
                      <p>
                         Lee los códigos de tiempo que se utilizarán para el ID de pista especificado
                         de <span class="parameter">nombre-archivo</span>. Estos códigos de tiempo reemplazan
                         de manera forzosa los códigos de tiempo que <span class="productname">mkvmerge</span>(1) normalmente
-                        calcula. Lea la sección acerca de <a href="#mkvmerge.external_timecode_files">archivos de códigos de tiempo
+                        calcula. Lea la sección acerca de <a href="#mkvmerge.external_timestamp_files">archivos de códigos de tiempo
                            externos</a>. 
                         
                      </p>
@@ -2388,9 +2413,9 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Selects the compression method to be used for the track. Note that the
-                        player also has to support this method. Valid values are
-                        '<span class="literal">none</span>', '<span class="literal">zlib</span>' and
+                        Selecciona el método de compresión que se usará para la pista. Tenga en
+                        cuenta que el reproductor debe soportar este método. Los valores válidos son
+                        '<span class="literal">none</span>', '<span class="literal">zlib</span>' y
                         '<span class="literal">mpeg4_p2</span>'/'<span class="literal">mpeg4p2</span>'.
                         
                      </p>
@@ -2405,10 +2430,11 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                      </p>
                      
                      <p>
-                        The default for some subtitle types is '<span class="literal">zlib</span>'
-                        compression. This compression method is also the one that most if not all
-                        playback applications support. Support for other compression methods other
-                        than '<span class="literal">none</span>' is not assured.
+                        La compresión por defecto para algunas pistas de subtítulos es
+                        '<span class="literal">zlib</span>'. Este método de compresión es para el que casi
+                        todas, si no todas, las aplicaciones de reproducción son compatibles. No se
+                        puede asegurar la compatibilidad para otros métodos de compresión que no sea
+                        'ninguna'. 
                         
                      </p>
                      
@@ -2419,7 +2445,7 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
          
          
          
-         <h2><a name="d4e3313">2.8. Opciones que sólo afectan a pistas de video</a></h2>
+         <h2><a name="d4e3339">2.8. Opciones que sólo afectan a pistas de video</a></h2>
          
          
          
@@ -2539,27 +2565,27 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Sets the matrix coefficients of the video used to derive luma and chroma
-                        values from red, green and blue color primaries. The parameter
-                        <span class="parameter">n</span> is an integer rangeing from <span class="constant">0</span>
-                        and <span class="constant">10</span>.
+                        Establece los coeficientes matriciales del video para derivar los valores de
+                        luminancia y crominancia a partir de los colores primarios rojo, verde y
+                        azul. El parámetro <span class="parameter">n</span> es un número entero entre
+                        <span class="constant">0</span> y <span class="constant">10</span>.
                         
                      </p>
                      
                      
                      <p>
-                        Valid values and their meaning are:
+                        Los valores válidos y su significado son:
                         
                      </p>
                      
                      
                      <p>
                         <span class="constant">0</span>: GBR, <span class="constant">1</span>: BT709,
-                        <span class="constant">2</span>: unspecified, <span class="constant">3</span>: reserved,
+                        <span class="constant">2</span>: indeterminado, <span class="constant">3</span>: reservado,
                         <span class="constant">4</span>: FCC, <span class="constant">5</span>: BT470BG,
                         <span class="constant">6</span>: SMPTE 170M, <span class="constant">7</span>: SMPTE 240M,
-                        <span class="constant">8</span>: YCOCG, <span class="constant">9</span>: BT2020 non-constant
-                        luminance, <span class="constant">10</span>: BT2020 constant luminance
+                        <span class="constant">8</span>: YCOCG, <span class="constant">9</span>: BT2020 luminancia no
+                        constante, <span class="constant">10</span>: BT2020 luminancia constante
                         
                      </p>
                      
@@ -2570,8 +2596,8 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Sets the number of coded bits for a colour channel. A value of
-                        <span class="constant">0</span> indicates that the number of bits is unspecified.
+                        Establece el número de bits codificados para un canal de color. Un valor de
+                        <span class="constant">0</span> indica que el número de bits no se ha especificado.
                         
                      </p>
                      
@@ -2582,15 +2608,15 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        The amount of pixels to remove in the Cr and Cb channels for every pixel not
-                        removed horizontally/vertically.
+                        La cantidad de píxeles a eliminar en los canales Cr y Cb por cada pixel no
+                        eliminado horizontal/verticalmente.
                         
                      </p>
                      
                      
                      <p>
-                        Example: For video with 4:2:0 chroma subsampling, the parameter should be
-                        set to
+                        Ejemplo: Para un video con submuestreo de crominancia 4:2:0, el parámetro se
+                        debe establecer a
                         <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">1</span></span>.
                         
                      </p>
@@ -2602,18 +2628,18 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        The amount of pixels to remove in the Cb channel for every pixel not removed
-                        horizontally/vertically. This is additive with
+                        La cantidad de píxeles a eliminar en el canal Cb por cada pixel no eliminado
+                        horizontal/verticalmente. Esto se adiciona a la opción
                         <span class="option">--chroma-subsample</span>.
                         
                      </p>
                      
                      
                      <p>
-                        Example: For video with 4:2:1 chroma subsampling, the parameter
-                        <span class="option">--chroma-subsample</span> should be set to
+                        Ejemplo: Para un video con submuestreo de crominancia 4:2:1, el parámetro
+                        <span class="option">--chroma-subsample</span> se debe establecer a
                         <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">0</span></span>
-                        and Cb-subsample should be set to
+                        y el submuestreo de Cb se debe establecer a
                         <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">0</span></span>.
                         
                      </p>
@@ -2625,9 +2651,9 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Sets how chroma is sited horizontally/vertically (<span class="constant">0</span>:
-                        unspecified, <span class="constant">1</span>: top collocated, <span class="constant">2</span>:
-                        half).
+                        Establece como se situa horizontal/verticalmente la crominancia
+                        (<span class="constant">0</span>: indeterminado, <span class="constant">1</span>: arriba,
+                        <span class="constant">2</span>: mitad).
                         
                      </p>
                      
@@ -2638,10 +2664,11 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Sets the clipping of the color ranges (<span class="constant">0</span>: unspecified,
-                        <span class="constant">1</span>: broadcast range, <span class="constant">2</span>: full range
-                        (no clipping), <span class="constant">3</span>: defined by
-                        MatrixCoefficients/TransferCharacteristics).
+                        Establece los valores de recorte -clipping- de los rangos de color
+                        (<span class="constant">0</span>: indeterminado, <span class="constant">1</span>: rango de
+                        retransmisión, <span class="constant">2</span>: rango completo (sin recorte),
+                        <span class="constant">3</span>: definido por
+                        CoeficientesMatriciales/CaracterísticasTransferencia).
                         
                      </p>
                      
@@ -2653,28 +2680,28 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        The transfer characteristics of the video.
+                        Las características de transferencia del video.
                         
                      </p>
                      
                      
                      <p>
-                        Valid values and their meaning are:
+                        Los valores válidos y su significado son:
                         
                      </p>
                      
                      
                      <p>
-                        <span class="constant">0</span>: reserved, <span class="constant">1</span>: ITU-R BT.709,
-                        <span class="constant">2</span>: unspecified, <span class="constant">3</span>: reserved,
-                        <span class="constant">4</span>: gamma 2.2 curve, <span class="constant">5</span>: gamma 2.8
-                        curve, <span class="constant">6</span>: SMPTE 170M, <span class="constant">7</span>: SMPTE
-                        240M, <span class="constant">8</span>: linear, <span class="constant">9</span>: log,
-                        <span class="constant">10</span>: log sqrt, <span class="constant">11</span>: IEC 61966-2-4,
-                        <span class="constant">12</span>: ITU-R BT.1361 extended colour gamut,
-                        <span class="constant">13</span>: IEC 61966-2-1, <span class="constant">14</span>: ITU-R
-                        BT.2020 10 bit, <span class="constant">15</span>: ITU-R BT.2020 12 bit,
-                        <span class="constant">16</span>: SMPTE ST 2084, <span class="constant">17</span>: SMPTE ST
+                        <span class="constant">0</span>: reservado, <span class="constant">1</span>: ITU-R BT.709,
+                        <span class="constant">2</span>: indeterminado,  <span class="constant">3</span>: reservado,
+                        <span class="constant">4</span>: curva gamma 2.2, <span class="constant">5</span>: curva gamma
+                        2.8, <span class="constant">6</span>: SMPTE 170M, <span class="constant">7</span>: SMPTE 240M,
+                        <span class="constant">8</span>: lineal, <span class="constant">9</span>: logarítmica,
+                        <span class="constant">10</span>: raiz cuadrada logarítmica, <span class="constant">11</span>:
+                        IEC 61966-2-4, <span class="constant">12</span>: ITU-R BT.1361 gama de color
+                        extendida, <span class="constant">13</span>: IEC 61966-2-1, <span class="constant">14</span>:
+                        ITU-R BT.2020 10 bit, <span class="constant">15</span>: ITU-R BT.2020 12 bit,
+                        <span class="constant">16</span>: SMPTE ST 2084,  <span class="constant">17</span>: SMPTE ST
                         428-1; <span class="constant">18</span>: ARIB STD-B67 (HLG)
                         
                      </p>
@@ -2686,25 +2713,25 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Sets the colour primaries of the video.
+                        Establece los colores primarios del video.
                         
                      </p>
                      
                      
                      <p>
-                        Valid values and their meaning are:
+                        Los valores válidos y su significado son:
                         
                      </p>
                      
                      
                      <p>
-                        <span class="constant">0</span>: reserved, <span class="constant">1</span>: ITU-R BT.709,
-                        <span class="constant">2</span>: unspecified, <span class="constant">3</span>: reserved,
+                        <span class="constant">0</span>: reservado, <span class="constant">1</span>: ITU-R BT.709,
+                        <span class="constant">2</span>: indeterminado,  <span class="constant">3</span>: reservado,
                         <span class="constant">4</span>: ITU-R BT.470M, <span class="constant">5</span>: ITU-R
                         BT.470BG, <span class="constant">6</span>: SMPTE 170M, <span class="constant">7</span>: SMPTE
                         240M, <span class="constant">8</span>: FILM, <span class="constant">9</span>: ITU-R BT.2020,
                         <span class="constant">10</span>: SMPTE ST 428-1, <span class="constant">22</span>: JEDEC P22
-                        phosphors
+                        fósforo
                         
                      </p>
                      
@@ -2715,9 +2742,9 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Sets the maximum brightness of a single pixel (Maximum Content Light Level)
-                        in candelas per square meter (cd/m²). The value of <span class="parameter">n</span>
-                        should be a non-negtive integer.
+                        Establece el brillo máximo de un único pixel (Nivel Máximo de Contenido de
+                        Luz) en candelas por metro cuadrado (cd/m²). El valor de
+                        <span class="parameter">n</span> debe ser un número entero positivo.
                         
                      </p>
                      
@@ -2728,9 +2755,9 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Sets the maximum brightness of a single full frame (Maximum Frame-Average
-                        Light Level) in candelas per square meter (cd/m²). The value of
-                        <span class="parameter">n</span> should be a non-negtive integer.
+                        Establece el brillo máximo de un único fotograma (Nivel Máximo de Luz del
+                        Promedio del Fotograma ) en candelas por metro cuadrado (cd/m²). El valor de
+                        <span class="parameter">n</span> debe ser un número entero positivo.
                         
                      </p>
                      
@@ -2738,11 +2765,12 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                </tr>
                <tr>
                   <td class="varlistoption"><span class="option">--chromaticity-coordinates</span>
-                     <span class="parameter">TID:red-x,red-y,green-x,green-y,blue-x,blue-y</span></td>
+                     <span class="parameter">TID:rojoj-x,rojo-y,verde-x,verde-y,azul-x,azul-y</span></td>
                   <td>
                      
                      <p>
-                        Sets the red/green/blue chromaticity coordinates as defined by CIE 1931.
+                        Establece las coordenadas cromáticas del color rojo/verde/azul definidas por
+                        CIE 1931.
                         
                      </p>
                      
@@ -2753,31 +2781,115 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Sets the white colour chromaticity coordinates as defined by CIE 1931.
+                        Establece las coordenadas cromáticas del color blanco definidas por CIE
+                        1931.
                         
                      </p>
                      
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--max-luminance</span> <span class="parameter">TID:float</span></td>
+                  <td class="varlistoption"><span class="option">--max-luminance</span> <span class="parameter">TID:decimal</span></td>
                   <td>
                      
                      <p>
-                        Sets the maximum luminance in candelas per square meter (cd/m²). The value
-                        should be less than 9999.99.
+                        Establece la luminancia máxima en candelas por metro cuadrado (cd/m²). El
+                        valor debe ser menor de 9999.99.
                         
                      </p>
                      
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--min-luminance</span> <span class="parameter">TID:float</span></td>
+                  <td class="varlistoption"><span class="option">--min-luminance</span> <span class="parameter">TID:decimal</span></td>
                   <td>
                      
                      <p>
-                        Sets the mininum luminance in candelas per square meter (cd/m²). The value
-                        should be less than 999.9999.
+                        Establece la luminancia mínima en candelas por metro cuadrado (cd/m²). El
+                        valor debe ser menor de 999.9999.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-type</span> <span class="parameter">TID:método</span></td>
+                  <td>
+                     
+                     <p>
+                        Establece el método usado de la proyección del video. Los valores admitidos
+                        son 0 (proyección rectangular), 1 (proyección equirectangular), 2
+                        (proyección de mapeo cúbico) y 3 (proyección de malla).
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-private</span> <span class="parameter">TID:data</span></td>
+                  <td>
+                     
+                     <p>
+                        Establece los datos privados que sólo se aplican a una proyección en
+                        concreto. Los datos deben ser números hexadecimales con o sin el prefijo
+                        "0x", con o sin espacios.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-yaw</span> <span class="parameter">TID:decimal</span></td>
+                  <td>
+                     
+                     <p>
+                        Especifica la rotación vertical de la proyección.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-pitch</span> <span class="parameter">TID:decimal</span></td>
+                  <td>
+                     
+                     <p>
+                        Especifica la rotación transversal de la proyección.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-roll</span> <span class="parameter">TID:decimal</span></td>
+                  <td>
+                     
+                     <p>
+                        Especifica la rotación longitudinal de la proyección.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.field_order"><span class="option">--field-order</span> <span class="parameter">TID:n</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Establece el orden de campos para la pista de video con el ID de pista
+                        <span class="parameter">TID</span>. El orden debe ser uno de los siguientes números:
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        <span class="constant">0</span>: progresivo; <span class="constant">1</span>: entrelazado con
+                        campo superior mostrado y almacenado primero; <span class="constant">2</span>: orden
+                        de campo indeterminado; <span class="constant">6</span>: entrelazado con campo
+                        inferior mostrado y almacenado primero; <span class="constant">9</span>: entrelazado
+                        con campo inferior mostrado primero y campo superior almacenado primero;
+                        <span class="constant">14</span>: entrelazado con campo superior mostrado primero y
+                        campo inferior almacenado primero
                         
                      </p>
                      
@@ -2821,7 +2933,7 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
          
          
          
-         <h2><a name="d4e4008">2.9. Opciones que sólo afectan a pistas de subtítulos</a></h2>
+         <h2><a name="d4e4156">2.9. Opciones que sólo afectan a pistas de subtítulos</a></h2>
          
          
          
@@ -2865,7 +2977,7 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
          
          
          
-         <h2><a name="d4e4051">2.10. Otras opciones</a></h2>
+         <h2><a name="d4e4199">2.10. Otras opciones</a></h2>
          
          
          
@@ -2897,15 +3009,43 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.identify_json"><span class="option">--chapters</span> <span class="parameter">nombre-archivo</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Este es un alias apropiado para "<span class="literal">--identification-format json
+                           --identify file-name</span>".
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
                         <span class="parameter">nombre-archivo</span></a></td>
                   <td>
                      
                      <p>
-                        Esta opción está en desuso. Utiliza, en su lugar, <a href="#mkvmerge.description.identification_format">--identification-format
-                           verbose-text --identify …</a>.
+                        Le permitirá a <span class="productname">mkvmerge</span>(1) analizar el archivo e informar de qué tipo es, las
+                        pistas que contiene y los IDs de pista. Si se usa esta opción entonces la
+                        unica opción permitida es el nombre-archivo.
                         
                      </p>
+                     
+                     
+                     <p>
+                        El resultado también contendrá las propiedades para todos los elementos
+                        encontrados, p.e. el título del archivo o el idioma de la pista.
+                        
+                     </p>
+                     
+                     
+                     <div class="note">
+                        <p class="note-title">Note:</p>
+                        
+                        <p>Esta opción es obsoleta. Será eliminada en 2018.</p>
+                        
+                     </div>
                      
                   </td>
                </tr>
@@ -2962,14 +3102,36 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                               el idioma que <span class="productname">mkvmerge</span>(1) utiliza (mire también <a href="#mkvmerge.description.ui_language">--ui-language</a>).
                            </p>
                            
+                           
+                           <div class="note">
+                              <p class="note-title">Note:</p>
+                              
+                              <p>Esta opción es obsoleta. Será eliminada en 2018.</p>
+                              
+                           </div>
+                           
                         </li>
                         
                         
                         <li>
                            
                            <p>
-                              El formato <span class="literal">json</span> genera una representación JSON en código
-                              máquina. Este formato sigue el esquema JSON descrito en el archivo <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema.json">mkvmerge-identification-output-schema.json</a>.
+                              El formato<span class="literal">json</span> genera una representación JSON legible por
+                              máquina. Este formato sigue el esquema JSON descrito en el siguiente
+                              archivo:
+                              
+                           </p>
+                           
+                           
+                           <p>
+                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v10.json">mkvmerge-identification-output-schema-v10.json</a>
+                              
+                           </p>
+                           
+                           
+                           <p>
+                              Todas las versión del esquema JSON están disponibles online y en los
+                              archivos del código fuente liberado. 
                               
                            </p>
                            
@@ -2980,22 +3142,23 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.probe_range_percentage"><span class="option">--probe-range-percentage</span> <span class="parameter">percentage</span></a></td>
+                  <td class="varlistoption"><a name="mkvmerge.description.probe_range_percentage"><span class="option">--probe-range-percentage</span> <span class="parameter">porcentaje</span></a></td>
                   <td>
                      
                      <p>
-                        File types such as MPEG program and transport streams
-                        (<span class="literal">.vob</span>, <span class="literal">.m2ts</span>) require parsing a
-                        certain amount of data in order to detect all tracks contained in the file.
-                        This amount is 0.3% of the source file's size or 10 MB, whichever is higher.
+                        Algunos tipos de archivos tales como secuencias de programa MPEG y
+                        transporte (<span class="literal">.vob</span>, <span class="literal">.m2ts</span>), necesitan
+                        analizar cierta cantidad de datos para detectar todas las pistas almacenadas
+                        en el archivo. Esta cantidad es un 0.3% del tamaño del archivo original o 10
+                        MB, dependiendo cual sea mayor.
                         
                      </p>
                      
                      
                      <p>
-                        If tracks are known to be present but not found then the percentage to probe
-                        can be changed with this option.  The minimum of 10 MB is built-in and
-                        cannot be changed.
+                        Si se conocen las pistas presentes en el archivo pero no son encontradas,
+                        entonces se puede cambiar el porcentaje de exploración con esta opción. El
+                        mínimo de 10 MB está definido por defecto y no se puede cambiar.
                         
                      </p>
                      
@@ -3103,11 +3266,11 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   <td>
                      
                      <p>
-                        Forces the translations for the language <span class="parameter">code</span> to be
-                        used (e.g.  '<span class="literal">de_DE</span>' for the German
-                        translations). Entering '<span class="literal">list</span>' as the
-                        <span class="parameter">code</span> will cause the program to output a list of
-                        available translations.
+                        Fuerza la traducción al <span class="parameter">código</span> de idioma que será
+                        usado (p.e. '<span class="literal">de_DE</span>' para la traducción al
+                        Alemán). Introduciendo '<span class="literal">list</span>' como
+                        <span class="parameter">código</span> provocará que el programa muestre una lista de
+                        las traducciones disponibles. 
                         
                      </p>
                      
@@ -3158,7 +3321,7 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">archivo-opciones</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file.json</span></td>
                   <td>
                      
                      <p>
@@ -3217,40 +3380,6 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                      
                      <p>
                         Muestra la información de la versión y sale. 
-                        
-                     </p>
-                     
-                  </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
-                  <td>
-                     
-                     <p>
-                        Comprueba online si hay nuevas versiones al descargar el archivo ubicado en
-                        la URL <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Cuatro líneas serán generadas del tipo <span class="literal">clave=valor</span>: la
-                        URL desde donde se obtuvo la información (clave
-                        <span class="literal">version_check_url</span>), la versión actual (clave
-                        <span class="literal">running_version</span>), la última versión disponible (clave
-                        <span class="literal">available_version</span>) y la URL de descarga (clave
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Después el programa sale con un código de salida 0 si ninguna versión nueva
-                        está disponible, con 1 si hay disponible una versión más actual y con 2 si
-                        ocurre algún error (p.e. si la información de la actualización no puede ser
-                        obtenida).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Esta opción sólo está disponible si el programa fue creado con
-                        compatibilidad para libcurl. 
                         
                      </p>
                      
@@ -3408,7 +3537,7 @@ mkvmerge -o MM-completa.mkv MiPelícula-con-sonido.mkv MiPelícula-añadir-audio
          
          
          <p>
-            i necesitas una pista de audio sincronizada puedes hacerlo fácilmente. Lo
+            Si necesitas una pista de audio sincronizada puedes hacerlo fácilmente. Lo
             primero es averiguar que ID de pista tiene la pista Vorbis, con: 
             
          </p>
@@ -3878,6 +4007,58 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
+            Hay dos formatos para archivos de opciones: un formato JSON y una formato
+            heredado patentado. El formato heredado es obsoleto, y su compatiblidad será
+            eliminada en 2018.
+            
+         </p>
+         
+         
+         <h2><a name="mkvmerge.option_files.json_format">8.1. El formato JSON</a></h2>
+         
+         
+         
+         <p>
+            El nombre del archivo de formato JSON debe finalizar en
+            '<span class="filename">.json</span>'. El contenido debe ser un vector compuesto
+            únicamente de cadenas de caracteres JSON. El archivo debe estar codificado
+            en formato UTF-8. El archivo no debe comenzar con un <span class="foreignphrase">marcador
+               de orden de bits</span>  (<span class="abbrev">BOM</span>), pero si lo
+            hiciese, será omitido.
+            
+         </p>
+         
+         
+         <p>
+            Las reglas de los caracteres especiales de escape dentro de JSON son las
+            unicas que existen en la especificación oficial JSON, <a href="https://tools.ietf.org/html/rfc7159">RFC 7159</a>.
+            
+         </p>
+         
+         
+         <p>
+            La línea de comandos '<span class="command">mkvmerge -o "mi archivo.mkv" -A "una
+               película.avi" audio.ogg</span>' se podría convertir al siguiente archivo
+            de opciones JSON llamado p.e. '<span class="filename">opciones.json</span>':
+            
+         </p>
+         
+         <pre class="programlisting">[
+  "-o",
+  "c:\\Matroska\\mi archivo.mkv",
+  "--title",
+  "#65",
+  "-A",
+  "una película.avi",
+  "audio.ogg"
+]</pre>
+         
+         
+         <h2><a name="mkvmerge.option_files.legacy_format">8.2. Formato heredado</a></h2>
+         
+         
+         
+         <p>
             Hay diversas reglas respecto a los archivos de opciones. Las líneas cuyo
             primer carácter es una almohadilla ('<span class="literal">#</span>') son tratadas
             como comentarios e ignorados. Los espacios en blanco al principio y final
@@ -3908,9 +4089,10 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
-            La línea de comandos '<span class="command">mkvmerge -o "mi archivo.mkv" -A "una
-               película.avi" audio.ogg</span>' podría ser convertida al siguiente
-            archivo de opciones: 
+            La línea de comandos  '<span class="command">mkvmerge -o "mi archivo.mkv" -A "una
+               película.avi" audio.ogg</span>' se podría convertir al siguiente archivo
+            de opciones en formato heredado denominado
+            p.e. '<span class="filename">opciones.txt</span>':
             
          </p>
          
@@ -3924,6 +4106,7 @@ C:\\Matroska\\mi archivo.mkv
 -A
 una película.avi
 audio.ogg</pre>
+         
          
          <h1><a name="mkvmerge.escaping">9. Caracteres especiales de escape en el texto</a></h1>
          
@@ -4310,7 +4493,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
           ChapterProcessData (binario)</pre>
          
          
-         <h2><a name="d4e5788">14.3. Notas generales</a></h2>
+         <h2><a name="d4e5988">14.3. Notas generales</a></h2>
          
          
          <p>
@@ -4342,7 +4525,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          
          
          
-         <h2><a name="d4e5857">15.1. Introducción</a></h2>
+         <h2><a name="d4e6057">15.1. Introducción</a></h2>
          
          
          
@@ -4551,7 +4734,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          <p>
             Otros campos del encabezado de "información del segmento" se
             pueden establecer a través de las opciones de la línea de comandos pero no
-            mediante archivos XML. Eso afecta p.e. las opciones <span class="option"><a href="#mkvmerge.description.title">--title</a></span> y <span class="option"><a href="#mkvmerge.description.timecode_scale">--timecode-scale</a></span>.
+            mediante archivos XML. Eso afecta p.e. las opciones <span class="option"><a href="#mkvmerge.description.title">--title</a></span> y <span class="option"><a href="#mkvmerge.description.timestamp_scale">--timestamp-scale</a></span>.
             
          </p>
          
@@ -4658,7 +4841,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timecode_files">18. Archivos de códigos de tiempo externos</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">18. Archivos de códigos de tiempo externos</a></h1>
          
          
          <p>
@@ -4682,7 +4865,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
             
          </p>
          
-         <pre class="screen">mkvmerge ... --timecodes 0:códigos_tiempo.txt video1.avi +video2.avi</pre>
+         <pre class="screen">mkvmerge ... --timestamps 0:códigos_tiempo.txt video1.avi +video2.avi</pre>
          
          <p>
             Hay cuatro formatos que son reconocidos por <span class="productname">mkvmerge</span>(1). La primera línea
@@ -4692,7 +4875,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          </p>
          
          
-         <h2><a name="d4e6293">18.1. Formato de archivo de código de tiempo v1</a></h2>
+         <h2><a name="d4e6493">18.1. Formato de archivo de código de tiempo v1</a></h2>
          
          
          <p>
@@ -4713,7 +4896,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6317">18.2. Formato de archivo de código de tiempo v2</a></h2>
+         <h2><a name="d4e6517">18.2. Formato de archivo de código de tiempo v2</a></h2>
          
          
          
@@ -4733,7 +4916,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6332">18.3. Formato de archivo de código de tiempo v3</a></h2>
+         <h2><a name="d4e6532">18.3. Formato de archivo de código de tiempo v3</a></h2>
          
          
          <p>
@@ -4757,7 +4940,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6350">18.4. Formato de archivo de código de tiempo v4</a></h2>
+         <h2><a name="d4e6550">18.4. Formato de archivo de código de tiempo v4</a></h2>
          
          
          <p>

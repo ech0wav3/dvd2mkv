@@ -18,7 +18,7 @@
             <li><a href="#mkvpropedit.edit_selectors">3. エディットセレクタ</a></li>
             <li><a href="#mkvpropedit.attachment_selectors">4. Attachment selectors</a></li>
             <li><a href="#mkvpropedit.examples">5. 例</a></li>
-            <li><a href="#d4e1433">6. 返り値</a></li>
+            <li><a href="#d4e1382">6. 返り値</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">7. テキストファイルと文字コード変換</a></li>
             <li><a href="#mkvpropedit.escaping">8. テキスト中の特殊文字をエスケープする</a></li>
             <li><a href="#mkvpropedit.environment_variables">9. 環境変数</a></li>
@@ -618,65 +618,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file.json</span></td>
                   <td>
                      
                      <p>
-                        Checks online for new releases by downloading the URL <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Four lines will be output in <span class="literal">key=value</span> style: the URL
-                        from where the information was retrieved (key
-                        <span class="literal">version_check_url</span>), the currently running version (key
-                        <span class="literal">running_version</span>), the latest release's version (key
-                        <span class="literal">available_version</span>) and the download URL (key
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        その後プログラムは、新しいリリースが入手可能ではなかった場合は終了コード0で、新しいリリースが入手可能であった場合は終了コード1で、エラーが発生した場合（例：アップデート情報を取得できなかった場合）は終了コード2で、それぞれ終了します。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        このオプションは、プログラムがlibcurlのサポートつきでビルドされた場合のみ使用できます。
+                        Reads additional command line arguments from the file
+                        <span class="parameter">options-file</span>. For a full explanation on the supported
+                        formats for such files see the section called "Option files" in the
+                        <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> man page.
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file</span></td>
-                  <td>
-                     
-                     <p>
-                        <span class="parameter">options-file</span>で指定されたファイルから追加のコマンドラインオプションを読み込みます。行で最初の空白文字でない文字がハッシュマーク('<span class="literal">#</span>')である行はコメントとして扱われ、無視されます。行頭、及び行末の空白文字は取り除かれます。各行には一つずつしかオプションを指定できません。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        エスケープすることのできる文字もあります。例えば、コメントではない行を'#'で始める必要のある場合です。そのルールは、<a href="#mkvpropedit.escaping">エスケープ文字についてのセクション</a>で説明されています。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        '<span class="command">mkvpropedit source.mkv --edit track:a2 --set
-                           name=Comments</span>'というコマンドラインと同じことは、次のようなオプションファイルによって指定できます。
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Modify source.mkv
-source.mkv
-# Edit the second audio track
---edit
-track:a2
-# and set the title to 'Comments'
---set
-name=Comments</pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -939,7 +892,7 @@ name=Comments</pre>
          </p>
          
          <pre class="screen">$ mkvpropedit movie.mkv --delete-attachment mime-type:application/x-truetype-font</pre>
-         <h1><a name="d4e1433">6. 返り値</a></h1>
+         <h1><a name="d4e1382">6. 返り値</a></h1>
          
          
          

@@ -17,7 +17,7 @@
             <li><a href="#mkvinfo.description">2. 说明</a></li>
             <li><a href="#mkvinfo.verbosity_levels">3. “详细”程度</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">4. 文本文件与字符集转换</a></li>
-            <li><a href="#d4e592">5. 退出代码</a></li>
+            <li><a href="#d4e542">5. 退出代码</a></li>
             <li><a href="#mkvinfo.escaping">6. 文本中特殊字符的转义</a></li>
             <li><a href="#mkvinfo.environment_variables">7. 环境变量</a></li>
             <li><a href="#mkvinfo.seealso">8. 参阅</a></li>
@@ -28,7 +28,7 @@
          <h1><a name="mkvinfo.synopsis">1. 概要</a></h1>
          
          
-         <div class="cmdsynopsis"><span class="commandname">mkvinfo</span> 选项 {源文件名}
+         <div class="cmdsynopsis"><span class="commandname">mkvinfo</span> 选项 {输入文件名}
          </div>
          
          <h1><a name="mkvinfo.description">2. 说明</a></h1>
@@ -249,65 +249,16 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">选项文件.json</span></td>
                   <td>
                      
                      <p>
-                        联机下载 URL <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>
-                        以检查新版本。将以 <span class="literal">键=值</span> 的样式输出四行: 检索信息的 URL（键
-                        <span class="literal">version_check_url</span>），当前运行的版本（键
-                        <span class="literal">running_version</span>），最新版本号（键
-                        <span class="literal">available_version</span>）及其下载 URL（键
-                        <span class="literal">download_url</span>）。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        若无更新版本可用，程序将以退出码 0 退出，若有更新版本可用，退出码为 1，若出现错误（如无法检索更新信息），退出码则为 2。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        此选项仅当程序附带 libcurl 支持编译时可用。
+                        从文件 <span class="parameter">选项文件</span> 读取其他命令行参数。关于支持的选项文件格式的详细说明，请参见 <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>
+                        手册的“选项文件”段落。
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">选项文件</span></td>
-                  <td>
-                     
-                     <p>
-                        从文件 <span class="parameter">选项文件</span> 中读取额外的命令行参数。首个非空白字符为井号
-                        ('<span class="literal">#</span>') 的行将被当作注释对待，在处理过程中将被忽略。各行开头与结尾的空白将被除去。各行必须恰好仅含一个选项。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        有些字符可以转义，如当您需要使用 '#' 作为一个不是评论的行的开头。规则在<a href="#mkvinfo.escaping">关于转义文本的段落</a>有描述。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        命令行 '<span class="command">mkvinfo -v -v 输入.mkv --redirect-output 信息.txt</span>'
-                        可以转换为下面所示的选项文件:
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># 更为详尽
--v
--v
-# 解析 输入.mkv
-输入.mkv
-# 并将输出信息写入 信息.txt
---redirect-output
-信息.txt</pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -360,7 +311,7 @@
             
          </p>
          
-         <h1><a name="d4e592">5. 退出代码</a></h1>
+         <h1><a name="d4e542">5. 退出代码</a></h1>
          
          
          

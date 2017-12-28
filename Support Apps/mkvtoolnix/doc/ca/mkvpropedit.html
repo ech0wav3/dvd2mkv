@@ -21,7 +21,7 @@
             <li><a href="#mkvpropedit.edit_selectors">3. Selectors per a l'edició</a></li>
             <li><a href="#mkvpropedit.attachment_selectors">4. Selectors per a l'adjunt</a></li>
             <li><a href="#mkvpropedit.examples">5. Exemples</a></li>
-            <li><a href="#d4e1414">6. Codis de sortida</a></li>
+            <li><a href="#d4e1363">6. Codis de sortida</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">7. Conversió per a fitxers de text i jocs de caràcters</a></li>
             <li><a href="#mkvpropedit.escaping">8. Escapar caràcters especials en el text</a></li>
             <li><a href="#mkvpropedit.environment_variables">9. Variables d'entorn</a></li>
@@ -72,7 +72,7 @@
                         Llista tots els noms de propietat coneguts i editables, el seu tipus
                         (cadena, enter, booleà, etc.) i una petita descripció. El programa després
                         sortirà. Per tant, el paràmetre <span class="parameter">nom_fitxer_origen</span> no
-                        té perquè subministrar-se.
+                        té per què subministrar-se.
                         
                      </p>
                      
@@ -91,8 +91,8 @@
                         localitzar els elements requerits d'un fitxer d'origen. En el 99% dels casos
                         n'hi haurà prou. No obstant això, pels fitxers que no contenen elements meta
                         de cerca o que estan malmesos, l'usuari hauria d'emprar el mode d'anàlisi
-                        «<span class="literal">full</span>». L'anàlisi completa d'un fitxer pot portar molts
-                        minuts, mentre que una anàlisi ràpida només portarà uns pocs segons.
+                        «<span class="literal">full</span>». L'anàlisi completa d'un fitxer pot trigar alguns
+                        minuts, mentre que una anàlisi ràpida només portarà alguns segons.
                         
                      </p>
                      
@@ -277,7 +277,7 @@
                      <p>
                         Afegeix o substitueix els capítols al <span class="filename">nom_fitxer</span> o els
                         elimina si està buit. El <span class="productname">mkvpropedit</span>(1) llegirà els mateixos formats de
-                        capítols simple i en XML que pugui llegir el <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>.
+                        capítols senzill i en XML que pugui llegir el <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>.
                         
                      </p>
                      
@@ -580,9 +580,9 @@
                      <p>
                         Escriu tots els missatges al <span class="parameter">nom_fitxer</span> en lloc de a
                         la consola. Si bé això es pot fer fàcilment amb la redirecció de la sortida,
-                        hi ha casos en què cal aquesta opció: quan el terminal torna interpretar la
-                        sortida abans d'escriure-la a un fitxer. Es respectarà el joc de caràcters
-                        establert amb <a href="#mkvpropedit.description.output_charset">--output-charset</a>.
+                        hi ha casos en què cal aquesta opció: quan el terminal torna a interpretar
+                        la sortida abans d'escriure-la a un fitxer. Es respectarà el joc de
+                        caràcters establert amb <a href="#mkvpropedit.description.output_charset">--output-charset</a>.
                         
                      </p>
                      
@@ -681,77 +681,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">fitxer_d_opcions.json</span></td>
                   <td>
                      
                      <p>
-                        Comprova en línia si hi ha nous llançaments per baixar-los des de l'URL
-                        <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Es generaran quatre línies amb l'estil <span class="literal">clau=valor</span>: l'URL
-                        des d'on s'ha obtingut la informació (clau
-                        <span class="literal">version_check_url</span>), la versió actualment en execució
-                        (clau <span class="literal">running_version</span>), la versió de l'últim llançament
-                        (clau <span class="literal">available_version</span>) i l'URL per a la baixada (clau
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Després el programa sortirà amb un codi de sortida de 0 si no hi ha cap
-                        llançament més recent disponible, amb 1 si hi ha disponible una nova versió
-                        i amb 2 si s'ha produït algun error (p. ex., si no s'ha pogut recuperar la
-                        informació sobre l'actualització).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Aquesta opció només estarà disponible si el programa va ser construït amb la
-                        implementació per a «libcurl».
+                        Llegeix els arguments addicionals per a la línia d'ordres des del fitxer
+                        <span class="parameter">fitxer_d_opcions</span>. Per a més informació sobre els
+                        formats admesos, vegeu la secció anomenada «Fitxers d'opcions» a la pàgina
+                        man del <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>.
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">fitxer_opcions</span></td>
-                  <td>
-                     
-                     <p>
-                        Llegeix arguments addicionals per a la línia d'ordres des del
-                        <span class="parameter">fitxer_opcions</span>. Les línies que tinguin com a primer
-                        caràcter un coixinet (<span class="literal">#</span>) seran tractades com a comentaris
-                        i ignorades. Els espais en blanc al començament i final de la línia seran
-                        descartats. Cada línia haurà de contenir exactament una opció.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Es poden escapar diversos caràcters, p. ex., si necessiteu que una línia que
-                        comença amb un coixinet «#», no sigui interpretada com un comentari. Les
-                        regles es descriuen a <a href="#mkvpropedit.escaping">la secció sobre
-                           escapar en el text</a>.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        La línia d'ordres «<span class="command">mkvpropedit origen.mkv --edit track:a2 --set
-                           name=Comentaris</span>» es pot convertir en el següent fitxer d'opcions:
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Modifica origen.mkv
-origen.mkv
-# Edita la segona pista d'àudio
---edit
-track:a2
-# i estableix el títol a «Comentaris»
---set
-name=Comentaris</pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -837,10 +778,10 @@ name=Comentaris</pre>
                      <p>
                         Si el paràmetre comença amb un únic caràcter <span class="parameter">t</span> seguit
                         per <span class="parameter">n</span>, llavors se seleccionarà la pista número
-                        <span class="parameter">n</span> d'un tipus de pista específic. El paràmetre del
+                        <span class="parameter">n</span> d'un tipus de pista específica. El paràmetre del
                         tipus de pista <span class="parameter">t</span>, haurà de ser un d'aquests quatre
                         caràcters: «<span class="literal">a</span>» per a una pista d'àudio,
-                        «<span class="literal">b</span>» per a un pista de botó, «<span class="literal">s</span>» per a
+                        «<span class="literal">b</span>» per a una pista de botó, «<span class="literal">s</span>» per a
                         una pista de subtítols i «<span class="literal">v</span>» per a una pista de
                         vídeo. L'ordre de les pistes és el mateix que surt amb l'opció
                         <span class="option">--identify</span> del <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>.
@@ -988,7 +929,7 @@ name=Comentaris</pre>
             El segon exemple elimina l'«etiqueta de pista per omissió» de la primera
             pista de subtítols i l'estableix per a la segona. Tingueu present que el
             <span class="productname">mkvpropedit</span>(1), a diferència del <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>, no estableix automàticament a
-            «0» el valor de l'«etiqueta de pista per omissió» quan un pista diferent
+            «0» el valor de l'«etiqueta de pista per omissió» quan una pista diferent
             s'ha establert a «1».
             
          </p>
@@ -1061,7 +1002,7 @@ name=Comentaris</pre>
          </p>
          
          <pre class="screen">$ mkvpropedit peli.mkv --delete-attachment mime-type:application/x-truetype-font</pre>
-         <h1><a name="d4e1414">6. Codis de sortida</a></h1>
+         <h1><a name="d4e1363">6. Codis de sortida</a></h1>
          
          
          

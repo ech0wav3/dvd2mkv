@@ -16,7 +16,7 @@
             <li><a href="#mkvinfo.description">2. Descripció</a></li>
             <li><a href="#mkvinfo.verbosity_levels">3. Nivells de loquacitat</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">4. Conversió per a fitxers de text i jocs de caràcters</a></li>
-            <li><a href="#d4e591">5. Codis de sortida</a></li>
+            <li><a href="#d4e541">5. Codis de sortida</a></li>
             <li><a href="#mkvinfo.escaping">6. Escapar caràcters especials en el text</a></li>
             <li><a href="#mkvinfo.environment_variables">7. Variables d'entorn</a></li>
             <li><a href="#mkvinfo.seealso">8. Vegeu també</a></li>
@@ -125,7 +125,7 @@
                   <td>
                      
                      <p>
-                        Mostra la mida de cada element incloent la seva capçalera.
+                        Mostra la mida de cada element inclosa la seva capçalera.
                         
                      </p>
                      
@@ -166,9 +166,9 @@
                      <p>
                         Escriu tots els missatges al <span class="parameter">nom_fitxer</span> en lloc de a
                         la consola. Si bé això es pot fer fàcilment amb la redirecció de la sortida,
-                        hi ha casos en que cal aquesta opció: quan el terminal torna interpretar la
-                        sortida abans d'escriure-la a un fitxer. Es respectarà el joc de caràcters
-                        establert amb <a href="#mkvinfo.description.output_charset">--output-charset</a>.
+                        hi ha casos en què cal aquesta opció: quan el terminal torna a interpretar
+                        la sortida abans d'escriure-la a un fitxer. Es respectarà el joc de
+                        caràcters establert amb <a href="#mkvinfo.description.output_charset">--output-charset</a>.
                         
                      </p>
                      
@@ -272,77 +272,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">fitxer_d_opcions.json</span></td>
                   <td>
                      
                      <p>
-                        Comprova en línia si hi ha nous llançaments per baixar-los des de l'URL
-                        <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Es generaran quatre línies amb l'estil <span class="literal">clau=valor</span>: l'URL
-                        des d'on s'ha obtingut la informació (clau
-                        <span class="literal">version_check_url</span>), la versió actualment en execució
-                        (clau <span class="literal">running_version</span>), la versió de l'últim llançament
-                        (clau <span class="literal">available_version</span>) i l'URL per a la baixada (clau
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Després el programa sortirà amb un codi de sortida de 0 si no hi ha cap
-                        llançament més recent disponible, amb 1 si hi ha disponible una nova versió
-                        i amb 2 si s'ha produït algun error (p. ex., si no s'ha pogut recuperar la
-                        informació sobre l'actualització).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Aquesta opció només estarà disponible si el programa va ser construït amb la
-                        implementació per a «libcurl».
+                        Llegeix els arguments addicionals per a la línia d'ordres des del fitxer
+                        <span class="parameter">fitxer_d_opcions</span>. Per a més informació sobre els
+                        formats admesos, vegeu la secció anomenada «Fitxers d'opcions» a la pàgina
+                        man del <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>.
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">fitxer_opcions</span></td>
-                  <td>
-                     
-                     <p>
-                        Llegeix arguments addicionals per a la línia d'ordres des del
-                        <span class="parameter">fitxer_opcions</span>. Les línies que tinguin com a primer
-                        caràcter un coixinet (<span class="literal">#</span>) seran tractades com a comentaris
-                        i ignorades. Els espais en blanc al començament i final de la línia seran
-                        descartats. Cada línia haurà de contenir exactament una opció.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Es poden escapar diversos caràcters, p. ex., si necessiteu que una línia que
-                        comença amb un coixinet «#», no sigui interpretada com un comentari. Les
-                        regles es descriuen a <a href="#mkvinfo.escaping">la secció sobre
-                           escapar en el text</a>.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        La línia d'ordres «<span class="command">mkvinfo -v -v entrada.mkv --redirect-output
-                           informació.txt</span>» es pot convertir en el següent fitxer d'opcions:
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Ser més loquaç
--v
--v
-# Analitza entrada.mkv
-entrada.mkv
-# i escriu la sortida a informació.txt
---redirect-output
-informació.txt</pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -364,7 +305,7 @@ informació.txt</pre>
             troba i els seus tipus. El <span class="productname">mkvinfo</span>(1) sortirà tan aviat s'hagin analitzat
             completament les capçaleres (més tècnic: tan aviat com es trobi el primer
             clúster). En aquest nivell, la cerca d'entrades de capçalera i els índexs no
-            serà mostrats -encara que es trobin al capdavant de la informació de la
+            seràn mostrats -encara que es trobin al capdavant de la informació de la
             pista-.
             
          </p>
@@ -409,7 +350,7 @@ informació.txt</pre>
             
          </p>
          
-         <h1><a name="d4e591">5. Codis de sortida</a></h1>
+         <h1><a name="d4e541">5. Codis de sortida</a></h1>
          
          
          

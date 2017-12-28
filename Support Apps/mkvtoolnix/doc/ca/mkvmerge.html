@@ -29,7 +29,7 @@
             <li><a href="#mkvmerge.tags">15. Etiquetes</a></li>
             <li><a href="#mkvmerge.segmentinfo">16. Els fitxers XML d'informació del segment</a></li>
             <li><a href="#mkvmerge.file_layout">17. Disposició dels fitxers Matroska</a></li>
-            <li><a href="#mkvmerge.external_timecode_files">18. Fitxers externs pels codis de temps</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">18. Fitxers externs pels codis de temps</a></li>
             <li><a href="#mkvmerge.exit_codes">19. Codis de sortida</a></li>
             <li><a href="#mkvmerge.environment_variables">20. Variables d'entorn</a></li>
             <li><a href="#mkvmerge.seealso">21. Vegeu també</a></li>
@@ -41,7 +41,7 @@
          
          
          <div class="cmdsynopsis"><span class="commandname">mkvmerge</span> opcions_globals {-o
-            sortida} opcions_1 {fitxer_1} opcions_2 {fitxer_2} @fitxer_opcions
+            sortida} opcions_1 {fitxer_1} opcions_2 {fitxer_2} @fitxer_d_opcions.json
          </div>
          
          <h1><a name="mkvmerge.description">2. Descripció</a></h1>
@@ -112,11 +112,19 @@
                   <td class="varlistoption"><span class="option">-w</span>, <span class="option">--webm</span></td>
                   <td>
                      
-                     <p>Crea un fitxer conforme amb WebM. També s'habilita si el nom de l'extensió
-                        del fitxer de sortida és «webm». Aquest mode obliga a complir certes
-                        restriccions. Els únics còdecs permesos són VP8, VP9 per a vídeo i Opus,
-                        Vorbis per a pistes d'àudio. No estan permeses ni els capítols, ni les
-                        etiquetes. L'element de capçalera DocType serà canviat a «webm».
+                     <p>Crea un fitxer compatible amb WebM. També s'activa si l'extensió del nom del
+                        fitxer de sortida és "webm". Aquest mode força diverses
+                        restriccions. Els únics còdecs permesos són el vídeo VP8, VP9 i les pistes
+                        d'àudio Opus, Vorbis. L'element de capçalera DocType es canviarà a
+                        "webm".
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        Per a capítols i etiquetes, només es permet un subconjunt d'elements. El
+                        «<span class="productname">mkvmerge</span>(1)» eliminarà automàticament tots els elements no permesos per
+                        l'especificació.
                         
                      </p>
                      
@@ -153,7 +161,7 @@
          
          
          
-         <h2><a name="d4e252">2.2. Informació quant a la manipulació del segment (opcions globals)</a></h2>
+         <h2><a name="d4e261">2.2. Informació quant a la manipulació del segment (opcions globals)</a></h2>
          
          
          
@@ -195,7 +203,7 @@
                      <p>
                         Estableix els UID dels segments a emprar. Aquesta és una llista separada per
                         comes dels UID dels segments de 128 bits en la forma usual de l'UID: nombres
-                        hexadecimals, amb o sense el «0x» com a prefix, amb o sense espais,
+                        hexadecimals, amb el «0x» com a prefix o sense, amb espais o sense,
                         exactament 32 dígits.
                         
                      </p>
@@ -223,7 +231,7 @@
          
          
          
-         <h2><a name="d4e325">2.3. Manipulació dels capítols i les etiquetes (opcions globals)</a></h2>
+         <h2><a name="d4e334">2.3. Manipulació dels capítols i les etiquetes (opcions globals)</a></h2>
          
          
          
@@ -241,14 +249,15 @@
                      
                      <p>
                         Estableix el codi d'idioma ISO639-2 que s'escriurà en cada entrada de
-                        capítol. Per omissió s'estableix a «<span class="literal">eng</span>». Per a més
-                        detalls, vegeu més endavant la secció sobre <a href="#mkvmerge.chapters">els capítols</a>.
+                        capítol. Per omissió és «<span class="literal">eng</span>». Per a més detalls, vegeu
+                        més endavant la secció sobre <a href="#mkvmerge.chapters">els
+                           capítols</a>.
                         
                      </p>
                      
                      
                      <p>
-                        Aquesta opció es pot emprar tant per a simples fitxers de capítols, com per
+                        Aquesta opció es pot emprar tant per a senzills fitxers de capítols, com per
                         a fitxers d'origen que continguin capítols sense informació sobre l'idioma,
                         p. ex., fitxers MP4 i OGM.
                         
@@ -269,7 +278,7 @@
                      
                      <p>
                         Estableix el joc de caràcters que es farà servir per a la conversió a UTF-8
-                        per a simples fitxers de capítols. Vegeu la secció sobre <a href="#mkvmerge.text_files_and_charsets">la conversió per a fitxers de
+                        per a senzills fitxers de capítols. Vegeu la secció sobre <a href="#mkvmerge.text_files_and_charsets">la conversió per a fitxers de
                            text i jocs de caràcters</a>, per a veure una explicació sobre com
                         realitza el <span class="productname">mkvmerge</span>(1) la conversió entre diferents jocs de caràcters.
                         
@@ -327,7 +336,7 @@
                            
                            <p>
                               «<span class="literal">interval:</span><span class="parameter">temps-especificat</span>» –
-                              Aquesta mode crearà un capítol a intervals fixos donats per
+                              Aquest mode crearà un capítol a intervals fixos donats per
                               <span class="parameter">temps-especificat</span>. El format segueix la forma
                               <span class="parameter">HH:MM:SS.nnnnnnnnn</span> o com un número seguit per una de
                               les unitats «<span class="literal">s</span>», «<span class="literal">ms</span>» o
@@ -371,7 +380,7 @@
                      
                      <p>
                         Hi ha diverses variables que es poden usar a la plantilla que seran
-                        substituïdes amb els valors actuals quan es generi un capítol. La cadena
+                        substituïdes amb els valors reals quan es generi un capítol. La cadena
                         «<span class="literal">&lt;NUM&gt;</span>» serà substituïda pel número de capítol. La
                         cadena «<span class="literal">&lt;START&gt;</span>» serà substituïda per la marca de
                         temps d'inici del capítol.
@@ -382,8 +391,8 @@
                      <p>
                         Les cadenes <span class="literal">«&lt;FILE_NAME&gt;»</span> i
                         <span class="literal">«&lt;FILE_NAME_WITH_EXT&gt;»</span>, que només funcionen quan es
-                        generen capítols per a fitxers adjunts. Seran , respectivament substituides
-                        pel nom del fitxer adjuntat, amb i sense la seva extensió. Recordeu que
+                        generen capítols per a fitxers adjunts. Seran, respectivament substituides
+                        pel nom del fitxer adjuntat, amb la seva extensió i sense. Recordeu que
                         només s'inseriran el nom base del fitxer i l'extensió, no el seu directori o
                         components de la unitat.
                         
@@ -543,7 +552,7 @@
                   <td>
                      
                      <p>
-                        Llegeix la informació dels capítol des del
+                        Llegeix la informació del capítol des del
                         <span class="parameter">nom_fitxer</span>. Per a més detalls, vegeu més endavant la
                         secció sobre <a href="#mkvmerge.chapters">els capítols</a>.
                         
@@ -568,7 +577,7 @@
          
          
          
-         <h2><a name="d4e753">2.4. Control general de la sortida (opcions globals avançades)</a></h2>
+         <h2><a name="d4e762">2.4. Control general de la sortida (opcions globals avançades)</a></h2>
          
          
          
@@ -639,7 +648,8 @@
                      <p>
                         Els programes que intenten trobar un cert fotograma només poden cercar
                         directament a un clúster i posteriorment llegir tot el clúster. Per tant, el
-                        crear clústers molt grans podria comportar una cerca lenta i poc precisa.
+                        fet de crear clústers molt grans podria comportar una cerca lenta i poc
+                        precisa.
                         
                      </p>
                      
@@ -714,15 +724,15 @@
                      
                      
                      <p>
-                        L'habilitar aquesta opció impedeix que el <span class="productname">mkvmerge</span>(1) escrigui i editi les
-                        etiquetes existents que tinguin els mateixos noms.
+                        El fet d'habilitar aquesta opció impedeix que el <span class="productname">mkvmerge</span>(1) escrigui i editi
+                        les etiquetes existents que tinguin els mateixos noms.
                         
                      </p>
                      
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.timecode_scale"><span class="option">--timecode-scale</span> <span class="parameter">factor</span></a></td>
+                  <td class="varlistoption"><a name="mkvmerge.description.timestamp_scale"><span class="option">--timestamp-scale</span> <span class="parameter">factor</span></a></td>
                   <td>
                      
                      <p>
@@ -736,8 +746,8 @@
                      
                      <p>
                         Normalment, el <span class="productname">mkvmerge</span>(1) emprarà el valor <span class="constant">1000000</span>, el
-                        qual vol dir que els codis de temps i durades tindran una precisió
-                        d'1ms. Pels fitxers que no continguin una pista de vídeo però sí almenys una
+                        qual vol dir que els codis de temps i durades tindran una precisió d'1
+                        ms. Pels fitxers que no continguin una pista de vídeo però sí almenys una
                         d'àudio, el <span class="productname">mkvmerge</span>(1) triarà automàticament un factor d'escala pels codis
                         de temps, de manera tots els codis de temps i durades tindran una precisió
                         d'una mostra d'àudio. Això causarà una major sobrecàrrega però permetrà que
@@ -759,7 +769,7 @@
          
          
          
-         <h2><a name="d4e1039">2.5. Divisió, vinculació, annexat i concatenació dels fitxers (més opcions
+         <h2><a name="d4e1048">2.5. Divisió, vinculació, annexat i concatenació dels fitxers (més opcions
                globals)</a></h2>
          
          
@@ -779,10 +789,8 @@
                      <p>
                         Divideix el fitxer de sortida després d'una mida o temps especificat. Si us
                         plau, tingueu en compte que aquestes pistes només es poden dividir just
-                        abans d'un fotograma clau. A causa de l'ús de memòria intermèdia i després
-                        d'arribar al punt de divisió especificat, el <span class="productname">mkvmerge</span>(1) realitzarà la
-                        divisió just abans que s'hagi abastat el següent fotograma clau. Per tant,
-                        el punt de divisió podria ser un xic diferent de l'especificat per l'usuari.
+                        abans d'un fotograma clau. Per tant, el punt de divisió podria ser un xic
+                        diferent de l'especificat per l'usuari.
                         
                      </p>
                      
@@ -891,13 +899,13 @@
                            
                            <p>
                               Sintaxi: <span class="option">--split</span>
-                              <span class="literal">timecodes:</span><span class="parameter">A</span>[,<span class="parameter">B</span>[,<span class="parameter">C</span>...]]
+                              <span class="literal">timestamps:</span><span class="parameter">A</span>[,<span class="parameter">B</span>[,<span class="parameter">C</span>...]]
                               
                            </p>
                            
                            
                            <p>
-                              Exemple: <span class="code">--split timecodes:00:45:00.000,01:20:00.250,6300s</span>
+                              Exemple: <span class="code">--split timestamps:00:45:00.000,01:20:00.250,6300s</span>
                               
                            </p>
                            
@@ -914,7 +922,7 @@
                            
                            
                            <p>
-                              El prefix «<span class="literal">timecodes:</span>» no es pot ometre.
+                              El prefix «<span class="literal">timestamps:</span>» no es pot ometre.
                               
                            </p>
                            
@@ -924,7 +932,7 @@
                         <li>
                            
                            <p>
-                              Manté les parts especifiques pels intervals de codis de temps especificats
+                              Manté les parts específiques pels intervals de codis de temps especificats
                               mentre que les altres seran descartades.
                               
                            </p>
@@ -1002,25 +1010,25 @@
                            
                            <p>
                               En l'exemple 1, el <span class="productname">mkvmerge</span>(1) crearà dos fitxers. El primer abastarà el
-                              contingut a partir de <span class="literal">00:01:20</span> fins
+                              contingut a partir de <span class="literal">00:01:20</span> fins a
                               <span class="literal">00:02:45</span>. El segon abastarà el contingut a partir de
-                              <span class="literal">00:05:50</span> fins <span class="literal">00:10:30</span>.
+                              <span class="literal">00:05:50</span> fins a <span class="literal">00:10:30</span>.
                               
                            </p>
                            
                            
                            <p>
                               En l'exemple 2, el <span class="productname">mkvmerge</span>(1) crearà un únic fitxer. Aquest abastarà ambdós,
-                              el contingut a partir de <span class="literal">00:01:20</span> fins
+                              el contingut a partir de <span class="literal">00:01:20</span> fins a
                               <span class="literal">00:02:45</span> i el contingut a partir de
-                              <span class="literal">00:05:50</span> fins <span class="literal">00:10:30</span>.
+                              <span class="literal">00:05:50</span> fins a <span class="literal">00:10:30</span>.
                               
                            </p>
                            
                            
                            <p>
                               En l'exemple 3, el <span class="productname">mkvmerge</span>(1) crearà dos fitxers. El primer abastarà el
-                              contingut des del començament dels fitxers d'origen fins
+                              contingut des del començament dels fitxers d'origen fins a
                               <span class="literal">00:02:45</span>. El segon abastarà el contingut a partir de
                               <span class="literal">00:05:50</span> fins al final dels fitxers d'origen.
                               
@@ -1047,7 +1055,7 @@
                         <li>
                            
                            <p>
-                              Manté les parts especifiques pels intervals del número de fotograma/camp
+                              Manté les parts específiques pels intervals del número de fotograma/camp
                               especificats mentre que les altres seran descartades.
                               
                            </p>
@@ -1175,7 +1183,7 @@
                               <p class="note-title">Note:</p>
                               
                               <p>
-                                 Els números indicats amb aquest argument són interpretats en base al nombre
+                                 Els números indicats amb aquest argument són interpretats partint del nombre
                                  de blocs <span class="productname">Matroska</span><sup>(tm)</sup> que es generen. Un únic bloc <span class="productname">Matroska</span><sup>(tm)</sup> conté tot un
                                  fotograma (per a contingut progressiu) o només un camp (per a contingut
                                  entrellaçat). El <span class="productname">mkvmerge</span>(1) no fa distincions entre els dos i només compta
@@ -1239,7 +1247,7 @@
                               <p class="note-title">Note:</p>
                               
                               <p>
-                                 Els números indicats amb aquest argument són interpretats en base al nombre
+                                 Els números indicats amb aquest argument són interpretats partint del nombre
                                  de blocs <span class="productname">Matroska</span><sup>(tm)</sup> que es generen. Un únic bloc <span class="productname">Matroska</span><sup>(tm)</sup> conté tot un
                                  fotograma (per a contingut progressiu) o només un camp (per a contingut
                                  entrellaçat). El <span class="productname">mkvmerge</span>(1) no fa distincions entre els dos i només compta
@@ -1282,7 +1290,7 @@
                               numeració comença per l'1. La llista de capítols estarà separada per
                               comes. La divisió succeirà just abans del primer fotograma clau on el codi
                               de temps sigui igual o major que el codi de temps d'inici per als capítols
-                              dels números llistats. Un capítol que comença als 0s mai es tindrà en compte
+                              dels números llistats. Un capítol que comença al 0 s mai es tindrà en compte
                               per a la divisió i serà omès silenciosament.
                               
                            </p>
@@ -1403,16 +1411,16 @@
                      
                      <p>
                         Quan el mkvmerge annexa una pista (anomenada «<span class="literal">pista2_1</span>»
-                        d'ara en endavant) des d'un segon fitxer (anomenat
+                        d'ara endavant) des d'un segon fitxer (anomenat
                         «<span class="literal">fitxer_2</span>») a una pista (anomenada
                         «<span class="literal">pista1_1</span>») des del primer fitxer (anomenat
                         «<span class="literal">fitxer_1</span>») llavors compensarà una quantitat en tots els
                         codis de temps per a la «<span class="literal">pista2_1</span>». En el mode
-                        «<span class="literal">file</span>» aquesta quantitat serà el major codi de temps
+                        «<span class="literal">file</span>» aquesta quantitat serà el codi de temps més gran
                         trobat en el «<span class="literal">fitxer_1</span>», fins i tot si aquest codi de
                         temps provingués d'una pista diferent de «<span class="literal">pista1_1</span>». En
-                        el mode «<span class="literal">track</span>», la compensació serà el major codi de
-                        temps de la «<span class="literal">pista1_1</span>».
+                        el mode «<span class="literal">track</span>», la compensació serà el codi de temps més
+                        gran de la «<span class="literal">pista1_1</span>».
                         
                      </p>
                      
@@ -1482,6 +1490,28 @@
                      
                      <pre class="screen">$ mkvmerge -o complet.mkv fitxer_1.mkv + fitxer_2.mkv
 $ mkvmerge -o complet.mkv fitxer_1.mkv +fitxer_2.mkv</pre>
+                     </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">[</span> <span class="parameter">fitxer_1</span>
+                     <span class="parameter">fitxer_2</span> <span class="option">]</span></td>
+                  <td>
+                     
+                     <p>
+                        Si hi ha entre claudàtors múltiples noms de fitxer, llabors el segon fitxer
+                        i tots els següents seran annexats al primer fitxer.
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        Aquesta és una sintaxi alternativa a l'ús del caràcter «+» entre els noms de
+                        fitxer. Per tant, les dues ordres següents són equivalents:
+                        
+                     </p>
+                     
+                     <pre class="screen">$ mkvmerge -o tot.mkv fitxer_1.mkv + fitxer_2.mkv
+$ mkvmerge -o tot.mkv '[' fitxer_1.mkv fitxer_2.mkv ']'</pre>
                      </td>
                </tr>
                <tr>
@@ -1595,7 +1625,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2096">2.6. Implementació per a adjunts (més opcions globals)</a></h2>
+         <h2><a name="d4e2127">2.6. Implementació per a adjunts (més opcions globals)</a></h2>
          
          
          
@@ -1684,7 +1714,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2237">2.7. Opcions que es poden emprar per a cada fitxer d'entrada</a></h2>
+         <h2><a name="d4e2268">2.7. Opcions que es poden emprar per a cada fitxer d'entrada</a></h2>
          
          
          
@@ -1866,7 +1896,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                         l'opció per omissió) o «<span class="literal">:first</span>». Si està activada la
                         divisió, llavors aquells adjunts on els ID s'han especificat amb
                         «<span class="literal">:all</span>» seran copiats a tots els fitxers de sortida
-                        resultants, mentre que els demés només seran copiats dins del primer fitxer
+                        resultants, mentre que els altres només seran copiats dins del primer fitxer
                         de sortida. Si la divisió no està activada, llavors les dues variants
                         produiran el mateix efecte.
                         
@@ -1894,7 +1924,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        No copia cap pista d'àudio des d'aquest fitxer.
+                        No copiar cap pista d'àudio des d'aquest fitxer.
                         
                      </p>
                      
@@ -1905,7 +1935,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        No copia cap pista de vídeo des d'aquest fitxer.
+                        No copiar cap pista de vídeo des d'aquest fitxer.
                         
                      </p>
                      
@@ -1916,7 +1946,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        No copia cap pista de subtítols des d'aquest fitxer.
+                        No copiar cap pista de subtítols des d'aquest fitxer.
                         
                      </p>
                      
@@ -1927,7 +1957,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        No copia cap pista de botó des d'aquest fitxer.
+                        No copiar cap pista de botó des d'aquest fitxer.
                         
                      </p>
                      
@@ -1938,7 +1968,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        No copia cap etiqueta específica de pista des d'aquest fitxer.
+                        No copiar cap etiqueta específica de pista des d'aquest fitxer.
                         
                      </p>
                      
@@ -1949,7 +1979,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        No copia cap capítol des d'aquest fitxer.
+                        No copiar cap capítol des d'aquest fitxer.
                         
                      </p>
                      
@@ -1960,7 +1990,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        No copia cap adjunt des d'aquest fitxer.
+                        No copiar cap adjunt des d'aquest fitxer.
                         
                      </p>
                      
@@ -1971,7 +2001,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        No copia cap etiqueta global des d'aquest fitxer.
+                        No copiar cap etiqueta global des d'aquest fitxer.
                         
                      </p>
                      
@@ -2208,7 +2238,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                      
                      <p>
                         Li indica al <span class="productname">mkvmerge</span>(1) que la pista amb l'ID <span class="parameter">TID</span> és
-                        <span class="abbrev">SBR AAC</span> (AAC en SBR) (també coneguda com
+                        <span class="abbrev">SBR AAC</span> (AAC en SBR) (també coneguda com a
                         <span class="abbrev">HE-AAC</span> o <span class="abbrev">AAC+</span>). Aquestes opcions són
                         necessàries si: a) el fitxer d'origen és un fitxer <span class="abbrev">AAC</span>
                         (<em>no</em> per a un fitxer <span class="productname">Matroska</span><sup>(tm)</sup>) i b) el fitxer
@@ -2269,15 +2299,15 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--timecodes</span> <span class="parameter">TID:nom_fitxer</span></td>
+                  <td class="varlistoption"><span class="option">--timestamps</span> <span class="parameter">TID:nom_fitxer</span></td>
                   <td>
                      
                      <p>
-                        Llegeix els codis de temps que s'empraran per a l'ID de la pista específic
-                        des de <span class="parameter">nom_fitxer</span>. Aquests codis de temps
+                        Llegeix els codis de temps que s'empraran per a l'ID de la pista específica
+                        des del <span class="parameter">nom_fitxer</span>. Aquests codis de temps
                         substitueixen de manera forçosa els codis de temps que normalment calcula el
-                        <span class="productname">mkvmerge</span>(1). Llegiu la secció sobre <a href="#mkvmerge.external_timecode_files">els fitxers externs pels codis de
-                           temps</a>.
+                        <span class="productname">mkvmerge</span>(1). Llegiu la secció sobre <a href="#mkvmerge.external_timestamp_files">els fitxers externs pels codis
+                           de temps</a>.
                         
                      </p>
                      
@@ -2398,7 +2428,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e3324">2.8. Opcions que només s'apliquen a les pistes de vídeo</a></h2>
+         <h2><a name="d4e3355">2.8. Opcions que només s'apliquen a les pistes de vídeo</a></h2>
          
          
          
@@ -2456,8 +2486,8 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                         Els fitxers <span class="productname">Matroska</span><sup>(tm)</sup> contenen dos valors que estableixen les propietats de
                         visualització que emprarà un reproductor per a escalar la imatge durant la
                         reproducció a: amplada i alçada de visualització. Amb aquesta opció, el
-                        <span class="productname">mkvmerge</span>(1) calcularà automàticament l'amplada i alçada de reproducció en
-                        base a l'amplada i alçada original de la imatge i la relació d'aspecte
+                        <span class="productname">mkvmerge</span>(1) calcularà automàticament l'amplada i alçada de reproducció
+                        partint de l'amplada i alçada original de la imatge i la relació d'aspecte
                         indicada amb aquesta opció. La relació es pot indicar com un nombre decimal
                         per a la <span class="parameter">relació</span> o com una fracció per a
                         l'«<span class="parameter">amplada</span>/<span class="parameter">alçada</span>», p. ex.,
@@ -2504,7 +2534,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Estableix als valors indicats els paràmetres del retall dels píxels d'una
+                        Estableix els valors indicats els paràmetres del retall dels píxels d'una
                         pista de vídeo.
                         
                      </p>
@@ -2516,7 +2546,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix els coeficients de la matriu del vídeo emprats per a derivar els
+                        Estableix els coeficients de la matriu del vídeo emprats per a derivar els
                         valors de luminància i de crominància dels colors primaris vermell, verd i
                         blau. El paràmetre <span class="parameter">n</span> és un nombre enter que va des
                         del <span class="constant">0</span> al <span class="constant">10</span>.
@@ -2547,7 +2577,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix el nombre de bits codificats per a un canal de color. Un valor de
+                        Estableix el nombre de bits codificats per a un canal de color. Un valor de
                         <span class="constant">0</span> indica que el nombre de bits no està especificat.
                         
                      </p>
@@ -2560,7 +2590,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                      
                      <p>
                         La quantitat de píxels per eliminar en els canals Cr i Cb per a cada píxel
-                        no eliminat horitzontal i verticalment.
+                        no eliminat horitzontalment i verticalment.
                         
                      </p>
                      
@@ -2580,7 +2610,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                      
                      <p>
                         La quantitat de píxels per eliminar al canal Cb per a cada píxel no eliminat
-                        horitzontal i verticalment. Aquest és additiu amb
+                        horitzontalment i verticalment. Aquest és additiu amb
                         <span class="option">--chroma-subsample</span>.
                         
                      </p>
@@ -2602,8 +2632,8 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix com està situada la crominància,
-                        horitzontal/verticalment.(<span class="constant">0</span>: sense especificar,
+                        Estableix com està situada la crominància,
+                        horitzontalment/verticalment.(<span class="constant">0</span>: sense especificar,
                         <span class="constant">1</span>: a dalt juxtaposats, <span class="constant">2</span>: meitat).
                         
                      </p>
@@ -2615,7 +2645,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix la retallada dels intervals de colors (<span class="constant">0</span>:
+                        Estableix la retallada dels intervals de colors (<span class="constant">0</span>:
                         sense especificar, <span class="constant">1</span>: interval de difusió,
                         <span class="constant">2</span>: tot l'interval (sense retallat),
                         <span class="constant">3</span>: definit pels coeficients de la
@@ -2665,7 +2695,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix els colors primaris del vídeo.
+                        Estableix els colors primaris del vídeo.
                         
                      </p>
                      
@@ -2694,7 +2724,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix la brillantor màxima d'un únic píxel (el nivell màxim de llum que
+                        Estableix la brillantor màxima d'un únic píxel (el nivell màxim de llum que
                         conté) en candeles per metre quadrat (cd/m²). El valor de
                         <span class="parameter">n</span> haurà de ser un nombre enter no negatiu.
                         
@@ -2707,7 +2737,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix la brillantor màxima de tot un marc (el nivell màxim de llum mitjà
+                        Estableix la brillantor màxima de tot un marc (el nivell màxim de llum mitjà
                         del marc) en candeles per metre quadrat (cd/m²). El valor de
                         <span class="parameter">n</span> haurà de ser un nombre enter no negatiu.
                         
@@ -2721,7 +2751,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix les coordenades de la cromaticitat pel vermell/verd/blau com es
+                        Estableix les coordenades de la cromaticitat pel vermell/verd/blau com es
                         defineixen per la CIE 1931.
                         
                      </p>
@@ -2733,7 +2763,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix les coordenades cromàtiques del color blanc com es defineixen per
+                        Estableix les coordenades cromàtiques del color blanc com es defineixen per
                         la CIE 1931.
                         
                      </p>
@@ -2745,7 +2775,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix la luminància màxima en candeles per metre quadrat (cd/m²). El
+                        Estableix la luminància màxima en candeles per metre quadrat (cd/m²). El
                         valor haurà de ser inferior que 9999.99.
                         
                      </p>
@@ -2757,8 +2787,92 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Defineix la luminància mínima en candeles per metre quadrat (cd/m²). El
+                        Estableix la luminància mínima en candeles per metre quadrat (cd/m²). El
                         valor haurà de ser inferior que 999.9999.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-type</span> <span class="parameter">TID:mètode</span></td>
+                  <td>
+                     
+                     <p>
+                        Estableix el mètode de projecció del vídeo que s'utilitzarà. Els valors
+                        vàlids són 0 (projecció rectangular), 1 (projecció equirectangular), 2
+                        (projecció mapa del cub) i 3 (projecció de malla).
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-private</span> <span class="parameter">TID:dades</span></td>
+                  <td>
+                     
+                     <p>
+                        Estableix les dades privades que només s'aplicaran a una projecció
+                        específica. Les dades s'han de proporcionar com a nombres hexadecimals amb
+                        el prefix "0x" o sense, amb espais o sense.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-yaw</span> <span class="parameter">TID:decimal</span></td>
+                  <td>
+                     
+                     <p>
+                        Especifica un gir de l'encaix a la projecció.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-pitch</span> <span class="parameter">TID:decimal</span></td>
+                  <td>
+                     
+                     <p>
+                        Especifica un gir de la presentació a la projecció.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-roll</span> <span class="parameter">TID:decimal</span></td>
+                  <td>
+                     
+                     <p>
+                        Especifica un gir del rotllo a la projecció.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.field_order"><span class="option">--field-order</span> <span class="parameter">TID:n</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Estableix l'ordre del camp de vídeo amb l'ID de pista
+                        <span class="parameter">TID</span>. L'ordre haurà de ser un dels següents números:
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        <span class="constant">0</span>: progressiu; <span class="constant">1</span>: entrellaçat del
+                        primer camp superior mostrat i del primer camp superior emmagatzemat;
+                        <span class="constant">2</span>: ordre del camp sense determinar;
+                        <span class="constant">6</span>: entrellaçat del primer camp inferior mostrat i del
+                        primer camp inferior emmagatzemat; <span class="constant">9</span>: entrellaçat del
+                        primer camp inferior mostrat i del primer camp superior emmagatzemat;
+                        <span class="constant">14</span>: entrellaçat del primer camp superior mostrat i del
+                        primer camp inferior emmagatzemat
                         
                      </p>
                      
@@ -2802,7 +2916,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4026">2.9. Opcions que només s'apliquen a les pistes de subtítols de text</a></h2>
+         <h2><a name="d4e4179">2.9. Opcions que només s'apliquen a les pistes de subtítols de text</a></h2>
          
          
          
@@ -2845,7 +2959,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4066">2.10. Altres opcions</a></h2>
+         <h2><a name="d4e4219">2.10. Altres opcions</a></h2>
          
          
          
@@ -2876,15 +2990,43 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.identify_json"><span class="option">-J</span> <span class="parameter">nom_fitxer</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Aquest és un àlies convenient per a «<span class="literal">--identification-format json
+                           --identify nom_fitxer</span>».
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
                         <span class="parameter">nom_fitxer</span></a></td>
                   <td>
                      
                      <p>
-                        Aquesta opció és obsoleta. Empreu la combinació <a href="#mkvmerge.description.identification_format">--identification-format
-                           verbose-text --identify …</a> en el seu lloc.
+                        Li permet al <span class="productname">mkvmerge</span>(1) sondejar el fitxer i informar del seu tipus, les
+                        pistes que conté i els ID de les pistes. Si s'empra aquesta opció, llavors
+                        l'única opció permesa serà el nom_fitxer.
                         
                      </p>
+                     
+                     
+                     <p>
+                        La sortida també contindrà propietats de tots els elements trobats, p. ex.,
+                        el títol del fitxer o l'idioma de la pista.
+                        
+                     </p>
+                     
+                     
+                     <div class="note">
+                        <p class="note-title">Note:</p>
+                        
+                        <p>Aquesta opció està en desús. Serà eliminada en 2018.</p>
+                        
+                     </div>
                      
                   </td>
                </tr>
@@ -2907,7 +3049,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                         <li>
                            
                            <p>El format <span class="literal">text</span> és curt i llegible. Consisteix en una
-                              línia per a cada element trobat (contenidor, pistes, adjunts, etc.)
+                              línia per a cada element trobat (contenidor, pistes, adjunts, etc.).
                            </p>
                            
                            
@@ -2941,15 +3083,36 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                               l'idioma que empra el <span class="productname">mkvmerge</span>(1) (vegeu també l'opció <a href="#mkvmerge.description.ui_language">--ui-language</a>).
                            </p>
                            
+                           
+                           <div class="note">
+                              <p class="note-title">Note:</p>
+                              
+                              <p>Aquesta opció està en desús. Serà eliminada en 2018.</p>
+                              
+                           </div>
+                           
                         </li>
                         
                         
                         <li>
                            
                            <p>
-                              El format <span class="literal">json</span> sortirà en una representació JSON de
-                              lectura mecànica. Aquest format segueix l'esquema JSON descrit al fitxer
-                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema.json">mkvmerge-identification-output-schema.json</a>.
+                              La sortida del format <span class="literal">json</span>  és una representació JSON
+                              llegible per la màquina. Aquest format segueix l'esquema JSON descrit en el
+                              següent fitxer:
+                              
+                           </p>
+                           
+                           
+                           <p>
+                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v10.json">mkvmerge-identification-output-schema-v10.json</a>
+                              
+                           </p>
+                           
+                           
+                           <p>
+                              Totes les versions de l'esquema JSON estan disponibles tant en línia com en
+                              els fitxers del codi font alliberat.
                               
                            </p>
                            
@@ -3010,7 +3173,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Estableix la prioritat del procés amb que s'executa el <span class="productname">mkvmerge</span>(1). Els
+                        Estableix la prioritat del procés amb què s'executa el <span class="productname">mkvmerge</span>(1). Els
                         valors vàlids són «<span class="literal">lowest</span>» (Molt baixa),
                         «<span class="literal">lower</span>» (Baixa), «<span class="literal">normal</span>» (Normal),
                         «<span class="literal">higher</span>» (Alta) i «<span class="literal">highest</span>» (Molt
@@ -3068,9 +3231,9 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                      <p>
                         Escriu tots els missatges al <span class="parameter">nom_fitxer</span> en lloc de a
                         la consola. Si bé això es pot fer fàcilment amb la redirecció de la sortida,
-                        hi ha casos en que cal aquesta opció: quan el terminal torna interpretar la
-                        sortida abans d'escriure-la a un fitxer. Es respectarà el joc de caràcters
-                        establert amb <a href="#mkvmerge.description.output_charset">--output-charset</a>.
+                        hi ha casos en què cal aquesta opció: quan el terminal torna a interpretar
+                        la sortida abans d'escriure-la a un fitxer. Es respectarà el joc de
+                        caràcters establert amb <a href="#mkvmerge.description.output_charset">--output-charset</a>.
                         
                      </p>
                      
@@ -3135,7 +3298,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">fitxer_opcions</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">fitxer_d_opcions.json</span></td>
                   <td>
                      
                      <p>
@@ -3201,40 +3364,6 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                      
                   </td>
                </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
-                  <td>
-                     
-                     <p>
-                        Comprova en línia si hi ha nous llançaments per baixar-los des de l'URL
-                        <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Es generaran quatre línies amb l'estil <span class="literal">clau=valor</span>: l'URL
-                        des d'on s'ha obtingut la informació (clau
-                        <span class="literal">version_check_url</span>), la versió actualment en execució
-                        (clau <span class="literal">running_version</span>), la versió de l'últim llançament
-                        (clau <span class="literal">available_version</span>) i l'URL per a la baixada (clau
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Després el programa sortirà amb un codi de sortida de 0 si no hi ha cap
-                        llançament més recent disponible, amb 1 si hi ha disponible una nova versió
-                        i amb 2 si s'ha produït algun error (p. ex., si no s'ha pogut recuperar la
-                        informació sobre l'actualització).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Aquesta opció només estarà disponible si el programa va ser construït amb la
-                        implementació per a «libcurl».
-                        
-                     </p>
-                     
-                  </td>
-               </tr>
             </tbody>
          </table>
          
@@ -3267,7 +3396,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          <p>
-            L'ordre en el que s'especifiquen les opcions és important per a algunes
+            L'ordre en el qual s'especifiquen les opcions és important per a algunes
             opcions. Les opcions es divideixen en dues categories:
             
          </p>
@@ -3406,7 +3535,7 @@ $ mkvmerge -o MM-completa.mkv meva_peli-amb-so.mkv meva_peli-afegeix-àudio.ogg<
          
          
          <p>
-            Algunes pel·lícules comencen sincronitzades correctament però a poc a poc es
+            Algunes pel·lícules comencen sincronitzades correctament però a poc a poc és
             desincronitzen. Per a aquest tipus de pel·lícules podeu especificar un
             factor de desfasament que serà aplicat a totes les marques de temps -no
             s'afegirà o suprimirà cap dada-. Si apliqueu un factor massa gran o petit el
@@ -3604,7 +3733,7 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
                
                <p>
                   La majoria de fitxers: Els ID de les pistes són assignats en l'ordre en el
-                  què es troben les pistes, començant des del número 0.
+                  qual es troben les pistes, començant des del número 0.
                   
                </p>
                
@@ -3622,7 +3751,7 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
-            Les opcions que empren els ID de les pistes són aquelles en que la
+            Les opcions que empren els ID de les pistes són aquelles en què la
             descripció conté un «<span class="literal">TID</span>». Les següents opcions també
             empren els ID de les pistes: <span class="option">--audio-tracks</span>,
             <span class="option">--video-tracks</span>, <span class="option">--subtitle-tracks</span>,
@@ -3664,7 +3793,7 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
             El <span class="productname">mkvmerge</span>(1) realitzarà automàticament aquesta conversió en funció de la
             presència d'un <span class="foreignphrase">marcador d'ordre de byte</span>
             (abreujat: <span class="abbrev">BOM</span>) o de la configuració regional del
-            sistema. Com el joc de caràcters es dedueix de la configuració regional
+            sistema. Com el joc de caràcters es dedueix de la configuració regional,
             dependrà del sistema operatiu on s'executi el <span class="productname">mkvmerge</span>(1).
             
          </p>
@@ -3688,7 +3817,7 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
          
          
          
-         <h2><a name="mkvmerge.text_files_and_charsets.unix">7.3. Sistemes Linux i Unix, incloent el Mac OS</a></h2>
+         <h2><a name="mkvmerge.text_files_and_charsets.unix">7.3. Sistemes Linux i Unix, inclòs el Mac OS</a></h2>
          
          
          
@@ -3843,10 +3972,62 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
          <p>
             Un fitxer d'opcions és un fitxer des d'on el <span class="productname">mkvmerge</span>(1) pot llegir arguments
             addicionals de la línia d'ordres. Això es pot emprar per eludir certes
-            limitacions de l'interpret d'ordres (shell) o del sistema operatiu, com una
+            limitacions de l'intèrpret d'ordres (shell) o del sistema operatiu, com una
             longitud limitada de la línia d'ordres quan s'executen programes externs.
             
          </p>
+         
+         
+         <p>
+            Hi ha dos formats pels fitxers d'opcions: el format JSON i un format heretat
+            propietari. El format heretat està en desús, i està implementat pel fet que
+            és probable que es retiri en 2018.
+            
+         </p>
+         
+         
+         <h2><a name="mkvmerge.option_files.json_format">8.1. El format JSON</a></h2>
+         
+         
+         
+         <p>
+            Un nom pel fitxer d'opcions JSON haurà d'acabar en
+            «<span class="filename">.json</span>». El seu contingut haurà de ser una matriu JSON
+            vàlida que consisteixi únicament de cadenes JSON. La codificació del fitxer
+            haurà de ser en UTF-8. El fitxer no podrà començar amb un
+            <span class="foreignphrase">marcador d'ordre de bytes</span>
+            (<span class="abbrev">BOM</span>), però si hi és, serà omès.
+            
+         </p>
+         
+         
+         <p>
+            Les regles per escapar caràcters especials dins del JSON són les mateixes
+            que hi ha a l'especificació oficial del JSON, <a href="https://tools.ietf.org/html/rfc7159">RFC 7159</a>.
+            
+         </p>
+         
+         
+         <p>
+            La línia d'ordres «<span class="command">mkvmerge -o "meu_fitxer.mkv" -A "una_peli.avi"
+               so.ogg</span>» es pot convertir en el següent fitxer d'opcions JSON
+            anomenat, p. ex., «<span class="filename">opcions.json</span>»:
+            
+         </p>
+         
+         <pre class="programlisting">[
+  "-o",
+  "c:\\Matroska\\fitxer_meu.mkv",
+  "--title",
+  "#65",
+  "-A",
+  "una_peli.avi",
+  "so.ogg"
+]</pre>
+         
+         
+         <h2><a name="mkvmerge.option_files.legacy_format">8.2. El format heretat</a></h2>
+         
          
          
          <p>
@@ -3884,7 +4065,8 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
          
          <p>
             La línia d'ordres «<span class="command">mkvmerge -o "meu_fitxer.mkv" -A "una_peli.avi"
-               so.ogg</span>» es pot convertir en el següent fitxer d'opcions:
+               so.ogg</span>» es pot convertir en el següent fitxer d'opcions heretat
+            anomenat, p. ex., «<span class="filename">opcions.txt</span>»:
             
          </p>
          
@@ -3898,6 +4080,7 @@ C:\\Matroska\\meu_fitxer.mkv
 -A
 una_peli.avi
 so.ogg</pre>
+         
          
          <h1><a name="mkvmerge.escaping">9. Escapar caràcters especials en el text</a></h1>
          
@@ -4032,7 +4215,7 @@ so.ogg</pre>
          
          <p>
             Si es divideix un fitxer en diversos fitxers més petits i després s'empra la
-            vinculació, llavors els codis de temps no començaran des de 0, si no que
+            vinculació, llavors els codis de temps no començaran des de 0, sinó que
             continuaran des d'on va quedar l'últim fitxer. D'aquesta manera, es
             mantindrà el temps absolut fins i tot si els fitxers anteriors no estan
             disponibles (p. ex., quan es transmeten). Si no s'empra la vinculació,
@@ -4055,7 +4238,7 @@ so.ogg</pre>
             <span class="constant">0xFF</span> prefixats cadascun amb «<span class="literal">0x</span>»,
             p. ex., «<span class="code">0x41 0xda 0x73 0x66 0xd9 0xcf 0xb2 0x1e 0xae 0x78 0xeb 0xb4
                0x5e 0xca 0xb3 0x93</span>». De manera alternativa, es pot emprar una forma
-            curta: 16 números hexadecimals entre <span class="constant">0x00</span> i
+            curta: 16 nombres hexadecimals entre <span class="constant">0x00</span> i
             <span class="constant">0xFF</span> sense el prefix «<span class="literal">0x</span>» i sense
             espais, p. ex., «<span class="code">41da7366d9cfb21eae78ebb45ecab393</span>».
             
@@ -4075,7 +4258,7 @@ so.ogg</pre>
          
          
          <p>
-            L'especificació <span class="productname">Matroska</span><sup>(tm)</sup> estableix que alguns elements tenen un valor
+            L'especificació <span class="productname">Matroska</span><sup>(tm)</sup> defineix que alguns elements tenen un valor
             predeterminat. En general, si el valor és igual que el predeterminat,
             llavors no serà escrit en el fitxer per tal d'estalviar espai. Els elements
             que l'usuari podria trobar a faltar a la sortida del <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a> són els
@@ -4095,8 +4278,8 @@ so.ogg</pre>
          <p>
             Possiblement també voldreu conservar algunes fotografies juntament amb el
             vostre fitxer <span class="productname">Matroska</span><sup>(tm)</sup>, o emprar subtítols <span class="abbrev">SSA</span> i
-            necessitareu d'un tipus de lletra <span class="productname">TrueType</span><sup>(tm)</sup>
-            especial que és realment rar. En aquests casos els podeu adjuntar al fitxer
+            necessitareu un tipus de lletra <span class="productname">TrueType</span><sup>(tm)</sup> especial
+            que és realment rar. En aquests casos els podeu adjuntar al fitxer
             <span class="productname">Matroska</span><sup>(tm)</sup>. No seran simplement annexats, sinó que seran incrustats. Un
             reproductor els podrà mostrar (en el cas de les «fotografies») o emprar-los
             per a renderitzar els subtítols (en el cas dels tipus de lletra
@@ -4142,7 +4325,7 @@ so.ogg</pre>
          <p>
             El <span class="productname">mkvmerge</span>(1) admet dos tipus de fitxers de capítols com a entrada. El
             primer format, anomenat «<span class="foreignphrase">format de capítols
-               simple</span>», és el mateix format que s'espera en les eines
+               senzill</span>», és el mateix format que s'espera en les eines
             <span class="abbrev">OGM</span>. El segon format es basa en el format de capítols en
             <span class="abbrev">XML</span>, el qual implementa totes les funcionalitats de capítols del
             <span class="productname">Matroska</span><sup>(tm)</sup>.
@@ -4150,7 +4333,7 @@ so.ogg</pre>
          </p>
          
          
-         <h2><a name="mkvmerge.chapters.simple">14.1. El format de capítols simple</a></h2>
+         <h2><a name="mkvmerge.chapters.simple">14.1. El format de capítols senzill</a></h2>
          
          
          
@@ -4286,13 +4469,13 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
           ChapterProcessData (binari)</pre>
          
          
-         <h2><a name="d4e5821">14.3. Notes generals</a></h2>
+         <h2><a name="d4e6026">14.3. Notes generals</a></h2>
          
          
          <p>
             Quan es divideixen els fitxers, el <span class="productname">mkvmerge</span>(1) també ajustarà correctament
             els capítols. Això vol dir que cada fitxer només inclourà les entrades dels
-            capítol que se li apliquin, i que es compensaran els codis de temps per a
+            capítols que se li apliquin, i que es compensaran els codis de temps per a
             que coincideixin amb el nou codi de temps de cada fitxer de sortida.
             
          </p>
@@ -4318,7 +4501,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          
          
-         <h2><a name="d4e5887">15.1. Introducció</a></h2>
+         <h2><a name="d4e6092">15.1. Introducció</a></h2>
          
          
          
@@ -4357,14 +4540,14 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
             els UID que calcularà automàticament el <span class="productname">mkvmerge</span>(1) (si la pista es pren d'un
             altre format de fitxer que no sigui <span class="productname">Matroska</span><sup>(tm)</sup>) o si es copia des del fitxer
             d'origen, si el fitxer d'origen de la pista és un fitxer <span class="productname">Matroska</span><sup>(tm)</sup>. Per
-            tant, és complicat saber quins UID es van a emprar al fitxer d'etiquetes
-            abans que el fitxer sigui proporcionat al <span class="productname">mkvmerge</span>(1).
+            tant, és complicat saber quins UID s'han emprat al fitxer d'etiquetes abans
+            que el fitxer fos proporcionat al <span class="productname">mkvmerge</span>(1).
             
          </p>
          
          
          <p>
-            El <span class="productname">mkvmerge</span>(1) té dues opcions amb les que es poden afegir etiquetes als
+            El <span class="productname">mkvmerge</span>(1) té dues opcions amb les quals es poden afegir etiquetes als
             fitxers <span class="productname">Matroska</span><sup>(tm)</sup>: Les opcions <a href="#mkvmerge.description.global_tags">--global-tags</a>
             i <a href="#mkvmerge.description.tags">--tags</a>. La
             diferència és que la primera opció, <a href="#mkvmerge.description.global_tags">--global-tags</a>,
@@ -4525,7 +4708,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          <p>
             Es poden establir altres camps de la capçalera «segment information» a
             través de les opcions de la línia d'ordres però no mitjançant el fitxer
-            XML. Això inclou, p. ex., les opcions <span class="option"><a href="#mkvmerge.description.title">--title</a></span> i <span class="option"><a href="#mkvmerge.description.timecode_scale">--timecode-scale</a></span>.
+            XML. Això inclou, p. ex., les opcions <span class="option"><a href="#mkvmerge.description.title">--title</a></span> i <span class="option"><a href="#mkvmerge.description.timestamp_scale">--timestamp-scale</a></span>.
             
          </p>
          
@@ -4631,7 +4814,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timecode_files">18. Fitxers externs pels codis de temps</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">18. Fitxers externs pels codis de temps</a></h1>
          
          
          <p>
@@ -4655,7 +4838,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
             
          </p>
          
-         <pre class="screen">$ mkvmerge «...» --timecodes 0:codis_de_temps.txt v1.avi +v2.avi</pre>
+         <pre class="screen">$ mkvmerge «...» --timestamps 0:codis_de_temps.txt v1.avi +v2.avi</pre>
          
          <p>
             Hi ha quatre formats que són reconeguts pel <span class="productname">mkvmerge</span>(1). La primera línia
@@ -4666,7 +4849,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          </p>
          
          
-         <h2><a name="d4e6338">18.1.  Format v1 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6543">18.1.  Format v1 pel fitxer del codi de temps</a></h2>
          
          
          <p>
@@ -4687,7 +4870,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6362">18.2.  Format v2 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6567">18.2.  Format v2 pel fitxer del codi de temps</a></h2>
          
          
          
@@ -4707,11 +4890,11 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6377">18.3.  Format v3 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6582">18.3.  Format v3 pel fitxer del codi de temps</a></h2>
          
          
          <p>
-            En aquest format cada línia conté una durada en segons seguida per un número
+            En aquest format cada línia conté una durada en segons seguida per un nombre
             opcional de fotogrames per segon. Ambdós camps poden ser nombres
             decimals. Si no s'especifica el nombre de fotogrames per segon s'emprarà el
             valor per omissió. Per a l'àudio s'hauria de deixar calcular al còdec els
@@ -4731,7 +4914,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6395">18.4.  Format v4 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6600">18.4.  Format v4 pel fitxer del codi de temps</a></h2>
          
          
          <p>

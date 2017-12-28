@@ -22,7 +22,7 @@
             <li><a href="#mkvmerge.text_files_and_charsets">7. 文本文件与字符集转换</a></li>
             <li><a href="#mkvmerge.option_files">8. 选项文件</a></li>
             <li><a href="#mkvmerge.escaping">9. 文本中特殊字符的转义</a></li>
-            <li><a href="#mkvmerge.subtitles">10. Subtitles</a></li>
+            <li><a href="#mkvmerge.subtitles">10. 字幕</a></li>
             <li><a href="#mkvmerge.file_linking">11. 文件链接</a></li>
             <li><a href="#mkvmerge.default_values">12. 默认值</a></li>
             <li><a href="#mkvmerge.attachments">13. 附件</a></li>
@@ -30,7 +30,7 @@
             <li><a href="#mkvmerge.tags">15. 标签</a></li>
             <li><a href="#mkvmerge.segmentinfo">16. 剪辑信息 XML 文件</a></li>
             <li><a href="#mkvmerge.file_layout">17. Matroska 文件规划</a></li>
-            <li><a href="#mkvmerge.external_timecode_files">18. 外部时间码文件</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">18. 外部时间码文件</a></li>
             <li><a href="#mkvmerge.exit_codes">19. 退出代码</a></li>
             <li><a href="#mkvmerge.environment_variables">20. 环境变量</a></li>
             <li><a href="#mkvmerge.seealso">21. 参阅</a></li>
@@ -41,14 +41,14 @@
          <h1><a name="mkvmerge.synopsis">1. 概要</a></h1>
          
          
-         <div class="cmdsynopsis"><span class="commandname">mkvmerge</span> 全局选项 {-o 输出文件} 选项1 {文件1} 选项2 {文件2} @选项文件
+         <div class="cmdsynopsis"><span class="commandname">mkvmerge</span> 全局选项 {-o 输出文件} 选项1 {文件1} 选项2 {文件2} @选项文件.json
          </div>
          
          <h1><a name="mkvmerge.description">2. 说明</a></h1>
          
          
          <p>
-            本程序可读取多种媒体文件并将它们的数据流（全部或者按选择）合并到 <span class="productname">Matroska</span><sup>(tm)</sup> 文件中去；参见 <a href="http://www.matroska.org/">Matroska 网站</a>。
+            本程序可读取多个媒体文件并将它们的数据流（全部或部分）合并到 <span class="productname">Matroska</span><sup>(tm)</sup> 文件中去；参见 <a href="http://www.matroska.org/">Matroska 网站</a>。
             
          </p>
          
@@ -106,8 +106,13 @@
                   <td>
                      
                      <p>创建 WebM 兼容文件。若输出文件的扩展名为 "webm" 则将自动打开本选项。此模式将实施一些限制。只允许使用编解码器为
-                        VP8、VP9 的视频轨道及 Opus、Vorbis 的音频轨道。不允许出现章节或标签。DocType 头部项目将改为
-                        "webm"。
+                        VP8、VP9 的视频轨道及 Opus、Vorbis 的音频轨道。DocType 头部项目将改为 "webm"。
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        对于章节与标签，只允许使用一部分元素。<span class="productname">mkvmerge</span>(1) 将自动移除规范所不允许的元素。
                         
                      </p>
                      
@@ -140,7 +145,7 @@
          
          
          
-         <h2><a name="d4e253">2.2. 剪辑信息处理 (全局选项)</a></h2>
+         <h2><a name="d4e262">2.2. 剪辑信息处理 (全局选项)</a></h2>
          
          
          
@@ -201,7 +206,7 @@
          
          
          
-         <h2><a name="d4e322">2.3. 章节与标签处理 (全局选项)</a></h2>
+         <h2><a name="d4e331">2.3. 章节与标签处理 (全局选项)</a></h2>
          
          
          
@@ -224,7 +229,7 @@
                      
                      
                      <p>
-                        此选项可用于简单章节文件与包含章节但不含章节语言信息的源文件，如 MP4 与 OGM 文件。
+                        此选项可用于简单章节文件与包含章节但不含章节语言信息的输入文件，如 MP4 与 OGM 文件。
                         
                      </p>
                      
@@ -336,12 +341,8 @@
                      
                      
                      <p>
-                        The strings <span class="literal">'&lt;FILE_NAME&gt;'</span> and
-                        <span class="literal">'&lt;FILE_NAME_WITH_EXT&gt;'</span> are only filled when
-                        generating chapters for appended files.  They will be replaced by the
-                        appended file's name wihtout respectively with its extension.  Note that
-                        only the file's base name and extension are inserted, not its directory or
-                        drive components.
+                        字符串“<span class="literal">&lt;FILE_NAME&gt;</span>”与“<span class="literal">&lt;FILE_NAME_WITH_EXT&gt;</span>”
+                        仅在为追加文件生成章节时被填充。它们会被替换为追加文件的名称，分别省略扩展名、包含扩展名。注意只会插入文件的基本名称与扩展名，不包括其目录或盘符。
                         
                      </p>
                      
@@ -509,7 +510,7 @@
          
          
          
-         <h2><a name="d4e755">2.4. 全局输出控制 (高级全局选项)</a></h2>
+         <h2><a name="d4e764">2.4. 全局输出控制 (高级全局选项)</a></h2>
          
          
          
@@ -639,7 +640,7 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.timecode_scale"><span class="option">--timecode-scale</span> <span class="parameter">系数</span></a></td>
+                  <td class="varlistoption"><a name="mkvmerge.description.timestamp_scale"><span class="option">--timestamp-scale</span> <span class="parameter">系数</span></a></td>
                   <td>
                      
                      <p>
@@ -670,7 +671,7 @@
          
          
          
-         <h2><a name="d4e1041">2.5. 文件切割、连接、追加及合并 (其他全局选项)</a></h2>
+         <h2><a name="d4e1050">2.5. 文件切割、连接、追加及合并 (其他全局选项)</a></h2>
          
          
          
@@ -687,8 +688,7 @@
                   <td>
                      
                      <p>
-                        在给定尺寸或时间之后切割输出文件。请注意，各轨道只能在关键帧之前的位置切割开。由于缓冲原因，<span class="productname">mkvmerge</span>(1)
-                        将在达到切割点后发现的首个关键帧前的位置切割。因此实际切割点可能比用户指定的稍稍靠后些。
+                        在给定尺寸或时间之后切割输出文件。请注意，各轨道只能在关键帧之前的地方切割开来。因此实际切割点可能比用户指定的稍稍靠后些。
                         
                      </p>
                      
@@ -788,13 +788,13 @@
                            
                            <p>
                               语法: <span class="option">--split</span>
-                              <span class="literal">timecodes:</span><span class="parameter">A</span>[,<span class="parameter">B</span>[,<span class="parameter">C</span>...]]
+                              <span class="literal">timestamps:</span><span class="parameter">A</span>[,<span class="parameter">B</span>[,<span class="parameter">C</span>...]]
                               
                            </p>
                            
                            
                            <p>
-                              示例: <span class="code">--split timecodes:00:45:00.000,01:20:00.250,6300s</span>
+                              示例: <span class="code">--split timestamps:00:45:00.000,01:20:00.250,6300s</span>
                               
                            </p>
                            
@@ -809,7 +809,7 @@
                            
                            
                            <p>
-                              '<span class="literal">timecodes:</span>' 前缀不得省略。
+                              '<span class="literal">timestamps:</span>' 前缀不得省略。
                               
                            </p>
                            
@@ -868,7 +868,7 @@
                            
                            
                            <p>
-                              若终止时间码留空，则默认为源文件末尾，亦即告诉 <span class="productname">mkvmerge</span>(1) 保留其余部分 (参见示例 3)。
+                              若终止时间码留空，则默认为输入文件末尾，亦即告诉 <span class="productname">mkvmerge</span>(1) 保留其余部分 (参见示例 3)。
                               
                            </p>
                            
@@ -898,8 +898,8 @@
                            
                            
                            <p>
-                              例 3 中 <span class="productname">mkvmerge</span>(1) 将创建两个文件。第一个包含从源文件开头到 <span class="literal">00:02:45</span>
-                              的内容。第二个文件将包含从 <span class="literal">00:05:50</span> 到源文件结尾之间的内容。
+                              例 3 中 <span class="productname">mkvmerge</span>(1) 将创建两个文件。第一个包含从输入文件开头到 <span class="literal">00:02:45</span>
+                              的内容。第二个文件将包含从 <span class="literal">00:05:50</span> 到输入文件结尾之间的内容。
                               
                            </p>
                            
@@ -1013,8 +1013,8 @@
                            
                            
                            <p>
-                              例 3 中 <span class="productname">mkvmerge</span>(1) 将创建两个文件。第一个包含源文件开头到 <span class="literal">430</span> 的内容。第二个文件将包含从
-                              <span class="literal">2512</span> 到源文件结尾之间的内容。
+                              例 3 中 <span class="productname">mkvmerge</span>(1) 将创建两个文件。第一个包含输入文件开头到 <span class="literal">430</span> 的内容。第二个文件将包含从
+                              <span class="literal">2512</span> 到输入文件结尾之间的内容。
                               
                            </p>
                            
@@ -1257,8 +1257,9 @@
                   <td>
                      
                      <p>
-                        此选项控制要追加合并哪些轨道与哪些轨道。 各指令由四个 ID 组成: 源文件 ID, 源轨道 ID, 目标文件 ID 和目标轨道 ID。
-                        第一对，"源文件 ID" 与 "源轨道 ID"确定要追加合并的轨道。 第二对，"目标文件 ID" 与 "目标轨道 ID"，确定源轨道要追加合并到的轨道。
+                        此选项控制要追加合并哪些轨道与哪些轨道。 各指令由四个 ID 组成: 输入文件 ID, 源轨道 ID, 目标文件 ID 和目标轨道 ID。
+                        第一对，"输入文件 ID" 与 "源轨道 ID"确定要追加合并的轨道。 第二对，"目标文件 ID" 与 "目标轨道
+                        ID"，确定源轨道要追加合并到的轨道。
                         
                      </p>
                      
@@ -1283,6 +1284,26 @@
                      
                      <pre class="screen">$ mkvmerge -o 完整.mkv 文件1.mkv + 文件2.mkv
 $ mkvmerge -o 完整.mkv 文件1.mkv +文件2.mkv</pre>
+                     </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">[</span> <span class="parameter">文件1</span> <span class="parameter">文件2</span>
+                     <span class="option">]</span></td>
+                  <td>
+                     
+                     <p>
+                        如果方括号内包含多个文件名，则从第二个文件开始的所有文件都将追加合并到第一个文件后面。
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        这是用“+”连接文件名的另一种语法。因此下述两条命令是等效的:
+                        
+                     </p>
+                     
+                     <pre class="screen">$ mkvmerge -o 完整.mkv 文件1.mkv + 文件2.mkv
+$ mkvmerge -o 完整.mkv '[' 文件1.mkv 文件2.mkv ']'</pre>
                      </td>
                </tr>
                <tr>
@@ -1379,7 +1400,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2080">2.6. 附件支持 (其他全局选项)</a></h2>
+         <h2><a name="d4e2111">2.6. 附件支持 (其他全局选项)</a></h2>
          
          
          
@@ -1458,7 +1479,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2221">2.7. 用于各输入文件的选项</a></h2>
+         <h2><a name="d4e2252">2.7. 用于各输入文件的选项</a></h2>
          
          
          
@@ -1484,7 +1505,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                      
                      
                      <p>
-                        除轨道 ID 以外，您还可以提供 ISO 639-2 语言代码。仅当源文件的轨道包含语言标签时可用。
+                        除轨道 ID 以外，您还可以提供 ISO 639-2 语言代码。仅当输入文件的轨道包含语言标签时可用。
                         
                      </p>
                      
@@ -1517,7 +1538,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                      
                      
                      <p>
-                        除轨道 ID 以外，您还可以提供 ISO 639-2 语言代码。仅当源文件的轨道包含语言标签时可用。
+                        除轨道 ID 以外，您还可以提供 ISO 639-2 语言代码。仅当输入文件的轨道包含语言标签时可用。
                         
                      </p>
                      
@@ -1544,7 +1565,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                      
                      
                      <p>
-                        除轨道 ID 以外，您还可以提供 ISO 639-2 语言代码。仅当源文件的轨道包含语言标签时可用。
+                        除轨道 ID 以外，您还可以提供 ISO 639-2 语言代码。仅当输入文件的轨道包含语言标签时可用。
                         
                      </p>
                      
@@ -1571,7 +1592,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                      
                      
                      <p>
-                        除轨道 ID 以外，您还可以提供 ISO 639-2 语言代码。仅当源文件的轨道包含语言标签时可用。
+                        除轨道 ID 以外，您还可以提供 ISO 639-2 语言代码。仅当输入文件的轨道包含语言标签时可用。
                         
                      </p>
                      
@@ -1726,7 +1747,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        设置源文件中章节信息的字符集，以供转为 UTF-8 之用。关于 <span class="productname">mkvmerge</span>(1) 如何在字符集之间进行转换的说明，请参阅下文 <a href="#mkvmerge.text_files_and_charsets"> 文本文件与字符集</a> 段落。
+                        设置输入文件中章节信息的字符集，以供转为 UTF-8 之用。关于 <span class="productname">mkvmerge</span>(1) 如何在字符集之间进行转换的说明，请参阅下文 <a href="#mkvmerge.text_files_and_charsets"> 文本文件与字符集</a> 段落。
                         
                      </p>
                      
@@ -1737,7 +1758,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        选择各章节项所用的 ISO639-2 语言代码。 此选项可用于包含章节但不含关于章节语言的信息的源文件，如 MP4 与 OGM 文件。
+                        选择各章节项所用的 ISO639-2 语言代码。 此选项可用于包含章节但不含关于章节语言的信息的输入文件，如 MP4 与 OGM 文件。
                         
                      </p>
                      
@@ -1911,7 +1932,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                      
                      <p>
                         告诉 <span class="productname">mkvmerge</span>(1) ID 为 <span class="parameter">TID</span> 的轨道是 <span class="abbrev">SBR AAC</span>
-                        (亦作 <span class="abbrev">HE-AAC</span> 或 <span class="abbrev">AAC+</span>)。下述情况下需要此选项：a) 源文件是
+                        (亦作 <span class="abbrev">HE-AAC</span> 或 <span class="abbrev">AAC+</span>)。下述情况下需要此选项：a) 输入文件是
                         <span class="abbrev">AAC</span> 文件 (<em>不是</em> <span class="productname">Matroska</span><sup>(tm)</sup> 文件) 且 b) 该
                         <span class="abbrev">AAC</span> 文件含有 <span class="abbrev">SBR AAC</span> 数据。
                         设置此开关的原因是目前技术上无法在不解码一个完整的 <span class="abbrev">AAC</span> 帧的情况下自动分辨普通的
@@ -1923,7 +1944,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                      
                      
                      <p>
-                        如果源文件是 <span class="productname">Matroska</span><sup>(tm)</sup> 文件，则已有足够侦测 <span class="abbrev">SBR AAC</span> 的
+                        如果输入文件是 <span class="productname">Matroska</span><sup>(tm)</sup> 文件，则已有足够侦测 <span class="abbrev">SBR AAC</span> 的
                         <span class="classname">CodecID</span> 了。然而，如果 <span class="classname">CodecID</span>
                         标注错误，此开关可用于更正之。
                         
@@ -1959,12 +1980,12 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--timecodes</span> <span class="parameter">TID:文件名</span></td>
+                  <td class="varlistoption"><span class="option">--timestamps</span> <span class="parameter">TID:文件名</span></td>
                   <td>
                      
                      <p>
                         从 <span class="parameter">文件名</span> 读取要应用到指定轨道 ID 的时间码。 这些时间码将强制覆盖 <span class="productname">mkvmerge</span>(1)
-                        默认计算出的时间码。参阅关于 <a href="#mkvmerge.external_timecode_files">外部时间码文件</a> 的章节。
+                        默认计算出的时间码。参阅关于 <a href="#mkvmerge.external_timestamp_files">外部时间码文件</a> 的章节。
                         
                      </p>
                      
@@ -2065,7 +2086,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e3308">2.8. 仅用于视频轨的选项</a></h2>
+         <h2><a name="d4e3339">2.8. 仅用于视频轨的选项</a></h2>
          
          
          
@@ -2168,16 +2189,14 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the matrix coefficients of the video used to derive luma and chroma
-                        values from red, green and blue color primaries. The parameter
-                        <span class="parameter">n</span> is an integer rangeing from <span class="constant">0</span>
-                        and <span class="constant">10</span>.
+                        设置视频从红绿蓝三原色衍生出亮度及色度值所用的矩阵系数。参数 <span class="parameter">n</span> 是范围从
+                        <span class="constant">0</span> 到 <span class="constant">10</span> 的整数。
                         
                      </p>
                      
                      
                      <p>
-                        Valid values and their meaning are:
+                        有效的值及其含义如下:
                         
                      </p>
                      
@@ -2187,8 +2206,8 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                         <span class="constant">2</span>: unspecified, <span class="constant">3</span>: reserved,
                         <span class="constant">4</span>: FCC, <span class="constant">5</span>: BT470BG,
                         <span class="constant">6</span>: SMPTE 170M, <span class="constant">7</span>: SMPTE 240M,
-                        <span class="constant">8</span>: YCOCG, <span class="constant">9</span>: BT2020 non-constant
-                        luminance, <span class="constant">10</span>: BT2020 constant luminance
+                        <span class="constant">8</span>: YCOCG, <span class="constant">9</span>: BT2020 非恒定亮度,
+                        <span class="constant">10</span>: BT2020 恒定亮度
                         
                      </p>
                      
@@ -2199,64 +2218,58 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the number of coded bits for a colour channel. A value of
-                        <span class="constant">0</span> indicates that the number of bits is unspecified.
+                        设置颜色通道编码位数。数值 <span class="constant">0</span> 表示位数未指定。
                         
                      </p>
                      
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--chroma-subsample</span> <span class="parameter">TID:hori,vert</span></td>
+                  <td class="varlistoption"><span class="option">--chroma-subsample</span> <span class="parameter">TID:水平,垂直</span></td>
                   <td>
                      
                      <p>
-                        The amount of pixels to remove in the Cr and Cb channels for every pixel not
-                        removed horizontally/vertically.
+                        对 Cr 与 Cb 通道中未移除的像素，水平/垂直方向需要移除的像素数量。
                         
                      </p>
                      
                      
                      <p>
-                        Example: For video with 4:2:0 chroma subsampling, the parameter should be
-                        set to
-                        <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">1</span></span>.
+                        例如: 对于色度抽样为 4:2:0 的视频，该参数应设为
+                        <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">1</span></span>。
                         
                      </p>
                      
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--cb-subsample</span> <span class="parameter">TID:hori,vert</span></td>
+                  <td class="varlistoption"><span class="option">--cb-subsample</span> <span class="parameter">TID:水平,垂直</span></td>
                   <td>
                      
                      <p>
-                        The amount of pixels to remove in the Cb channel for every pixel not removed
-                        horizontally/vertically. This is additive with
-                        <span class="option">--chroma-subsample</span>.
+                        对 Cb 通道中未移除的像素，水平/垂直方向需要移除的像素数量。该数值将与 <span class="option">--chroma-subsample</span>
+                        相加。
                         
                      </p>
                      
                      
                      <p>
-                        Example: For video with 4:2:1 chroma subsampling, the parameter
-                        <span class="option">--chroma-subsample</span> should be set to
-                        <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">0</span></span>
-                        and Cb-subsample should be set to
-                        <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">0</span></span>.
+                        例如: 对于色度抽样为 4:2:1 的视频，参数 <span class="option">--chroma-subsample</span> 应设为
+                        <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">0</span></span>，Cb
+                        抽样应设为
+                        <span class="code"><span class="parameter">TID</span>:<span class="constant">1</span>,<span class="constant">0</span></span>。
                         
                      </p>
                      
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--chroma-siting</span> <span class="parameter">TID:hori,vert</span></td>
+                  <td class="varlistoption"><span class="option">--chroma-siting</span> <span class="parameter">TID:水平,垂直</span></td>
                   <td>
                      
                      <p>
-                        Sets how chroma is sited horizontally/vertically (<span class="constant">0</span>:
-                        unspecified, <span class="constant">1</span>: top collocated, <span class="constant">2</span>:
-                        half).
+                        设置色度在水平/垂直方向上如何抽样 (<span class="constant">0</span>: 未指定, <span class="constant">1</span>:
+                        顶部/左侧合并, <span class="constant">2</span>: 对半)。
                         
                      </p>
                      
@@ -2267,10 +2280,9 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the clipping of the color ranges (<span class="constant">0</span>: unspecified,
-                        <span class="constant">1</span>: broadcast range, <span class="constant">2</span>: full range
-                        (no clipping), <span class="constant">3</span>: defined by
-                        MatrixCoefficients/TransferCharacteristics).
+                        设置色域裁剪 (<span class="constant">0</span>: 未指定, <span class="constant">1</span>: 广播色域,
+                        <span class="constant">2</span>: 完整色域 (无裁剪), <span class="constant">3</span>: 由
+                        MatrixCoefficients/TransferCharacteristics 指定)。
                         
                      </p>
                      
@@ -2282,24 +2294,24 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        The transfer characteristics of the video.
+                        视频的传输特征。
                         
                      </p>
                      
                      
                      <p>
-                        Valid values and their meaning are:
+                        有效的值及其含义如下:
                         
                      </p>
                      
                      
                      <p>
-                        <span class="constant">0</span>: reserved, <span class="constant">1</span>: ITU-R BT.709,
-                        <span class="constant">2</span>: unspecified, <span class="constant">3</span>: reserved,
-                        <span class="constant">4</span>: gamma 2.2 curve, <span class="constant">5</span>: gamma 2.8
-                        curve, <span class="constant">6</span>: SMPTE 170M, <span class="constant">7</span>: SMPTE
-                        240M, <span class="constant">8</span>: linear, <span class="constant">9</span>: log,
-                        <span class="constant">10</span>: log sqrt, <span class="constant">11</span>: IEC 61966-2-4,
+                        <span class="constant">0</span>: 保留, <span class="constant">1</span>: ITU-R BT.709,
+                        <span class="constant">2</span>: unspecified, <span class="constant">3</span>: 保留,
+                        <span class="constant">4</span>: gamma 2.2 曲线, <span class="constant">5</span>: gamma 2.8 曲线,
+                        <span class="constant">6</span>: SMPTE 170M, <span class="constant">7</span>: SMPTE 240M,
+                        <span class="constant">8</span>: 线性, <span class="constant">9</span>: 对数,
+                        <span class="constant">10</span>: 对数平方根, <span class="constant">11</span>: IEC 61966-2-4,
                         <span class="constant">12</span>: ITU-R BT.1361 extended colour gamut,
                         <span class="constant">13</span>: IEC 61966-2-1, <span class="constant">14</span>: ITU-R
                         BT.2020 10 bit, <span class="constant">15</span>: ITU-R BT.2020 12 bit,
@@ -2315,25 +2327,25 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the colour primaries of the video.
+                        设置视频的颜色基准。
                         
                      </p>
                      
                      
                      <p>
-                        Valid values and their meaning are:
+                        有效的值及其含义如下:
                         
                      </p>
                      
                      
                      <p>
-                        <span class="constant">0</span>: reserved, <span class="constant">1</span>: ITU-R BT.709,
-                        <span class="constant">2</span>: unspecified, <span class="constant">3</span>: reserved,
+                        <span class="constant">0</span>: 保留, <span class="constant">1</span>: ITU-R BT.709,
+                        <span class="constant">2</span>: 未指定, <span class="constant">3</span>: 保留,
                         <span class="constant">4</span>: ITU-R BT.470M, <span class="constant">5</span>: ITU-R
                         BT.470BG, <span class="constant">6</span>: SMPTE 170M, <span class="constant">7</span>: SMPTE
                         240M, <span class="constant">8</span>: FILM, <span class="constant">9</span>: ITU-R BT.2020,
                         <span class="constant">10</span>: SMPTE ST 428-1, <span class="constant">22</span>: JEDEC P22
-                        phosphors
+                        磷光体
                         
                      </p>
                      
@@ -2344,9 +2356,8 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the maximum brightness of a single pixel (Maximum Content Light Level)
-                        in candelas per square meter (cd/m²). The value of <span class="parameter">n</span>
-                        should be a non-negtive integer.
+                        设置单个像素的最高亮度 (Maximum Content Light Level 最大内容亮度级别)，单位为坎德拉每平方米 (cd/m²)。数值
+                        <span class="parameter">n</span> 应为非负整数。
                         
                      </p>
                      
@@ -2357,9 +2368,8 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the maximum brightness of a single full frame (Maximum Frame-Average
-                        Light Level) in candelas per square meter (cd/m²). The value of
-                        <span class="parameter">n</span> should be a non-negtive integer.
+                        设置单个完整帧的最高亮度 (Maximum Frame-Average Light Level 最大帧平均亮度级别)，单位为坎德拉每平方米
+                        (cd/m²)。数值 <span class="parameter">n</span> 应为非负整数。
                         
                      </p>
                      
@@ -2371,7 +2381,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the red/green/blue chromaticity coordinates as defined by CIE 1931.
+                        设置 CIE 1931 定义的红/绿/蓝色度坐标。
                         
                      </p>
                      
@@ -2382,31 +2392,104 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the white colour chromaticity coordinates as defined by CIE 1931.
+                        设置 CIE 1931 定义的白色色度坐标。
                         
                      </p>
                      
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--max-luminance</span> <span class="parameter">TID:float</span></td>
+                  <td class="varlistoption"><span class="option">--max-luminance</span> <span class="parameter">TID:浮点数</span></td>
                   <td>
                      
                      <p>
-                        Sets the maximum luminance in candelas per square meter (cd/m²). The value
-                        should be less than 9999.99.
+                        设置最高亮度，单位为坎德拉每平方米 (cd/m²)。数值应小于 9999.99。
                         
                      </p>
                      
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--min-luminance</span> <span class="parameter">TID:float</span></td>
+                  <td class="varlistoption"><span class="option">--min-luminance</span> <span class="parameter">TID:浮点数</span></td>
                   <td>
                      
                      <p>
-                        Sets the mininum luminance in candelas per square meter (cd/m²). The value
-                        should be less than 999.9999.
+                        设置最低亮度，单位为坎德拉每平方米 (cd/m²)。数值应小于 999.9999。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-type</span> <span class="parameter">TID:方式</span></td>
+                  <td>
+                     
+                     <p>
+                        设置要使用的视频投影方式。有效值包括：0 (方形投影), 1 (等距圆柱投影), 2 (立方面投影), 3 (网状投影)。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-private</span> <span class="parameter">TID:数据</span></td>
+                  <td>
+                     
+                     <p>
+                        设置仅用于特定投影方式的私有数据。数据格式为十六进制数字，可以有 "0x" 前缀，可以有空格。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-yaw</span> <span class="parameter">TID:浮点数</span></td>
+                  <td>
+                     
+                     <p>
+                        设置投影的水平平面旋转（yaw，上下轴不动）。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-pitch</span> <span class="parameter">TID:浮点数</span></td>
+                  <td>
+                     
+                     <p>
+                        设置投影的上下旋转（pitch，左右轴不动）。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--projection-pose-roll</span> <span class="parameter">TID:浮点数</span></td>
+                  <td>
+                     
+                     <p>
+                        设置投影的垂直平面旋转（roll，前后轴不动）。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.field_order"><span class="option">--field-order</span> <span class="parameter">TID:n</span></a></td>
+                  <td>
+                     
+                     <p>
+                        设置轨道 ID 为 <span class="parameter">TID</span> 的视频轨道的场序。场序必须为以下数字之一:
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        <span class="constant">0</span>: 逐行扫描; <span class="constant">1</span>: 隔行扫描，顶场先显示，顶场先存储;
+                        <span class="constant">2</span>: 未定场序; <span class="constant">6</span>: 隔行扫描，底场先显示，底场先存储;
+                        <span class="constant">9</span>: 隔行扫描，底场先显示，顶场先存储; <span class="constant">14</span>:
+                        隔行扫描，顶场先显示，底场先存储
                         
                      </p>
                      
@@ -2436,7 +2519,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4010">2.9. 仅适用于文本字幕轨道的选项</a></h2>
+         <h2><a name="d4e4163">2.9. 仅适用于文本字幕轨道的选项</a></h2>
          
          
          
@@ -2473,7 +2556,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4050">2.10. 其他选项</a></h2>
+         <h2><a name="d4e4203">2.10. 其他选项</a></h2>
          
          
          
@@ -2502,15 +2585,39 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.identify_json"><span class="option">-J</span> <span class="parameter">文件名</span></a></td>
+                  <td>
+                     
+                     <p>
+                        等同于“<span class="literal">--identification-format json --identify 文件名</span>”的简便写法。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
                         <span class="parameter">文件名</span></a></td>
                   <td>
                      
                      <p>
-                        该选项已废弃。请使用 <a href="#mkvmerge.description.identification_format">--identification-format
-                           verbose-text --identify …</a> 替代之。
+                        将使 <span class="productname">mkvmerge</span>(1) 探查单个文件并报告其类型、文件中包含的轨道及其轨道 ID。如果使用了本选项，唯一可用的其他选项就是文件名。
                         
                      </p>
+                     
+                     
+                     <p>
+                        输出信息还会包含已发现所有项目的属性，例如文件标题或轨道语言。
+                        
+                     </p>
+                     
+                     
+                     <div class="note">
+                        <p class="note-title">Note:</p>
+                        
+                        <p>该选项已废弃。将在 2018 年移除。</p>
+                        
+                     </div>
                      
                   </td>
                </tr>
@@ -2559,14 +2666,33 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                            <p>该格式不应该用来解析。输出内容会翻译为 <span class="productname">mkvmerge</span>(1) 所使用的语言 (参见 <a href="#mkvmerge.description.ui_language">--ui-language</a>)。
                            </p>
                            
+                           
+                           <div class="note">
+                              <p class="note-title">Note:</p>
+                              
+                              <p>该选项已废弃。将在 2018 年移除。</p>
+                              
+                           </div>
+                           
                         </li>
                         
                         
                         <li>
                            
                            <p>
-                              <span class="literal">json</span> 格式输出机器可读的 JSON 表达式。该格式遵循 <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema.json">mkvmerge-identification-output-schema.json</a>
-                              文件所描述的 JSON 规范。
+                              <span class="literal">json</span> 格式输出机器可读的 JSON 表达式。此格式遵循该文件所描述的 JSON 规范：
+                              
+                           </p>
+                           
+                           
+                           <p>
+                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v10.json">mkvmerge-identification-output-schema-v10.json</a>
+                              
+                           </p>
+                           
+                           
+                           <p>
+                              所有版本的 JSON 规范可在线获取，也可在发布的源码压缩包中找到。
                               
                            </p>
                            
@@ -2577,22 +2703,19 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.probe_range_percentage"><span class="option">--probe-range-percentage</span> <span class="parameter">percentage</span></a></td>
+                  <td class="varlistoption"><a name="mkvmerge.description.probe_range_percentage"><span class="option">--probe-range-percentage</span> <span class="parameter">百分比</span></a></td>
                   <td>
                      
                      <p>
-                        File types such as MPEG program and transport streams
-                        (<span class="literal">.vob</span>, <span class="literal">.m2ts</span>) require parsing a
-                        certain amount of data in order to detect all tracks contained in the file.
-                        This amount is 0.3% of the source file's size or 10 MB, whichever is higher.
+                        部分文件类型，如 MPEG 节目流及传输流
+                        (<span class="literal">.vob</span>、<span class="literal">.m2ts</span>)，需要解析一定量的数据，方可侦测出文件中所包含的所有轨道。该数据量为输入文件大小的
+                        0.3% 或 10 MB，取其中较高者。
                         
                      </p>
                      
                      
                      <p>
-                        If tracks are known to be present but not found then the percentage to probe
-                        can be changed with this option.  The minimum of 10 MB is built-in and
-                        cannot be changed.
+                        如果已知轨道存在，但未能找到，可以通过本选项更改探测百分比。 最小值 10 MB 为内置参数，无法更改。
                         
                      </p>
                      
@@ -2729,7 +2852,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">选项文件</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">选项文件.json</span></td>
                   <td>
                      
                      <p>
@@ -2788,34 +2911,6 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                      
                   </td>
                </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
-                  <td>
-                     
-                     <p>
-                        联机下载 URL <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>
-                        以检查新版本。将以 <span class="literal">键=值</span> 的样式输出四行: 检索信息的 URL（键
-                        <span class="literal">version_check_url</span>），当前运行的版本（键
-                        <span class="literal">running_version</span>），最新版本号（键
-                        <span class="literal">available_version</span>）及其下载 URL（键
-                        <span class="literal">download_url</span>）。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        若无更新版本可用，程序将以退出码 0 退出，若有更新版本可用，退出码为 1，若出现错误（如无法检索更新信息），退出码则为 2。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        此选项仅当程序附带 libcurl 支持编译时可用。
-                        
-                     </p>
-                     
-                  </td>
-               </tr>
             </tbody>
          </table>
          
@@ -2824,8 +2919,8 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          <p>
-            用户可以选择各文件中 <span class="productname">mkvmerge</span>(1) 应该使用的轨道。它们都将被封装到 <span class="option">-o</span>所指定的文件中。可通过
-            <span class="option">-l</span> 选项获取已知（且受支持的）来源格式列表。
+            用户可以选择各文件中 <span class="productname">mkvmerge</span>(1) 应该使用的轨道。它们都将被封装到 <span class="option">-o</span> 所指定的文件中。可通过
+            <span class="option">-l</span> 选项获取已知（且受支持的）输入格式列表。
             
          </p>
          
@@ -2999,8 +3094,8 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
             
             <li>
                
-               <p>从源文件中提取原始字幕流:</p>
-               <pre class="screen">$ tccat -i /path/to/copied/dvd/ -T 1 -L | tcextract -x ps1 -t vob -a 0x20 | subtitle2pgm -o mymovie</pre>
+               <p>从输入文件中提取原始字幕流:</p>
+               <pre class="screen">$ tccat -i /DVD/文件/的/路径/ -T 1 -L | tcextract -x ps1 -t vob -a 0x20 | subtitle2pgm -o 我的影片</pre>
                </li>
             
             
@@ -3258,8 +3353,8 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
                
                
                <p>
-                  若输出通过 <span class="command">cmd.exe</span> 自身重定向，例如 <span class="literal">mkvinfo 文件.mkv &gt;
-                     info.txt</span>，则其字符集bi为 UTF-8，且无法修改。
+                  若输出内容通过 <span class="command">cmd.exe</span> 自身重定向，例如 <span class="literal">mkvinfo 文件.mkv &gt;
+                     info.txt</span>，则其字符集必为 UTF-8，且无法修改。
                   
                </p>
                
@@ -3349,6 +3444,51 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          <p>
+            选项文件有两种格式: JSON 格式以及专用的传统格式。传统格式已废弃，对传统格式的支持大约在 2018 年移除。
+            
+         </p>
+         
+         
+         <h2><a name="mkvmerge.option_files.json_format">8.1. JSON 格式</a></h2>
+         
+         
+         
+         <p>
+            JSON 选项文件的名称必须以“<span class="filename">.json</span>”结尾。其内容必须是有效的 JSON 数组，该数组只能由 JSON
+            字符串组成。文件编码应为 UTF-8。文件开头不应存在字节序标志（<span class="foreignphrase">byte order
+               marker</span>，<span class="abbrev">BOM</span>），但如果存在也不会报错，读取时会跳过它。
+            
+         </p>
+         
+         
+         <p>
+            在 JSON 内部转义特殊字符的规则请见官方 JSON 规范 <a href="https://tools.ietf.org/html/rfc7159">RFC 7159</a>。
+            
+         </p>
+         
+         
+         <p>
+            命令行“<span class="command">mkvmerge -o "我的文件.mkv" -A "一部影片.avi" 声音.ogg</span>”可以转换为下述
+            JSON 选项文件，文件可以命名为“<span class="filename">选项.json</span>”:
+            
+         </p>
+         
+         <pre class="programlisting">[
+  "-o",
+  "c:\\Matroska\\我的文件.mkv",
+  "--title",
+  "#65",
+  "-A",
+  "一部影片.avi",
+  "声音.ogg"
+]</pre>
+         
+         
+         <h2><a name="mkvmerge.option_files.legacy_format">8.2. 传统格式</a></h2>
+         
+         
+         
+         <p>
             选项文件的处理有一些规则。首个非空白字符为井号 ('<span class="literal">#</span>')
             的行将被当作注释对待，在处理过程中将被忽略。各行开头与结尾的空白将被除去。各行必须恰好仅含一个选项。
             
@@ -3374,8 +3514,8 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          <p>
-            命令行 '<span class="command">mkvmerge -o "我的文件.mkv" -A "一部影片.avi" 声音.ogg</span>'
-            可以转换为下述选项文件:
+            命令行“<span class="command">mkvmerge -o "我的文件.mkv" -A "一部影片.avi"
+               声音.ogg</span>”可以转换为下述传统选项文件，文件可以命名为“<span class="filename">选项.txt</span>”:
             
          </p>
          
@@ -3389,6 +3529,7 @@ c:\\Matroska\\我的文件.mkv
 -A
 一部影片.avi
 声音.ogg</pre>
+         
          
          <h1><a name="mkvmerge.escaping">9. 文本中特殊字符的转义</a></h1>
          
@@ -3405,7 +3546,7 @@ c:\\Matroska\\我的文件.mkv
             
          </p>
          
-         <h1><a name="mkvmerge.subtitles">10. Subtitles</a></h1>
+         <h1><a name="mkvmerge.subtitles">10. 字幕</a></h1>
          
          
          <p>
@@ -3722,7 +3863,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
           ChapterProcessData (二进制)</pre>
          
          
-         <h2><a name="d4e5806">14.3. 一般性备注</a></h2>
+         <h2><a name="d4e6011">14.3. 一般性备注</a></h2>
          
          
          <p>
@@ -3732,7 +3873,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          <p>
-            <span class="productname">mkvmerge</span>(1) 能够从 <span class="productname">Matroska</span><sup>(tm)</sup> 源文件中复制章节，除非使用 <a href="#mkvmerge.description.no_chapters">--no-chapters</a>
+            <span class="productname">mkvmerge</span>(1) 能够从 <span class="productname">Matroska</span><sup>(tm)</sup> 输入文件中复制章节，除非使用 <a href="#mkvmerge.description.no_chapters">--no-chapters</a>
             选项明令禁用。来自各类来源 (<span class="productname">Matroska</span><sup>(tm)</sup> 文件、Ogg 文件、<span class="abbrev">MP4</span> 文件、章节文本文件)
             的章节通常不被合并，而是分成多个 <span class="classname">ChapterEditions（章节版本）</span>。仅当从多个
             <span class="productname">Matroska</span><sup>(tm)</sup> 或 <span class="abbrev">XML</span> 文件读取的章节具有相同的版本 UID 时，章节才会被合并为单个
@@ -3746,7 +3887,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          
-         <h2><a name="d4e5872">15.1. 介绍</a></h2>
+         <h2><a name="d4e6077">15.1. 介绍</a></h2>
          
          
          
@@ -3775,7 +3916,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          <p>
             重要的一点是标签通过 <span class="classname">Targets</span> <span class="productname">Matroska</span><sup>(tm)</sup> 标签元素与轨道或章节相连，而用于此链接的
             UID <em>并非</em> <span class="productname">mkvmerge</span>(1) 常用的轨道 ID。而是 <span class="productname">mkvmerge</span>(1) 自动计算而来 (当轨道来自非
-            <span class="productname">Matroska</span><sup>(tm)</sup> 文件时) 或当轨道源文件是 <span class="productname">Matroska</span><sup>(tm)</sup> 文件时复制而来的 的 UID。因此在文件被 <span class="productname">mkvmerge</span>(1)
+            <span class="productname">Matroska</span><sup>(tm)</sup> 文件时) 或当轨道输入文件是 <span class="productname">Matroska</span><sup>(tm)</sup> 文件时复制而来的 的 UID。因此在文件被 <span class="productname">mkvmerge</span>(1)
             处理过之前很难知道应该在标签文件中使用哪些 UID。
             
          </p>
@@ -3917,7 +4058,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          <p>
-            还有一些 "剪辑信息" 头部字段可以通过命令行选项设置，而非通过 XML 文件。包括如 <span class="option"><a href="#mkvmerge.description.title">--title</a></span> 及 <span class="option"><a href="#mkvmerge.description.timecode_scale">--timecode-scale</a></span>
+            还有一些 "剪辑信息" 头部字段可以通过命令行选项设置，而非通过 XML 文件。包括如 <span class="option"><a href="#mkvmerge.description.title">--title</a></span> 及 <span class="option"><a href="#mkvmerge.description.timestamp_scale">--timestamp-scale</a></span>
             选项。
             
          </p>
@@ -4011,7 +4152,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timecode_files">18. 外部时间码文件</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">18. 外部时间码文件</a></h1>
          
          
          <p>
@@ -4028,7 +4169,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
             
          </p>
          
-         <pre class="screen">$ mkvmerge ... --timecodes 0:我的时间码.txt v1.avi +v2.avi</pre>
+         <pre class="screen">$ mkvmerge ... --timestamps 0:我的时间码.txt v1.avi +v2.avi</pre>
          
          <p>
             <span class="productname">mkvmerge</span>(1) 可识别四种格式的时间码。版本号在时间码文件的第一行内。空行，只含有空格的行，以及以 '<span class="literal">#</span>'
@@ -4037,7 +4178,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          </p>
          
          
-         <h2><a name="d4e6323">18.1. 时间码文件格式 v1</a></h2>
+         <h2><a name="d4e6528">18.1. 时间码文件格式 v1</a></h2>
          
          
          <p>
@@ -4047,13 +4188,13 @@ CHAPTER03NAME=宝宝摇屋子</pre>
             
          </p>
          
-         <pre class="screen"># timecode format v1
+         <pre class="screen"># timestamp format v1
 assume 27.930
 800,1000,25
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6347">18.2. 时间码文件格式 v2</a></h2>
+         <h2><a name="d4e6552">18.2. 时间码文件格式 v2</a></h2>
          
          
          
@@ -4063,13 +4204,13 @@ assume 27.930
             
          </p>
          
-         <pre class="screen"># timecode format v2
+         <pre class="screen"># timestamp format v2
 0
 40
 80</pre>
          
          
-         <h2><a name="d4e6362">18.3. 时间码文件格式 v3</a></h2>
+         <h2><a name="d4e6567">18.3. 时间码文件格式 v3</a></h2>
          
          
          <p>
@@ -4079,7 +4220,7 @@ assume 27.930
             
          </p>
          
-         <pre class="screen"># timecode format v3
+         <pre class="screen"># timestamp format v3
 assume 0.0
 25.325
 7.530,38.236
@@ -4087,7 +4228,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6380">18.4. 时间码文件格式 v4</a></h2>
+         <h2><a name="d4e6585">18.4. 时间码文件格式 v4</a></h2>
          
          
          <p>

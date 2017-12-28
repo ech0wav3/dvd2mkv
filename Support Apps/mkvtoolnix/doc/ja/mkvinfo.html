@@ -17,7 +17,7 @@
             <li><a href="#mkvinfo.description">2. 説明</a></li>
             <li><a href="#mkvinfo.verbosity_levels">3. 冗長レベル</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">4. テキストファイルと文字コード変換</a></li>
-            <li><a href="#d4e561">5. 返り値</a></li>
+            <li><a href="#d4e511">5. 返り値</a></li>
             <li><a href="#mkvinfo.escaping">6. テキスト中の特殊文字をエスケープする</a></li>
             <li><a href="#mkvinfo.environment_variables">7. 環境変数</a></li>
             <li><a href="#mkvinfo.seealso">8. 関連項目</a></li>
@@ -253,65 +253,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file.json</span></td>
                   <td>
                      
                      <p>
-                        Checks online for new releases by downloading the URL <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Four lines will be output in <span class="literal">key=value</span> style: the URL
-                        from where the information was retrieved (key
-                        <span class="literal">version_check_url</span>), the currently running version (key
-                        <span class="literal">running_version</span>), the latest release's version (key
-                        <span class="literal">available_version</span>) and the download URL (key
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        その後プログラムは、新しいリリースが入手可能ではなかった場合は終了コード0で、新しいリリースが入手可能であった場合は終了コード1で、エラーが発生した場合（例：アップデート情報を取得できなかった場合）は終了コード2で、それぞれ終了します。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        このオプションは、プログラムがlibcurlのサポートつきでビルドされた場合のみ使用できます。
+                        Reads additional command line arguments from the file
+                        <span class="parameter">options-file</span>. For a full explanation on the supported
+                        formats for such files see the section called "Option files" in the
+                        <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> man page.
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file</span></td>
-                  <td>
-                     
-                     <p>
-                        <span class="parameter">options-file</span>で指定されたファイルから追加のコマンドラインオプションを読み込みます。行で最初の空白文字でない文字がハッシュマーク('<span class="literal">#</span>')である行はコメントとして扱われ、無視されます。行頭、及び行末の空白文字は取り除かれます。各行には一つずつしかオプションを指定できません。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        エスケープすることのできる文字もあります。例えば、コメントではない行を'#'で始める必要のある場合です。そのルールは、<a href="#mkvinfo.escaping">エスケープ文字についてのセクション</a>で説明されています。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        '<span class="command">mkvinfo -v -v input.mkv --redirect-output
-                           info.txt</span>というコマンドラインと同じことは、次のようなオプションファイルで指定できます。
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># 冗長モード
--v
--v
-# input.mkvを解析する
-input.mkv
-# info.txtに出力を書き込む
---redirect-output
-info.txt     </pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -361,7 +314,7 @@ info.txt     </pre>
             
          </p>
          
-         <h1><a name="d4e561">5. 返り値</a></h1>
+         <h1><a name="d4e511">5. 返り値</a></h1>
          
          
          

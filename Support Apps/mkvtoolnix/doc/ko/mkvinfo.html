@@ -16,10 +16,10 @@
             <li><a href="#mkvinfo.synopsis">1. 개요</a></li>
             <li><a href="#mkvinfo.description">2. 설명</a></li>
             <li><a href="#mkvinfo.verbosity_levels">3. Verbosity levels</a></li>
-            <li><a href="#mkvinfo.text_files_and_charsets">4. Text files and character set conversions</a></li>
-            <li><a href="#d4e592">5. 종료 코드</a></li>
-            <li><a href="#mkvinfo.escaping">6. Escaping special chars in text</a></li>
-            <li><a href="#mkvinfo.environment_variables">7. Environment variables</a></li>
+            <li><a href="#mkvinfo.text_files_and_charsets">4. 텍스트 파일과 문자셋 변환</a></li>
+            <li><a href="#d4e548">5. 종료 코드</a></li>
+            <li><a href="#mkvinfo.escaping">6. 텍스트에서 특수 문자 이스케이프 처리</a></li>
+            <li><a href="#mkvinfo.environment_variables">7. 환경 변수</a></li>
             <li><a href="#mkvinfo.seealso">8. 더 보기</a></li>
             <li><a href="#mkvinfo.www">9. WWW</a></li>
          </ul>
@@ -173,11 +173,9 @@
                   <td>
                      
                      <p>
-                        Forces the translations for the language <span class="parameter">code</span> to be
-                        used (e.g.  '<span class="literal">de_DE</span>' for the German
-                        translations). Entering '<span class="literal">list</span>' as the
-                        <span class="parameter">code</span> will cause the program to output a list of
-                        available translations.
+                        언어 <span class="parameter">코드</span>의 번역을 강제로 사용합니다 (예: 강제 사용할 독일어 번역 코드는
+                        '<span class="literal">de_DE</span>'). '<span class="literal">list</span>'를
+                        <span class="parameter">코드</span>로 입력하면 <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a> 에서 이용 가능한 번역 목록을 출력할 것입니다.
                         
                      </p>
                      
@@ -261,69 +259,16 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">옵션 파일.json</span></td>
                   <td>
                      
                      <p>
-                        <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>
-                        URL을 다운로드하여 새로운 버전이 나왔는지 온라인에서 확인합니다. <span class="literal">key=value</span> 스타일의 네 줄이
-                        출력될 것입니다: 정보를 검색하는 주소 (key <span class="literal">version_check_url</span>), 현재 실행 중인
-                        버전 (key <span class="literal">running_version</span>), 가장 최근에 나온 버전 (key
-                        <span class="literal">available_version</span>), 다운로드 URL (key
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        이후에 프로그램은 이용 가능한 새 버전이 없으면 0, 새 버전이 있으면 1, 오류 발생시(업데이트 정보를 가져올 수 없는 경우)는 2의
-                        종료 코드를 가지고 있습니다.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        이 옵션은 libcurl을 지원하도록 프로그램을 만든 경우에만 이용 가능합니다.
+                        추가 명령행 인수는 <span class="parameter">옵션-파일</span> 파일에서 읽어보세요. 이러한 파일용 지원 형식에 대한 자세한
+                        설명은 <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> man page에서 "옵션 파일"이라는 섹션을 참고하세요.
                         
                      </p>
                      
                   </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">옵션 파일</span></td>
-                  <td>
-                     
-                     <p>
-                        <span class="parameter">options-file</span> 파일에서 추가적인 명령행 인수를 읽습니다. 공백이 아닌 첫번째 문자가
-                        해쉬 표시('<span class="literal">#</span>')인 줄은 주석으로 간주하여 무시합니다. 줄의 앞과 끝의 공백은 제거될 것입니다. 각
-                        줄에는 반드시 한 개의 옵션을 포함해야 합니다.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Several chars can be escaped, e.g. if you need to start a non-comment line
-                        with '#'. The rules are described in <a href="#mkvinfo.escaping">the
-                           section about escaping text</a>.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        The command line '<span class="command">mkvinfo -v -v input.mkv --redirect-output
-                           info.txt</span>' could be converted into the following option file:
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Be more verbose
--v
--v
-# Parse input.mkv
-input.mkv
-# and write the output to info.txt
---redirect-output
-info.txt</pre>
-                     </td>
                </tr>
             </tbody>
          </table>
@@ -376,7 +321,7 @@ info.txt</pre>
             
          </p>
          
-         <h1><a name="mkvinfo.text_files_and_charsets">4. Text files and character set conversions</a></h1>
+         <h1><a name="mkvinfo.text_files_and_charsets">4. 텍스트 파일과 문자셋 변환</a></h1>
          
          
          
@@ -388,7 +333,7 @@ info.txt</pre>
             
          </p>
          
-         <h1><a name="d4e592">5. 종료 코드</a></h1>
+         <h1><a name="d4e548">5. 종료 코드</a></h1>
          
          
          
@@ -437,7 +382,7 @@ info.txt</pre>
             
          </ul>
          
-         <h1><a name="mkvinfo.escaping">6. Escaping special chars in text</a></h1>
+         <h1><a name="mkvinfo.escaping">6. 텍스트에서 특수 문자 이스케이프 처리</a></h1>
          
          
          <p>
@@ -455,7 +400,7 @@ info.txt</pre>
             
          </p>
          
-         <h1><a name="mkvinfo.environment_variables">7. Environment variables</a></h1>
+         <h1><a name="mkvinfo.environment_variables">7. 환경 변수</a></h1>
          
          
          

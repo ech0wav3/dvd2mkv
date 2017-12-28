@@ -16,7 +16,7 @@
             <li><a href="#mkvinfo.description">2. Descripción</a></li>
             <li><a href="#mkvinfo.verbosity_levels">3. Niveles de detalle</a></li>
             <li><a href="#mkvinfo.text_files_and_charsets">4. Conversión de archivos de texto y conjunto de caracteres</a></li>
-            <li><a href="#d4e591">5. Códigos de salida</a></li>
+            <li><a href="#d4e541">5. Códigos de salida</a></li>
             <li><a href="#mkvinfo.escaping">6. Caracteres especiales de escape en el texto</a></li>
             <li><a href="#mkvinfo.environment_variables">7. Variables de entorno</a></li>
             <li><a href="#mkvinfo.seealso">8. Vea también</a></li>
@@ -185,11 +185,11 @@
                   <td>
                      
                      <p>
-                        Forces the translations for the language <span class="parameter">code</span> to be
-                        used (e.g.  '<span class="literal">de_DE</span>' for the German
-                        translations). Entering '<span class="literal">list</span>' as the
-                        <span class="parameter">code</span> will cause the program to output a list of
-                        available translations.
+                        Fuerza la traducción al <span class="parameter">código</span> de idioma que será
+                        usado (p.e. '<span class="literal">de_DE</span>' para la traducción al
+                        Alemán). Introduciendo '<span class="literal">list</span>' como
+                        <span class="parameter">código</span> provocará que el programa muestre una lista de
+                        las traducciones disponibles. 
                         
                      </p>
                      
@@ -279,78 +279,18 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--check-for-updates</span></td>
-                  <td>
-                     
-                     <p>
-                        Comprueba online si hay nuevas versiones al descargar el archivo ubicado en
-                        la URL <a href="http://mkvtoolnix-releases.bunkus.org/latest-release.xml">http://mkvtoolnix-releases.bunkus.org/latest-release.xml</a>.
-                        Cuatro líneas serán generadas del tipo <span class="literal">clave=valor</span>: la
-                        URL desde donde se obtuvo la información (clave
-                        <span class="literal">version_check_url</span>), la versión actual (clave
-                        <span class="literal">running_version</span>), la última versión disponible (clave
-                        <span class="literal">available_version</span>) y la URL de descarga (clave
-                        <span class="literal">download_url</span>).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Después el programa sale con un código de salida 0 si ninguna versión nueva
-                        está disponible, con 1 si hay disponible una versión más actual y con 2 si
-                        ocurre algún error (p.e. si la información de la actualización no puede ser
-                        obtenida).
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Esta opción sólo está disponible si el programa fue creado con
-                        compatibilidad para libcurl. 
-                        
-                     </p>
-                     
-                  </td>
-               </tr>
-               <tr>
-                  <td class="varlistoption"><span class="option">@</span><span class="parameter">archivo-opciones</span></td>
+                  <td class="varlistoption"><span class="option">@</span><span class="parameter">options-file.json</span></td>
                   <td>
                      
                      <p>
                         Lee argumentos adicionales de la línea de comandos desde el archivo
-                        <span class="parameter">archivo-opciones</span>. Las líneas que tengan en el primer
-                        carácter una almohadilla ('<span class="literal">#</span>') serán tratados como
-                        comentarios y se ignorarán. Espacios en blanco al inicio y final de la línea
-                        serán descartados. Cada línea debe contener exactamente una opción. 
+                        <span class="parameter">archivo-opciones</span>. Para más información sobre los
+                        formatos admitidos para esos archivos mire la sección acerca de "archivos de
+                        opciones" en la página del manual de <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>
                         
                      </p>
                      
-                     
-                     <p>
-                        Diversos caracteres pueden ser interpretados como de escape, p.e. si
-                        necesitas que una línea, que comience con una almohadilla '#', no sea
-                        interpretada como un comentario. Las normas están descritas en <a href="#mkvinfo.escaping">la sección sobre caracteres de escape en
-                           texto</a>.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        La línea de comandos '<span class="command">mkvinfo -v -v entrada.mkv --redirect-output
-                           info.txt</span>' podría ser convertida en el siguiente archivo de
-                        opciones: 
-                        
-                     </p>
-                     
-                     <pre class="programlisting"># Ser más detallado
--v
--v
-# Analiza entrada.mkv
-entrada.mkv
-# y escribe la salida en info.txt
---redirect-output
-info.txt</pre>
-                     </td>
+                  </td>
                </tr>
             </tbody>
          </table>
@@ -417,7 +357,7 @@ info.txt</pre>
             
          </p>
          
-         <h1><a name="d4e591">5. Códigos de salida</a></h1>
+         <h1><a name="d4e541">5. Códigos de salida</a></h1>
          
          
          
