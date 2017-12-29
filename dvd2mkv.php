@@ -598,7 +598,7 @@ if ($complete == 1) {
 			} else {
 				$audio_destination[$i][1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\AUDIO-0.ac3";
 				fwrite($batfile, "ECHO Demuxing audio track 1 for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-				fwrite($batfile, "START \"Demuxing audio track 1 for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[$i] . "MAIN.vob\" -!do\"" . $audio_destination[$i][1] . "\" 0xBD " . $audio_stream[$i][1] . "\r\n");
+				fwrite($batfile, "START \"Demuxing audio track 1 for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[$i] . "MAIN.vob\" -!do\"" . $audio_destination[$i][1] . "\" 0xBD " . $audio_stream[$i][0] . "\r\n");
 			}
 			$i++;
 			echo ".";
@@ -620,7 +620,7 @@ if ($complete == 1) {
 		} else {
 			$audio_destination[1][1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\AUDIO-0.ac3";
 			fwrite($batfile, "ECHO Demuxing audio track 1 for " . $content_title . "...\r\n");
-			fwrite($batfile, "START \"Demuxing audio track 1 for " . $content_title . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[1] . "MAIN.vob\" -!do\"" . $audio_destination[1][1] . "\" 0xBD " . $audio_stream[1][1] . "\r\n");
+			fwrite($batfile, "START \"Demuxing audio track 1 for " . $content_title . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[1] . "MAIN.vob\" -!do\"" . $audio_destination[1][1] . "\" 0xBD " . $audio_stream[1][0] . "\r\n");
 		}
 		echo ".";
 		$i = 1;
@@ -690,16 +690,22 @@ if ($complete == 1) {
 			fwrite($avsfile, "LoadPlugin(\"" . $tc_loc . "\")" . "\r\n");
 			fwrite($avsfile, "LoadPlugin(\"" . $td_loc . "\")" . "\r\n");
 			fwrite($avsfile, "MPEG2Source(\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
-			if ($post_proc == 3) {
+			if ($post_proc == 2 || $post_proc == 3) {
 				fwrite($avsfile, "deint = TDeint(mode=2, mtnmode=3, blim=100)" . "\r\n");
+			}
+			if ($post_proc == 3) {
 				fwrite($avsfile, "tfm(cthresh=4, slow=2, MI=30, clip2=deint, d2v=\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
-				fwrite($avsfile, "TDecimate(mode=1)" . "\r\n");
 			} elseif ($post_proc == 1) {
 				fwrite($avsfile, "tfm(d2v=\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
-				fwrite($avsfile, "TDecimate()" . "\r\n");
 			} elseif ($post_proc == 2) {
-				fwrite($avsfile, "deint = TDeint(mode=2, mtnmode=3, blim=100)" . "\r\n");
 				fwrite($avsfile, "tfm(cthresh=4, slow=2, MI=30, clip2=deint, d2v=\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
+			}
+			if ($post_proc == 1 || $post_proc == 3) {
+				if ($content_type == 1) {
+					fwrite($avsfile, "TDecimate(mode=1)" . "\r\n");
+				} elseif ($content_type == 0) {
+					fwrite($avsfile, "TDecimate()" . "\r\n");
+				}
 			}
 			if ($aspect_ratio == 1) {
 				fwrite($avsfile, "BicubicResize(640,480,0,0.5)" . "\r\n");
@@ -724,17 +730,23 @@ if ($complete == 1) {
 		fwrite($avsfile, "LoadPlugin(\"" . $tc_loc . "\")" . "\r\n");
 		fwrite($avsfile, "LoadPlugin(\"" . $td_loc . "\")" . "\r\n");
 		fwrite($avsfile, "MPEG2Source(\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
-		if ($post_proc == 3) {
+		if ($post_proc == 2 || $post_proc == 3) {
 				fwrite($avsfile, "deint = TDeint(mode=2, mtnmode=3, blim=100)" . "\r\n");
+			}
+			if ($post_proc == 3) {
 				fwrite($avsfile, "tfm(cthresh=4, slow=2, MI=30, clip2=deint, d2v=\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
-				fwrite($avsfile, "TDecimate(mode=1)" . "\r\n");
 			} elseif ($post_proc == 1) {
-				fwrite($avsfile, "tfm(d2v=\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
-				fwrite($avsfile, "TDecimate()" . "\r\n");
+				fwrite($avsfile, "tfm(d2v=\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
 			} elseif ($post_proc == 2) {
-				fwrite($avsfile, "deint = TDeint(mode=2, mtnmode=3, blim=100)" . "\r\n");
 				fwrite($avsfile, "tfm(cthresh=4, slow=2, MI=30, clip2=deint, d2v=\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
-		}
+			}
+			if ($post_proc == 1 || $post_proc == 3) {
+				if ($content_type == 1) {
+					fwrite($avsfile, "TDecimate(mode=1)" . "\r\n");
+				} elseif ($content_type == 0) {
+					fwrite($avsfile, "TDecimate()" . "\r\n");
+				}
+			}
 		if ($aspect_ratio == 1) {
 			fwrite($avsfile, "BicubicResize(640,480,0,0.5)" . "\r\n");
 		} else {
@@ -810,7 +822,11 @@ if ($complete == 1) {
 			} elseif ($aspect_radio == 1) {
 				$video_ar = "4/3";
 			}
-			$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:24000/1001p ^\"^(^\" ^\"" . $x264_destination[$i] . "^\" ^\"^)^\"";
+			if ($post_proc == 2) {
+				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:30000/1001p ^\"^(^\" ^\"" . $x264_destination[$i] . "^\" ^\"^)^\"";
+			} elseif ($post_proc == 1 || $post_proc == 3) {
+				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:24000/1001p ^\"^(^\" ^\"" . $x264_destination[$i] . "^\" ^\"^)^\"";
+			}
 			if ($audio_quantity[$i] > 1) {
 				$r = 1;
 				while ($r <= $audio_quantity[$i]) {
@@ -856,7 +872,11 @@ if ($complete == 1) {
 		} elseif ($aspect_radio == 1) {
 			$video_ar = "4/3";
 		}
-		$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:24000/1001p ^\"^(^\" ^\"" . $x264_destination[1] . "^\" ^\"^)^\"";
+		if ($post_proc == 2) {
+				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:30000/1001p ^\"^(^\" ^\"" . $x264_destination[1] . "^\" ^\"^)^\"";
+			} elseif ($post_proc == 1 || $post_proc == 3) {
+				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:24000/1001p ^\"^(^\" ^\"" . $x264_destination[1] . "^\" ^\"^)^\"";
+			}
 		if ($audio_quantity[1] > 1) {
 			$r = 1;
 			while ($r <= $audio_quantity[1]) {
