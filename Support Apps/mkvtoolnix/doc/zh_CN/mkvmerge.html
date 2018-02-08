@@ -21,20 +21,19 @@
             <li><a href="#mkvmerge.track_ids">6. 轨道 ID</a></li>
             <li><a href="#mkvmerge.text_files_and_charsets">7. 文本文件与字符集转换</a></li>
             <li><a href="#mkvmerge.option_files">8. 选项文件</a></li>
-            <li><a href="#mkvmerge.escaping">9. 文本中特殊字符的转义</a></li>
-            <li><a href="#mkvmerge.subtitles">10. 字幕</a></li>
-            <li><a href="#mkvmerge.file_linking">11. 文件链接</a></li>
-            <li><a href="#mkvmerge.default_values">12. 默认值</a></li>
-            <li><a href="#mkvmerge.attachments">13. 附件</a></li>
-            <li><a href="#mkvmerge.chapters">14. 章节</a></li>
-            <li><a href="#mkvmerge.tags">15. 标签</a></li>
-            <li><a href="#mkvmerge.segmentinfo">16. 剪辑信息 XML 文件</a></li>
-            <li><a href="#mkvmerge.file_layout">17. Matroska 文件规划</a></li>
-            <li><a href="#mkvmerge.external_timestamp_files">18. 外部时间码文件</a></li>
-            <li><a href="#mkvmerge.exit_codes">19. 退出代码</a></li>
-            <li><a href="#mkvmerge.environment_variables">20. 环境变量</a></li>
-            <li><a href="#mkvmerge.seealso">21. 参阅</a></li>
-            <li><a href="#mkvmerge.www">22. 网络</a></li>
+            <li><a href="#mkvmerge.subtitles">9. 字幕</a></li>
+            <li><a href="#mkvmerge.file_linking">10. 文件链接</a></li>
+            <li><a href="#mkvmerge.default_values">11. 默认值</a></li>
+            <li><a href="#mkvmerge.attachments">12. 附件</a></li>
+            <li><a href="#mkvmerge.chapters">13. 章节</a></li>
+            <li><a href="#mkvmerge.tags">14. 标签</a></li>
+            <li><a href="#mkvmerge.segmentinfo">15. 剪辑信息 XML 文件</a></li>
+            <li><a href="#mkvmerge.file_layout">16. Matroska 文件规划</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">17. 外部时间码文件</a></li>
+            <li><a href="#mkvmerge.exit_codes">18. 退出代码</a></li>
+            <li><a href="#mkvmerge.environment_variables">19. 环境变量</a></li>
+            <li><a href="#mkvmerge.seealso">20. 参阅</a></li>
+            <li><a href="#mkvmerge.www">21. 网络</a></li>
          </ul>
       </div>
       <div class="content">
@@ -2596,40 +2595,14 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
-                        <span class="parameter">文件名</span></a></td>
-                  <td>
-                     
-                     <p>
-                        将使 <span class="productname">mkvmerge</span>(1) 探查单个文件并报告其类型、文件中包含的轨道及其轨道 ID。如果使用了本选项，唯一可用的其他选项就是文件名。
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        输出信息还会包含已发现所有项目的属性，例如文件标题或轨道语言。
-                        
-                     </p>
-                     
-                     
-                     <div class="note">
-                        <p class="note-title">Note:</p>
-                        
-                        <p>该选项已废弃。将在 2018 年移除。</p>
-                        
-                     </div>
-                     
-                  </td>
-               </tr>
-               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identification_format"><span class="option">-F</span>, <span class="option">--identification-format</span>
                         <span class="parameter">格式</span></a></td>
                   <td>
                      
                      <p>
                         决定 <a href="#mkvmerge.description.identify">--identify
-                           选项</a> 的输出格式。支持以下格式: <span class="literal">text</span>
-                        (未使用本选项时的默认值)、<span class="literal">verbose-text</span> 及 <span class="literal">json</span>。
+                           选项</a>使用的输出格式。支持下列格式: <span class="literal">text</span> (文本，未使用该选项时的默认值) 以及
+                        <span class="literal">json</span>。
                         
                      </p>
                      
@@ -2644,35 +2617,6 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                            
                            <p>该格式不应该用来解析。输出内容会翻译为 <span class="productname">mkvmerge</span>(1) 所使用的语言 (参见 <a href="#mkvmerge.description.ui_language">--ui-language</a>)。
                            </p>
-                           
-                        </li>
-                        
-                        
-                        <li>
-                           
-                           <p>
-                              <span class="literal">verbose-text</span> 格式是对 <span class="literal">text</span>
-                              格式的扩展，为每项提供额外的属性信息。额外信息由方括号围绕。它包含空格分隔的键/值对，其中键与值由冒号分隔。
-                              
-                           </p>
-                           
-                           
-                           <p>
-                              各值按 <a href="#mkvmerge.escaping">关于文本中特殊字符的转义的段落</a> 中描述的规则转义。
-                              
-                           </p>
-                           
-                           
-                           <p>该格式不应该用来解析。输出内容会翻译为 <span class="productname">mkvmerge</span>(1) 所使用的语言 (参见 <a href="#mkvmerge.description.ui_language">--ui-language</a>)。
-                           </p>
-                           
-                           
-                           <div class="note">
-                              <p class="note-title">Note:</p>
-                              
-                              <p>该选项已废弃。将在 2018 年移除。</p>
-                              
-                           </div>
                            
                         </li>
                         
@@ -3444,19 +3388,9 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          <p>
-            选项文件有两种格式: JSON 格式以及专用的传统格式。传统格式已废弃，对传统格式的支持大约在 2018 年移除。
-            
-         </p>
-         
-         
-         <h2><a name="mkvmerge.option_files.json_format">8.1. JSON 格式</a></h2>
-         
-         
-         
-         <p>
-            JSON 选项文件的名称必须以“<span class="filename">.json</span>”结尾。其内容必须是有效的 JSON 数组，该数组只能由 JSON
-            字符串组成。文件编码应为 UTF-8。文件开头不应存在字节序标志（<span class="foreignphrase">byte order
-               marker</span>，<span class="abbrev">BOM</span>），但如果存在也不会报错，读取时会跳过它。
+            包含 JSON 格式数据的选项文件。其内容必须为有效的 JSON 数组，数组元素只能为 JSON 字符串。文件编码必须为
+            UTF-8。文件开头不需要有字节序标记 (<span class="foreignphrase">byte order
+               marker</span>，<span class="abbrev">BOM</span>)，但即使有也没关系，会跳过它。
             
          </p>
          
@@ -3482,71 +3416,7 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
   "一部影片.avi",
   "声音.ogg"
 ]</pre>
-         
-         
-         <h2><a name="mkvmerge.option_files.legacy_format">8.2. 传统格式</a></h2>
-         
-         
-         
-         <p>
-            选项文件的处理有一些规则。首个非空白字符为井号 ('<span class="literal">#</span>')
-            的行将被当作注释对待，在处理过程中将被忽略。各行开头与结尾的空白将被除去。各行必须恰好仅含一个选项。
-            
-         </p>
-         
-         
-         <p>
-            不包含任何内容的行也会被忽略。空参数用 <span class="literal">#EMPTY#</span> 独占一行表示。
-            
-         </p>
-         
-         
-         <p>
-            有些字符可以转义，如当您需要使用 '#' 作为一个不是评论的行的开头。规则在<a href="#mkvmerge.escaping">关于转义文本的段落</a>有描述。
-            
-         </p>
-         
-         
-         <p>
-            注意反斜杠必须转义。井号 ('#') 如果不作为注释标记，也必须转义。
-            
-         </p>
-         
-         
-         <p>
-            命令行“<span class="command">mkvmerge -o "我的文件.mkv" -A "一部影片.avi"
-               声音.ogg</span>”可以转换为下述传统选项文件，文件可以命名为“<span class="filename">选项.txt</span>”:
-            
-         </p>
-         
-         <pre class="programlisting"># 写入 Windows 平台的 "c:\Matroska\我的文件.mkv" 文件。
--o
-c:\\Matroska\\我的文件.mkv
-# 设置标题为 '#65'。
---title
-\h65
-# 只需要 "一部影片.avi" 中的视频。
--A
-一部影片.avi
-声音.ogg</pre>
-         
-         
-         <h1><a name="mkvmerge.escaping">9. 文本中特殊字符的转义</a></h1>
-         
-         
-         <p>
-            有时文本中的特殊字符必须或应该转义。转义规则很简单: 用反斜杠后接一字符替换需要转义的各字符。
-            
-         </p>
-         
-         
-         <p>
-            规则为: ' ' (空格) 变为 '\s'，'"' (双引号) 变为 '\2'，':' 变为 '\c'，'#' 变为 '\h'，'[' 变为
-            '\b'，']' 变为 '\B'，'\' (单个反引号) 自身变为 '\\'。
-            
-         </p>
-         
-         <h1><a name="mkvmerge.subtitles">10. 字幕</a></h1>
+         <h1><a name="mkvmerge.subtitles">9. 字幕</a></h1>
          
          
          <p>
@@ -3626,7 +3496,7 @@ c:\\Matroska\\我的文件.mkv
             
          </ul>
          
-         <h1><a name="mkvmerge.file_linking">11. 文件链接</a></h1>
+         <h1><a name="mkvmerge.file_linking">10. 文件链接</a></h1>
          
          
          <p>
@@ -3674,7 +3544,7 @@ c:\\Matroska\\我的文件.mkv
             
          </p>
          
-         <h1><a name="mkvmerge.default_values">12. 默认值</a></h1>
+         <h1><a name="mkvmerge.default_values">11. 默认值</a></h1>
          
          
          <p>
@@ -3687,7 +3557,7 @@ c:\\Matroska\\我的文件.mkv
             
          </p>
          
-         <h1><a name="mkvmerge.attachments">13. 附件</a></h1>
+         <h1><a name="mkvmerge.attachments">12. 附件</a></h1>
          
          
          <p>
@@ -3720,7 +3590,7 @@ c:\\Matroska\\我的文件.mkv
             
          </p>
          
-         <h1><a name="mkvmerge.chapters">14. 章节</a></h1>
+         <h1><a name="mkvmerge.chapters">13. 章节</a></h1>
          
          
          <p>
@@ -3736,7 +3606,7 @@ c:\\Matroska\\我的文件.mkv
          </p>
          
          
-         <h2><a name="mkvmerge.chapters.simple">14.1. 简单章节格式</a></h2>
+         <h2><a name="mkvmerge.chapters.simple">13.1. 简单章节格式</a></h2>
          
          
          
@@ -3768,7 +3638,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          
-         <h2><a name="mkvmerge.chapters.xml">14.2. 基于 XML 的章节格式</a></h2>
+         <h2><a name="mkvmerge.chapters.xml">13.2. 基于 XML 的章节格式</a></h2>
          
          
          <p>
@@ -3863,7 +3733,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
           ChapterProcessData (二进制)</pre>
          
          
-         <h2><a name="d4e6011">14.3. 一般性备注</a></h2>
+         <h2><a name="d4e5875">13.3. 一般性备注</a></h2>
          
          
          <p>
@@ -3883,11 +3753,11 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          </p>
          
          
-         <h1><a name="mkvmerge.tags">15. 标签</a></h1>
+         <h1><a name="mkvmerge.tags">14. 标签</a></h1>
          
          
          
-         <h2><a name="d4e6077">15.1. 介绍</a></h2>
+         <h2><a name="d4e5940">14.1. 介绍</a></h2>
          
          
          
@@ -3901,7 +3771,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.scope">15.2. 标签细述</a></h2>
+         <h2><a name="mkvmerge.tags.scope">14.2. 标签细述</a></h2>
          
          
          
@@ -3934,7 +3804,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.example">15.3. 示例</a></h2>
+         <h2><a name="mkvmerge.tags.example">14.3. 示例</a></h2>
          
          
          <p>
@@ -3947,7 +3817,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          <pre class="screen">$ mkvmerge -o 文件.mkv --tags 0:标签.xml 文件.avi</pre>
          
          
-         <h2><a name="mkvmerge.tags.file_format">15.4. 标签文件格式</a></h2>
+         <h2><a name="mkvmerge.tags.file_format">14.4. 标签文件格式</a></h2>
          
          
          <p>
@@ -3986,7 +3856,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.data_types">15.5. 数据类型</a></h2>
+         <h2><a name="mkvmerge.tags.data_types">14.5. 数据类型</a></h2>
          
          
          <p>
@@ -4020,7 +3890,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.xml">15.6. XML 文件格式的已知标签</a></h2>
+         <h2><a name="mkvmerge.tags.xml">14.6. XML 文件格式的已知标签</a></h2>
          
          
          
@@ -4046,7 +3916,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
       String (UTF-8 字符串)
       Binary (二进制)</pre>
          
-         <h1><a name="mkvmerge.segmentinfo">16. 剪辑信息 XML 文件</a></h1>
+         <h1><a name="mkvmerge.segmentinfo">15. 剪辑信息 XML 文件</a></h1>
          
          
          
@@ -4090,7 +3960,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
     ChapterTranslateEditionUID (无符号整数)
     ChapterTranslateCodec (无符号整数)
     ChapterTranslateID (二进制)</pre>
-         <h1><a name="mkvmerge.file_layout">17. Matroska 文件规划</a></h1>
+         <h1><a name="mkvmerge.file_layout">16. Matroska 文件规划</a></h1>
          
          
          <p>
@@ -4152,7 +4022,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timestamp_files">18. 外部时间码文件</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">17. 外部时间码文件</a></h1>
          
          
          <p>
@@ -4178,7 +4048,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          </p>
          
          
-         <h2><a name="d4e6528">18.1. 时间码文件格式 v1</a></h2>
+         <h2><a name="d4e6392">17.1. 时间码文件格式 v1</a></h2>
          
          
          <p>
@@ -4194,7 +4064,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6552">18.2. 时间码文件格式 v2</a></h2>
+         <h2><a name="d4e6416">17.2. 时间码文件格式 v2</a></h2>
          
          
          
@@ -4210,7 +4080,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6567">18.3. 时间码文件格式 v3</a></h2>
+         <h2><a name="d4e6431">17.3. 时间码文件格式 v3</a></h2>
          
          
          <p>
@@ -4228,7 +4098,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6585">18.4. 时间码文件格式 v4</a></h2>
+         <h2><a name="d4e6449">17.4. 时间码文件格式 v4</a></h2>
          
          
          <p>
@@ -4237,7 +4107,7 @@ gap, 10.050
          </p>
          
          
-         <h1><a name="mkvmerge.exit_codes">19. 退出代码</a></h1>
+         <h1><a name="mkvmerge.exit_codes">18. 退出代码</a></h1>
          
          
          
@@ -4282,7 +4152,7 @@ gap, 10.050
             
          </ul>
          
-         <h1><a name="mkvmerge.environment_variables">20. 环境变量</a></h1>
+         <h1><a name="mkvmerge.environment_variables">19. 环境变量</a></h1>
          
          
          
@@ -4323,20 +4193,10 @@ gap, 10.050
                      
                   </td>
                </tr>
-               <tr>
-                  <td class="varlistoption"><span class="varname">MKVMERGE_OPTIONS</span>, <span class="varname">MKVTOOLNIX_OPTIONS</span>
-                     及其缩略形式 <span class="varname">MTX_OPTIONS</span></td>
-                  <td>
-                     
-                     <p>内容将在空白处切割。最终得到的字符串部分将按命令行选项的格式处理。如果您需要传递特殊字符 (如空白) 则需要转义 (参见<a href="#mkvmerge.escaping">关于转义文本中特殊字符的段落</a>)。
-                     </p>
-                     
-                  </td>
-               </tr>
             </tbody>
          </table>
          
-         <h1><a name="mkvmerge.seealso">21. 参阅</a></h1>
+         <h1><a name="mkvmerge.seealso">20. 参阅</a></h1>
          
          
          <p>
@@ -4344,7 +4204,7 @@ gap, 10.050
             
          </p>
          
-         <h1><a name="mkvmerge.www">22. 网络</a></h1>
+         <h1><a name="mkvmerge.www">21. 网络</a></h1>
          
          
          <p>

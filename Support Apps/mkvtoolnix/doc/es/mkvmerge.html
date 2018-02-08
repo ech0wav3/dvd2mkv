@@ -20,20 +20,19 @@
             <li><a href="#mkvmerge.track_ids">6. IDs de pista</a></li>
             <li><a href="#mkvmerge.text_files_and_charsets">7. Conversión de archivos de texto y conjunto de caracteres</a></li>
             <li><a href="#mkvmerge.option_files">8. Archivos de opciones</a></li>
-            <li><a href="#mkvmerge.escaping">9. Caracteres especiales de escape en el texto</a></li>
-            <li><a href="#mkvmerge.subtitles">10. Subtítulos</a></li>
-            <li><a href="#mkvmerge.file_linking">11. Vinculación de archivos</a></li>
-            <li><a href="#mkvmerge.default_values">12. Valores predeterminados</a></li>
-            <li><a href="#mkvmerge.attachments">13. Attachments</a></li>
-            <li><a href="#mkvmerge.chapters">14. Chapters</a></li>
-            <li><a href="#mkvmerge.tags">15. Tags</a></li>
-            <li><a href="#mkvmerge.segmentinfo">16. Archivos XML de información del segmento</a></li>
-            <li><a href="#mkvmerge.file_layout">17. Diseño de archivo matroska</a></li>
-            <li><a href="#mkvmerge.external_timestamp_files">18. Archivos de códigos de tiempo externos</a></li>
-            <li><a href="#mkvmerge.exit_codes">19. Códigos de salida</a></li>
-            <li><a href="#mkvmerge.environment_variables">20. Variables de entorno</a></li>
-            <li><a href="#mkvmerge.seealso">21. Vea también</a></li>
-            <li><a href="#mkvmerge.www">22. WWW</a></li>
+            <li><a href="#mkvmerge.subtitles">9. Subtítulos</a></li>
+            <li><a href="#mkvmerge.file_linking">10. Vinculación de archivos</a></li>
+            <li><a href="#mkvmerge.default_values">11. Valores predeterminados</a></li>
+            <li><a href="#mkvmerge.attachments">12. Attachments</a></li>
+            <li><a href="#mkvmerge.chapters">13. Chapters</a></li>
+            <li><a href="#mkvmerge.tags">14. Tags</a></li>
+            <li><a href="#mkvmerge.segmentinfo">15. Archivos XML de información del segmento</a></li>
+            <li><a href="#mkvmerge.file_layout">16. Diseño de archivo matroska</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">17. Archivos de códigos de tiempo externos</a></li>
+            <li><a href="#mkvmerge.exit_codes">18. Códigos de salida</a></li>
+            <li><a href="#mkvmerge.environment_variables">19. Variables de entorno</a></li>
+            <li><a href="#mkvmerge.seealso">20. Vea también</a></li>
+            <li><a href="#mkvmerge.www">21. WWW</a></li>
          </ul>
       </div>
       <div class="content">
@@ -795,9 +794,10 @@
                   <td>
                      
                      <p>
-                        Splits the output file after a given size or a given time.  Please note that
-                        tracks can only be split right before a key frame.  Therefore the split
-                        point may be a bit off from what the user has specified.
+                        Divide el archivo generado después de un tamaño o tiempo especificado. Por
+                        favor, tenga en cuenta que estas pistas sólo pueden ser divididas justo
+                        antes de un fotograma clave. Por lo tanto, el punto de división podría ser
+                        algo distinto del especificado por el usuario. 
                         
                      </p>
                      
@@ -3021,44 +3021,14 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
-                        <span class="parameter">nombre-archivo</span></a></td>
-                  <td>
-                     
-                     <p>
-                        Le permitirá a <span class="productname">mkvmerge</span>(1) analizar el archivo e informar de qué tipo es, las
-                        pistas que contiene y los IDs de pista. Si se usa esta opción entonces la
-                        unica opción permitida es el nombre-archivo.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        El resultado también contendrá las propiedades para todos los elementos
-                        encontrados, p.e. el título del archivo o el idioma de la pista.
-                        
-                     </p>
-                     
-                     
-                     <div class="note">
-                        <p class="note-title">Note:</p>
-                        
-                        <p>Esta opción es obsoleta. Será eliminada en 2018.</p>
-                        
-                     </div>
-                     
-                  </td>
-               </tr>
-               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identification_format"><span class="option">-F</span>, <span class="option">--identification-format</span>
                         <span class="parameter">formato</span></a></td>
                   <td>
                      
                      <p>
-                        Determina el formato de salida usado por la <a href="#mkvmerge.description.identify">--identify
-                           opción</a>. Los siguientes formatos son válidos: <span class="literal">text</span>
-                        (el valor por defecto si esta opción no se usa),
-                        <span class="literal">verbose-text</span> y <span class="literal">json</span>.
+                        Determina el formato de salida usado por la opción <a href="#mkvmerge.description.identify">--identify</a>.
+                        Los siguientes formatos son válidos: <span class="literal">text</span> (el valor por
+                        defecto si esta opción no se usa), y <span class="literal">json</span>.
                         
                      </p>
                      
@@ -3075,40 +3045,6 @@ mkvmerge -o salida.mkv "(" archivo.mkv ")"</pre>
                            <p>Este formato no está pensado para ser analizado. La salida se traducirá en
                               el idioma que <span class="productname">mkvmerge</span>(1) utiliza (mire también <a href="#mkvmerge.description.ui_language">--ui-language</a>).
                            </p>
-                           
-                        </li>
-                        
-                        
-                        <li>
-                           
-                           <p>
-                              El formato <span class="literal">verbose-text</span> amplía el formato
-                              <span class="literal">text</span> con propiedades adicionales por cada elemento. La
-                              información extra se especifica entre corchetes. Se compone de pares de
-                              clave/valor separados por espacios, en donde las claves y valores están
-                              separadas por dos puntos.
-                              
-                           </p>
-                           
-                           
-                           <p>
-                              Cada valor es escapado conforme a las reglas descritas en <a href="#mkvmerge.escaping">la sección acerca de caracteres especiales de
-                                 escape en el texto</a>. 
-                              
-                           </p>
-                           
-                           
-                           <p>Este formato no está pensado para ser analizado. La salida se traducirá en
-                              el idioma que <span class="productname">mkvmerge</span>(1) utiliza (mire también <a href="#mkvmerge.description.ui_language">--ui-language</a>).
-                           </p>
-                           
-                           
-                           <div class="note">
-                              <p class="note-title">Note:</p>
-                              
-                              <p>Esta opción es obsoleta. Será eliminada en 2018.</p>
-                              
-                           </div>
                            
                         </li>
                         
@@ -4007,24 +3943,11 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
-            Hay dos formatos para archivos de opciones: un formato JSON y una formato
-            heredado patentado. El formato heredado es obsoleto, y su compatiblidad será
-            eliminada en 2018.
-            
-         </p>
-         
-         
-         <h2><a name="mkvmerge.option_files.json_format">8.1. El formato JSON</a></h2>
-         
-         
-         
-         <p>
-            El nombre del archivo de formato JSON debe finalizar en
-            '<span class="filename">.json</span>'. El contenido debe ser un vector compuesto
-            únicamente de cadenas de caracteres JSON. El archivo debe estar codificado
-            en formato UTF-8. El archivo no debe comenzar con un <span class="foreignphrase">marcador
-               de orden de bits</span>  (<span class="abbrev">BOM</span>), pero si lo
-            hiciese, será omitido.
+            Un archivo de opciones que contiene datos con formato JSON. El contenido
+            debe ser un vector JSON compuesto únicamente de cadenas de caracteres
+            JSON. El archivo debe estar codificado en formato UTF-8. El archivo no debe
+            comenzar con un <span class="foreignphrase">marcador de orden de bits</span>
+            (<span class="abbrev">BOM</span>), pero si lo hiciese, será omitido.
             
          </p>
          
@@ -4052,82 +3975,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
   "una película.avi",
   "audio.ogg"
 ]</pre>
-         
-         
-         <h2><a name="mkvmerge.option_files.legacy_format">8.2. Formato heredado</a></h2>
-         
-         
-         
-         <p>
-            Hay diversas reglas respecto a los archivos de opciones. Las líneas cuyo
-            primer carácter es una almohadilla ('<span class="literal">#</span>') son tratadas
-            como comentarios e ignorados. Los espacios en blanco al principio y final
-            serán eliminados. Cada línea debe contener sólo una opción. 
-            
-         </p>
-         
-         
-         <p>
-            Una línea que no contiene nada es ignorada. Un argumento vacío se representa
-            con la línea '<span class="literal">#EMPTY#</span>'. 
-            
-         </p>
-         
-         
-         <p>
-            Varios caracteres pueden ser escapados, p.e. si necesitas iniciar una línea
-            no comentada con '#'. Las reglas están descritas en <a href="#mkvmerge.escaping">la sección acerca de texto escapado</a>.
-            
-         </p>
-         
-         
-         <p>
-            Las barras invertidas deben ser siempre escapadas. Las almohadillas deben
-            ser escapadas si no inicia ningún comentario. 
-            
-         </p>
-         
-         
-         <p>
-            La línea de comandos  '<span class="command">mkvmerge -o "mi archivo.mkv" -A "una
-               película.avi" audio.ogg</span>' se podría convertir al siguiente archivo
-            de opciones en formato heredado denominado
-            p.e. '<span class="filename">opciones.txt</span>':
-            
-         </p>
-         
-         <pre class="programlisting"># Escribe en el archivo "C:\Matroska\mi archivo.mkv", bajo Windows.
-		 
-C:\\Matroska\\mi archivo.mkv
-# Establece el título a '#65'.
---title
-\h65
-# Sólo toma el video de "una película.avi".
--A
-una película.avi
-audio.ogg</pre>
-         
-         
-         <h1><a name="mkvmerge.escaping">9. Caracteres especiales de escape en el texto</a></h1>
-         
-         
-         <p>
-            Hay pocos sitios en los que los caracteres especiales en el texto puedan o
-            deban ser escapados. Las reglas del escape son simples: cada carácter que
-            necesite ser escapado es reemplazado con una barra invertida seguida de otro
-            carácter.
-            
-         </p>
-         
-         
-         <p>
-            Las reglas son: ' ' (un espacio) se convierte a '\s', '"' (doble
-            comillas) sería '\2', ':' se convierte a '\c', '#' será reemplazada como
-            '\h', '[' será '\B', y '\' (una barra invertida) se expresaría como '\\'. 
-            
-         </p>
-         
-         <h1><a name="mkvmerge.subtitles">10. Subtítulos</a></h1>
+         <h1><a name="mkvmerge.subtitles">9. Subtítulos</a></h1>
          
          
          <p>
@@ -4212,7 +4060,7 @@ audio.ogg</pre>
             
          </ul>
          
-         <h1><a name="mkvmerge.file_linking">11. Vinculación de archivos</a></h1>
+         <h1><a name="mkvmerge.file_linking">10. Vinculación de archivos</a></h1>
          
          
          <p>
@@ -4279,7 +4127,7 @@ audio.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.default_values">12. Valores predeterminados</a></h1>
+         <h1><a name="mkvmerge.default_values">11. Valores predeterminados</a></h1>
          
          
          <p>
@@ -4296,7 +4144,7 @@ audio.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.attachments">13. Attachments</a></h1>
+         <h1><a name="mkvmerge.attachments">12. Attachments</a></h1>
          
          
          <p>
@@ -4335,7 +4183,7 @@ audio.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.chapters">14. Chapters</a></h1>
+         <h1><a name="mkvmerge.chapters">13. Chapters</a></h1>
          
          
          <p>
@@ -4357,7 +4205,7 @@ audio.ogg</pre>
          </p>
          
          
-         <h2><a name="mkvmerge.chapters.simple">14.1. El formato simple de capítulos</a></h2>
+         <h2><a name="mkvmerge.chapters.simple">13.1. El formato simple de capítulos</a></h2>
          
          
          
@@ -4395,7 +4243,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.chapters.xml">14.2. El formato de capítulos basados en XML </a></h2>
+         <h2><a name="mkvmerge.chapters.xml">13.2. El formato de capítulos basados en XML </a></h2>
          
          
          <p>
@@ -4493,7 +4341,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
           ChapterProcessData (binario)</pre>
          
          
-         <h2><a name="d4e5988">14.3. Notas generales</a></h2>
+         <h2><a name="d4e5851">13.3. Notas generales</a></h2>
          
          
          <p>
@@ -4521,11 +4369,11 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          </p>
          
          
-         <h1><a name="mkvmerge.tags">15. Tags</a></h1>
+         <h1><a name="mkvmerge.tags">14. Tags</a></h1>
          
          
          
-         <h2><a name="d4e6057">15.1. Introducción</a></h2>
+         <h2><a name="d4e5919">14.1. Introducción</a></h2>
          
          
          
@@ -4543,7 +4391,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.scope">15.2. Alcance de las etiquetas</a></h2>
+         <h2><a name="mkvmerge.tags.scope">14.2. Alcance de las etiquetas</a></h2>
          
          
          
@@ -4586,7 +4434,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.example">15.3. Ejemplo</a></h2>
+         <h2><a name="mkvmerge.tags.example">14.3. Ejemplo</a></h2>
          
          
          <p>
@@ -4602,7 +4450,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          <pre class="screen">mkvmerge -o archivo.mkv --tags 0:etiquetas.xml archivo.avi</pre>
          
          
-         <h2><a name="mkvmerge.tags.file_format">15.4. Formato del archivo de etiquetas</a></h2>
+         <h2><a name="mkvmerge.tags.file_format">14.4. Formato del archivo de etiquetas</a></h2>
          
          
          <p>
@@ -4648,7 +4496,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.data_types">15.5. Tipos de datos</a></h2>
+         <h2><a name="mkvmerge.tags.data_types">14.5. Tipos de datos</a></h2>
          
          
          <p>
@@ -4691,7 +4539,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.xml">15.6. Etiquetas conocidas para el formato de archivos XML</a></h2>
+         <h2><a name="mkvmerge.tags.xml">14.6. Etiquetas conocidas para el formato de archivos XML</a></h2>
          
          
          
@@ -4718,7 +4566,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
       String (cadena de texto UTF-8)
       Binary (binario)</pre>
          
-         <h1><a name="mkvmerge.segmentinfo">16. Archivos XML de información del segmento</a></h1>
+         <h1><a name="mkvmerge.segmentinfo">15. Archivos XML de información del segmento</a></h1>
          
          
          
@@ -4768,7 +4616,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
     ChapterTranslateEditionUID (entero sin signo)
     ChapterTranslateCodec (entero sin signo)
     ChapterTranslateID (binario)</pre>
-         <h1><a name="mkvmerge.file_layout">17. Diseño de archivo matroska</a></h1>
+         <h1><a name="mkvmerge.file_layout">16. Diseño de archivo matroska</a></h1>
          
          
          <p>
@@ -4841,7 +4689,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timestamp_files">18. Archivos de códigos de tiempo externos</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">17. Archivos de códigos de tiempo externos</a></h1>
          
          
          <p>
@@ -4875,7 +4723,7 @@ CHAPTER03NAME=El niño sacude la casa</pre>
          </p>
          
          
-         <h2><a name="d4e6493">18.1. Formato de archivo de código de tiempo v1</a></h2>
+         <h2><a name="d4e6356">17.1. Formato de archivo de código de tiempo v1</a></h2>
          
          
          <p>
@@ -4896,7 +4744,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6517">18.2. Formato de archivo de código de tiempo v2</a></h2>
+         <h2><a name="d4e6380">17.2. Formato de archivo de código de tiempo v2</a></h2>
          
          
          
@@ -4916,7 +4764,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6532">18.3. Formato de archivo de código de tiempo v3</a></h2>
+         <h2><a name="d4e6395">17.3. Formato de archivo de código de tiempo v3</a></h2>
          
          
          <p>
@@ -4940,7 +4788,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6550">18.4. Formato de archivo de código de tiempo v4</a></h2>
+         <h2><a name="d4e6413">17.4. Formato de archivo de código de tiempo v4</a></h2>
          
          
          <p>
@@ -4951,7 +4799,7 @@ gap, 10.050
          </p>
          
          
-         <h1><a name="mkvmerge.exit_codes">19. Códigos de salida</a></h1>
+         <h1><a name="mkvmerge.exit_codes">18. Códigos de salida</a></h1>
          
          
          
@@ -5003,7 +4851,7 @@ gap, 10.050
             
          </ul>
          
-         <h1><a name="mkvmerge.environment_variables">20. Variables de entorno</a></h1>
+         <h1><a name="mkvmerge.environment_variables">19. Variables de entorno</a></h1>
          
          
          
@@ -5043,24 +4891,10 @@ gap, 10.050
                      
                   </td>
                </tr>
-               <tr>
-                  <td class="varlistoption"><span class="varname">MKVMERGE_OPTIONS</span>, <span class="varname">MKVTOOLNIX_OPTIONS</span> y
-                     su forma abreviada <span class="varname">MTX_OPTIONS</span></td>
-                  <td>
-                     
-                     <p>El contenido es dividido en espacios en blanco. Las cadenas de texto
-                        parciales resultantes son tratadas como si hubiesen sido pasadas como
-                        opciones a la línea de comandos. Si necesitas pasar caracteres especiales
-                        (p.e. espacios) entonces tienes que escaparlos (vea <a href="#mkvmerge.escaping">la sección caracteres especiales de escape en el
-                           texto</a>). 
-                     </p>
-                     
-                  </td>
-               </tr>
             </tbody>
          </table>
          
-         <h1><a name="mkvmerge.seealso">21. Vea también</a></h1>
+         <h1><a name="mkvmerge.seealso">20. Vea también</a></h1>
          
          
          <p>
@@ -5068,7 +4902,7 @@ gap, 10.050
             
          </p>
          
-         <h1><a name="mkvmerge.www">22. WWW</a></h1>
+         <h1><a name="mkvmerge.www">21. WWW</a></h1>
          
          
          <p>

@@ -689,6 +689,13 @@ if ($complete == 1) {
 			fwrite($avsfile, "LoadPlugin(\"" . $gd_loc . "\")" . "\r\n");
 			fwrite($avsfile, "LoadPlugin(\"" . $tc_loc . "\")" . "\r\n");
 			fwrite($avsfile, "LoadPlugin(\"" . $td_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $mt_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $dp_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $de_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $nn_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $rg_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $sm_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $qt_loc . "\")" . "\r\n");
 			fwrite($avsfile, "MPEG2Source(\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
 			if ($post_proc == 2 || $post_proc == 3) {
 				fwrite($avsfile, "deint = TDeint(mode=2, mtnmode=3, blim=100)" . "\r\n");
@@ -729,6 +736,13 @@ if ($complete == 1) {
 		fwrite($avsfile, "LoadPlugin(\"" . $gd_loc . "\")" . "\r\n");
 		fwrite($avsfile, "LoadPlugin(\"" . $tc_loc . "\")" . "\r\n");
 		fwrite($avsfile, "LoadPlugin(\"" . $td_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $mt_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $dp_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $de_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $nn_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $rg_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $sm_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $qt_loc . "\")" . "\r\n");
 		fwrite($avsfile, "MPEG2Source(\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
 		if ($post_proc == 2 || $post_proc == 3) {
 				fwrite($avsfile, "deint = TDeint(mode=2, mtnmode=3, blim=100)" . "\r\n");

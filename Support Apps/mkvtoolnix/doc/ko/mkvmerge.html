@@ -21,20 +21,19 @@
             <li><a href="#mkvmerge.track_ids">6. 트랙 ID</a></li>
             <li><a href="#mkvmerge.text_files_and_charsets">7. 텍스트 파일과 문자셋 변환</a></li>
             <li><a href="#mkvmerge.option_files">8. 옵션 파일</a></li>
-            <li><a href="#mkvmerge.escaping">9. 텍스트에서 특수 문자 이스케이프 처리</a></li>
-            <li><a href="#mkvmerge.subtitles">10. 자막</a></li>
-            <li><a href="#mkvmerge.file_linking">11. 파일 링크</a></li>
-            <li><a href="#mkvmerge.default_values">12. 기본값</a></li>
-            <li><a href="#mkvmerge.attachments">13. 첨부 파일</a></li>
-            <li><a href="#mkvmerge.chapters">14. 챕터</a></li>
-            <li><a href="#mkvmerge.tags">15. 태그</a></li>
-            <li><a href="#mkvmerge.segmentinfo">16. 세그먼트 정보 XML 파일</a></li>
-            <li><a href="#mkvmerge.file_layout">17. Matroska 파일 레이아웃</a></li>
-            <li><a href="#mkvmerge.external_timestamp_files">18. 외부 타임스탬프 파일</a></li>
-            <li><a href="#mkvmerge.exit_codes">19. 종료 코드</a></li>
-            <li><a href="#mkvmerge.environment_variables">20. 환경 변수</a></li>
-            <li><a href="#mkvmerge.seealso">21. 더 보기</a></li>
-            <li><a href="#mkvmerge.www">22. WWW</a></li>
+            <li><a href="#mkvmerge.subtitles">9. 자막</a></li>
+            <li><a href="#mkvmerge.file_linking">10. 파일 링크</a></li>
+            <li><a href="#mkvmerge.default_values">11. 기본값</a></li>
+            <li><a href="#mkvmerge.attachments">12. 첨부 파일</a></li>
+            <li><a href="#mkvmerge.chapters">13. 챕터</a></li>
+            <li><a href="#mkvmerge.tags">14. 태그</a></li>
+            <li><a href="#mkvmerge.segmentinfo">15. 세그먼트 정보 XML 파일</a></li>
+            <li><a href="#mkvmerge.file_layout">16. Matroska 파일 레이아웃</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">17. 외부 타임스탬프 파일</a></li>
+            <li><a href="#mkvmerge.exit_codes">18. 종료 코드</a></li>
+            <li><a href="#mkvmerge.environment_variables">19. 환경 변수</a></li>
+            <li><a href="#mkvmerge.seealso">20. 더 보기</a></li>
+            <li><a href="#mkvmerge.www">21. WWW</a></li>
          </ul>
       </div>
       <div class="content">
@@ -2903,35 +2902,6 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
-                        <span class="parameter">file-name</span></a></td>
-                  <td>
-                     
-                     <p>
-                        Will let <span class="productname">mkvmerge</span>(1) probe the single file and report its type, the tracks
-                        contained in the file and their track IDs. If this option is used then the
-                        only other option allowed is the filename.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        The output will also contain properties for all items found, e.g. the file
-                        title or the track language.
-                        
-                     </p>
-                     
-                     
-                     <div class="note">
-                        <p class="note-title">Note:</p>
-                        
-                        <p>This option is deprecated. It will be removed in 2018.</p>
-                        
-                     </div>
-                     
-                  </td>
-               </tr>
-               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identification_format"><span class="option">-F</span>, <span class="option">--identification-format</span>
                         <span class="parameter">format</span></a></td>
                   <td>
@@ -2939,8 +2909,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                      <p>
                         Determines the output format used by the <a href="#mkvmerge.description.identify">--identify
                            option</a>. The following formats are supported: <span class="literal">text</span>
-                        (the default if this option isn't used), <span class="literal">verbose-text</span> and
-                        <span class="literal">json</span>.
+                        (the default if this option isn't used) and <span class="literal">json</span>.
                         
                      </p>
                      
@@ -2957,40 +2926,6 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                            <p>This format is not meant to be parsed. The output will be translated into
                               the language <span class="productname">mkvmerge</span>(1) uses (see also <a href="#mkvmerge.description.ui_language">--ui-language</a>).
                            </p>
-                           
-                        </li>
-                        
-                        
-                        <li>
-                           
-                           <p>
-                              The <span class="literal">verbose-text</span> format extends the
-                              <span class="literal">text</span> format with additional properties for each item. The
-                              extra information is surronded by square brackets. It consists of
-                              space-saparated key/value pairs where keys and values are separated by a
-                              colon.
-                              
-                           </p>
-                           
-                           
-                           <p>
-                              Each value is escaped according to the rules described in <a href="#mkvmerge.escaping">the section about escaping special characters in
-                                 text</a>.
-                              
-                           </p>
-                           
-                           
-                           <p>This format is not meant to be parsed. The output will be translated into
-                              the language <span class="productname">mkvmerge</span>(1) uses (see also <a href="#mkvmerge.description.ui_language">--ui-language</a>).
-                           </p>
-                           
-                           
-                           <div class="note">
-                              <p class="note-title">Note:</p>
-                              
-                              <p>This option is deprecated. It will be removed in 2018.</p>
-                              
-                           </div>
                            
                         </li>
                         
@@ -3855,23 +3790,11 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
-            There are two formats for option files: a JSON format and a proprietary
-            legacy format. The legacy format is deprecated, and support for it will
-            likely be removed in 2018.
-            
-         </p>
-         
-         
-         <h2><a name="mkvmerge.option_files.json_format">8.1. JSON 형식</a></h2>
-         
-         
-         
-         <p>
-            A JSON option file's name must end in '<span class="filename">.json</span>'. Its
-            content must be a valid JSON array consisting solely of JSON strings. The
-            file's encoding must be UTF-8. The file should not start with a
-            <span class="foreignphrase">byte order marker</span> (<span class="abbrev">BOM</span>), but
-            if one exists, it will be skipped.
+            An option file contains JSON-formatted data. Its content must be a valid
+            JSON array consisting solely of JSON strings. The file's encoding must be
+            UTF-8. The file should not start with a <span class="foreignphrase">byte order
+               marker</span> (<span class="abbrev">BOM</span>), but if one exists, it will be
+            skipped.
             
          </p>
          
@@ -3899,81 +3822,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
   "a movie.avi",
   "sound.ogg"
 ]</pre>
-         
-         
-         <h2><a name="mkvmerge.option_files.legacy_format">8.2. 레거시 형식</a></h2>
-         
-         
-         
-         <p>
-            There are several rules regarding option files. Lines whose first
-            non-whitespace character is a hash mark ('<span class="literal">#</span>') are treated
-            as comments and ignored. White spaces at the start and end of a line will be
-            stripped. Each line must contain exactly one option.
-            
-         </p>
-         
-         
-         <p>
-            A line not containing anything is also ignored. An empty argument is
-            represented by the line '<span class="literal">#EMPTY#</span>'.
-            
-         </p>
-         
-         
-         <p>
-            Several chars can be escaped, e.g. if you need to start a non-comment line
-            with '#'. The rules are described in <a href="#mkvmerge.escaping">the
-               section about escaping text</a>.
-            
-         </p>
-         
-         
-         <p>
-            Note that backslashes must always be escaped. Hash marks ('#') must be
-            escaped if they should not start a comment.
-            
-         </p>
-         
-         
-         <p>
-            The command line '<span class="command">mkvmerge -o "my file.mkv" -A "a movie.avi"
-               sound.ogg</span>' could be converted into the following legacy option
-            file called e.g. '<span class="filename">options.txt</span>':
-            
-         </p>
-         
-         <pre class="programlisting"># Write to the file "c:\Matroska\my file.mkv" on Windows.
--o
-c:\\Matroska\\my file.mkv
-# Set the title to '#65'.
---title
-\h65
-# Only take the video from "a movie.avi".
--A
-a movie.avi
-sound.ogg</pre>
-         
-         
-         <h1><a name="mkvmerge.escaping">9. 텍스트에서 특수 문자 이스케이프 처리</a></h1>
-         
-         
-         <p>
-            There are a few places in which special characters in text must or should be
-            escaped. The rules for escaping are simple: each character that needs
-            escaping is replaced with a backslash followed by another character.
-            
-         </p>
-         
-         
-         <p>
-            The rules are: ' ' (a space) becomes '\s', '"' (double quotes) becomes
-            '\2', ':' becomes '\c', '#' becomes '\h', '[' becomes '\b', ']' becomes '\B'
-            and '\' (a single backslash) itself becomes '\\'.
-            
-         </p>
-         
-         <h1><a name="mkvmerge.subtitles">10. 자막</a></h1>
+         <h1><a name="mkvmerge.subtitles">9. 자막</a></h1>
          
          
          <p>
@@ -4056,7 +3905,7 @@ sound.ogg</pre>
             
          </ul>
          
-         <h1><a name="mkvmerge.file_linking">11. 파일 링크</a></h1>
+         <h1><a name="mkvmerge.file_linking">10. 파일 링크</a></h1>
          
          
          <p>
@@ -4119,7 +3968,7 @@ sound.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.default_values">12. 기본값</a></h1>
+         <h1><a name="mkvmerge.default_values">11. 기본값</a></h1>
          
          
          <p>
@@ -4136,7 +3985,7 @@ sound.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.attachments">13. 첨부 파일</a></h1>
+         <h1><a name="mkvmerge.attachments">12. 첨부 파일</a></h1>
          
          
          <p>
@@ -4174,7 +4023,7 @@ sound.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.chapters">14. 챕터</a></h1>
+         <h1><a name="mkvmerge.chapters">13. 챕터</a></h1>
          
          
          <p>
@@ -4195,7 +4044,7 @@ sound.ogg</pre>
          </p>
          
          
-         <h2><a name="mkvmerge.chapters.simple">14.1. 간단한 챕터 형식</a></h2>
+         <h2><a name="mkvmerge.chapters.simple">13.1. 간단한 챕터 형식</a></h2>
          
          
          
@@ -4233,7 +4082,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="mkvmerge.chapters.xml">14.2. XML 기반의 챕터 형식</a></h2>
+         <h2><a name="mkvmerge.chapters.xml">13.2. XML 기반의 챕터 형식</a></h2>
          
          
          <p>
@@ -4331,7 +4180,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
           ChapterProcessData (binary)</pre>
          
          
-         <h2><a name="d4e6017">14.3. 일반적인 주의사항</a></h2>
+         <h2><a name="d4e5881">13.3. 일반적인 주의사항</a></h2>
          
          
          <p>
@@ -4359,11 +4208,11 @@ CHAPTER03NAME=Baby rocks the house</pre>
          </p>
          
          
-         <h1><a name="mkvmerge.tags">15. 태그</a></h1>
+         <h1><a name="mkvmerge.tags">14. 태그</a></h1>
          
          
          
-         <h2><a name="d4e6083">15.1. 소개</a></h2>
+         <h2><a name="d4e5946">14.1. 소개</a></h2>
          
          
          
@@ -4379,7 +4228,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.scope">15.2. 태그 범위</a></h2>
+         <h2><a name="mkvmerge.tags.scope">14.2. 태그 범위</a></h2>
          
          
          
@@ -4421,7 +4270,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.example">15.3. 예</a></h2>
+         <h2><a name="mkvmerge.tags.example">14.3. 예</a></h2>
          
          
          <p>
@@ -4436,7 +4285,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          <pre class="screen">$ mkvmerge -o file.mkv --tags 0:tags.xml file.avi</pre>
          
          
-         <h2><a name="mkvmerge.tags.file_format">15.4. 태그 파일 형식</a></h2>
+         <h2><a name="mkvmerge.tags.file_format">14.4. 태그 파일 형식</a></h2>
          
          
          <p>
@@ -4479,7 +4328,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.data_types">15.5. 데이터 형식</a></h2>
+         <h2><a name="mkvmerge.tags.data_types">14.5. 데이터 형식</a></h2>
          
          
          <p>
@@ -4520,7 +4369,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.xml">15.6. XML 파일 형식의 알려진 태그</a></h2>
+         <h2><a name="mkvmerge.tags.xml">14.6. XML 파일 형식의 알려진 태그</a></h2>
          
          
          
@@ -4547,7 +4396,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
       String (UTF-8 string)
       Binary (binary)</pre>
          
-         <h1><a name="mkvmerge.segmentinfo">16. 세그먼트 정보 XML 파일</a></h1>
+         <h1><a name="mkvmerge.segmentinfo">15. 세그먼트 정보 XML 파일</a></h1>
          
          
          
@@ -4596,7 +4445,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
     ChapterTranslateEditionUID (unsigned integer)
     ChapterTranslateCodec (unsigned integer)
     ChapterTranslateID (binary)</pre>
-         <h1><a name="mkvmerge.file_layout">17. Matroska 파일 레이아웃</a></h1>
+         <h1><a name="mkvmerge.file_layout">16. Matroska 파일 레이아웃</a></h1>
          
          
          <p>
@@ -4664,7 +4513,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timestamp_files">18. 외부 타임스탬프 파일</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">17. 외부 타임스탬프 파일</a></h1>
          
          
          <p>
@@ -4697,7 +4546,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          </p>
          
          
-         <h2><a name="d4e6536">18.1. 타임스탬프 파일 형식 v1</a></h2>
+         <h2><a name="d4e6400">17.1. 타임스탬프 파일 형식 v1</a></h2>
          
          
          <p>
@@ -4717,7 +4566,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6560">18.2. 타임스탬프 파일 형식 v2</a></h2>
+         <h2><a name="d4e6424">17.2. 타임스탬프 파일 형식 v2</a></h2>
          
          
          
@@ -4736,7 +4585,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6575">18.3. 타임스탬프 파일 형식 v3</a></h2>
+         <h2><a name="d4e6439">17.3. 타임스탬프 파일 형식 v3</a></h2>
          
          
          <p>
@@ -4759,7 +4608,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6593">18.4. 타임스탬프 파일 형식 v4</a></h2>
+         <h2><a name="d4e6457">17.4. 타임스탬프 파일 형식 v4</a></h2>
          
          
          <p>
@@ -4770,7 +4619,7 @@ gap, 10.050
          </p>
          
          
-         <h1><a name="mkvmerge.exit_codes">19. 종료 코드</a></h1>
+         <h1><a name="mkvmerge.exit_codes">18. 종료 코드</a></h1>
          
          
          
@@ -4821,7 +4670,7 @@ gap, 10.050
             
          </ul>
          
-         <h1><a name="mkvmerge.environment_variables">20. 환경 변수</a></h1>
+         <h1><a name="mkvmerge.environment_variables">19. 환경 변수</a></h1>
          
          
          
@@ -4862,24 +4711,10 @@ gap, 10.050
                      
                   </td>
                </tr>
-               <tr>
-                  <td class="varlistoption"><span class="varname">MKVMERGE_OPTIONS</span>, <span class="varname">MKVTOOLNIX_OPTIONS</span>
-                     and its short form <span class="varname">MTX_OPTIONS</span></td>
-                  <td>
-                     
-                     <p>The content is split on white space. The resulting partial strings are
-                        treated as if it had been passed as command line options. If you need to
-                        pass special characters (e.g. spaces) then you have to escape them (see
-                        <a href="#mkvmerge.escaping">the section about escaping special
-                           characters in text</a>).
-                     </p>
-                     
-                  </td>
-               </tr>
             </tbody>
          </table>
          
-         <h1><a name="mkvmerge.seealso">21. 더 보기</a></h1>
+         <h1><a name="mkvmerge.seealso">20. 더 보기</a></h1>
          
          
          <p>
@@ -4887,7 +4722,7 @@ gap, 10.050
             
          </p>
          
-         <h1><a name="mkvmerge.www">22. WWW</a></h1>
+         <h1><a name="mkvmerge.www">21. WWW</a></h1>
          
          
          <p>

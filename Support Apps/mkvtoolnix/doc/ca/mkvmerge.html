@@ -20,20 +20,19 @@
             <li><a href="#mkvmerge.track_ids">6. Els ID de les pistes</a></li>
             <li><a href="#mkvmerge.text_files_and_charsets">7. Conversió per a fitxers de text i jocs de caràcters</a></li>
             <li><a href="#mkvmerge.option_files">8. Fitxers d'opcions</a></li>
-            <li><a href="#mkvmerge.escaping">9. Escapar caràcters especials en el text</a></li>
-            <li><a href="#mkvmerge.subtitles">10. Subtítols</a></li>
-            <li><a href="#mkvmerge.file_linking">11. Vincular els fitxers</a></li>
-            <li><a href="#mkvmerge.default_values">12. Valors per omissió</a></li>
-            <li><a href="#mkvmerge.attachments">13. Adjunts</a></li>
-            <li><a href="#mkvmerge.chapters">14. Capítols</a></li>
-            <li><a href="#mkvmerge.tags">15. Etiquetes</a></li>
-            <li><a href="#mkvmerge.segmentinfo">16. Els fitxers XML d'informació del segment</a></li>
-            <li><a href="#mkvmerge.file_layout">17. Disposició dels fitxers Matroska</a></li>
-            <li><a href="#mkvmerge.external_timestamp_files">18. Fitxers externs pels codis de temps</a></li>
-            <li><a href="#mkvmerge.exit_codes">19. Codis de sortida</a></li>
-            <li><a href="#mkvmerge.environment_variables">20. Variables d'entorn</a></li>
-            <li><a href="#mkvmerge.seealso">21. Vegeu també</a></li>
-            <li><a href="#mkvmerge.www">22. WWW</a></li>
+            <li><a href="#mkvmerge.subtitles">9. Subtítols</a></li>
+            <li><a href="#mkvmerge.file_linking">10. Vincular els fitxers</a></li>
+            <li><a href="#mkvmerge.default_values">11. Valors per omissió</a></li>
+            <li><a href="#mkvmerge.attachments">12. Adjunts</a></li>
+            <li><a href="#mkvmerge.chapters">13. Capítols</a></li>
+            <li><a href="#mkvmerge.tags">14. Etiquetes</a></li>
+            <li><a href="#mkvmerge.segmentinfo">15. Els fitxers XML d'informació del segment</a></li>
+            <li><a href="#mkvmerge.file_layout">16. Disposició dels fitxers Matroska</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">17. Fitxers externs pels codis de temps</a></li>
+            <li><a href="#mkvmerge.exit_codes">18. Codis de sortida</a></li>
+            <li><a href="#mkvmerge.environment_variables">19. Variables d'entorn</a></li>
+            <li><a href="#mkvmerge.seealso">20. Vegeu també</a></li>
+            <li><a href="#mkvmerge.www">21. WWW</a></li>
          </ul>
       </div>
       <div class="content">
@@ -3002,35 +3001,6 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
-                        <span class="parameter">nom_fitxer</span></a></td>
-                  <td>
-                     
-                     <p>
-                        Li permet al <span class="productname">mkvmerge</span>(1) sondejar el fitxer i informar del seu tipus, les
-                        pistes que conté i els ID de les pistes. Si s'empra aquesta opció, llavors
-                        l'única opció permesa serà el nom_fitxer.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        La sortida també contindrà propietats de tots els elements trobats, p. ex.,
-                        el títol del fitxer o l'idioma de la pista.
-                        
-                     </p>
-                     
-                     
-                     <div class="note">
-                        <p class="note-title">Note:</p>
-                        
-                        <p>Aquesta opció està en desús. Serà eliminada en 2018.</p>
-                        
-                     </div>
-                     
-                  </td>
-               </tr>
-               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identification_format"><span class="option">-F</span>, <span class="option">--identification-format</span>
                         <span class="parameter">format</span></a></td>
                   <td>
@@ -3038,8 +3008,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                      <p>
                         Determina el format de la sortida emprat per l'opció <a href="#mkvmerge.description.identify">--identify</a>.
                         S'admeten els següents formats: <span class="literal">text</span> (el valor per
-                        omissió si no s'empra aquesta opció), <span class="literal">verbose-text</span> i
-                        <span class="literal">json</span>.
+                        omissió si no s'empra aquesta opció) i <span class="literal">json</span>.
                         
                      </p>
                      
@@ -3056,40 +3025,6 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                            <p>Aquest format no està destinat a ser analitzat. La sortida serà traduïda a
                               l'idioma que empra el <span class="productname">mkvmerge</span>(1) (vegeu també l'opció <a href="#mkvmerge.description.ui_language">--ui-language</a>).
                            </p>
-                           
-                        </li>
-                        
-                        
-                        <li>
-                           
-                           <p>
-                              El format <span class="literal">verbose-text</span> estén el format
-                              <span class="literal">text</span> amb propietats addicionals per a cada element. La
-                              informació addicional estarà embolcallada entre claudàtors. Consisteix de
-                              parells clau/valor separats per espais, on les claus i els valors estaran
-                              separats per un signe de dos punts.
-                              
-                           </p>
-                           
-                           
-                           <p>
-                              Cada valor estarà escapat d'acord amb les regles descrites a <a href="#mkvmerge.escaping">la secció sobre escapar caràcters especials en
-                                 el text</a>.
-                              
-                           </p>
-                           
-                           
-                           <p>Aquest format no està destinat a ser analitzat. La sortida serà traduïda a
-                              l'idioma que empra el <span class="productname">mkvmerge</span>(1) (vegeu també l'opció <a href="#mkvmerge.description.ui_language">--ui-language</a>).
-                           </p>
-                           
-                           
-                           <div class="note">
-                              <p class="note-title">Note:</p>
-                              
-                              <p>Aquesta opció està en desús. Serà eliminada en 2018.</p>
-                              
-                           </div>
                            
                         </li>
                         
@@ -3979,23 +3914,10 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
-            Hi ha dos formats pels fitxers d'opcions: el format JSON i un format heretat
-            propietari. El format heretat està en desús, i està implementat pel fet que
-            és probable que es retiri en 2018.
-            
-         </p>
-         
-         
-         <h2><a name="mkvmerge.option_files.json_format">8.1. El format JSON</a></h2>
-         
-         
-         
-         <p>
-            Un nom pel fitxer d'opcions JSON haurà d'acabar en
-            «<span class="filename">.json</span>». El seu contingut haurà de ser una matriu JSON
-            vàlida que consisteixi únicament de cadenes JSON. La codificació del fitxer
-            haurà de ser en UTF-8. El fitxer no podrà començar amb un
-            <span class="foreignphrase">marcador d'ordre de bytes</span>
+            Un fitxer d'opcions amb dades en el format JSON. El seu contingut haurà de
+            ser una matriu JSON vàlida que consisteixi únicament de cadenes JSON. La
+            codificació del fitxer haurà de ser en UTF-8. El fitxer no podrà començar
+            amb un <span class="foreignphrase">marcador d'ordre de bytes</span>
             (<span class="abbrev">BOM</span>), però si hi és, serà omès.
             
          </p>
@@ -4024,84 +3946,7 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
   "una_peli.avi",
   "so.ogg"
 ]</pre>
-         
-         
-         <h2><a name="mkvmerge.option_files.legacy_format">8.2. El format heretat</a></h2>
-         
-         
-         
-         <p>
-            Hi ha diverses regles relatives als fitxers d'opcions. Les línies que
-            tinguin com a primer caràcter un coixinet (<span class="literal">#</span>) seran
-            tractades com a comentaris i ignorades. Els espais en blanc al començament i
-            final de la línia seran descartats. Cada línia haurà de contenir exactament
-            una opció.
-            
-         </p>
-         
-         
-         <p>
-            Una línia que no conté res serà ignorada. Un argument buit serà representat
-            amb la línia «<span class="literal">#EMPTY#</span>».
-            
-         </p>
-         
-         
-         <p>
-            Es poden escapar diversos caràcters, p. ex., si necessiteu que una línia que
-            comença amb un coixinet «#», no sigui interpretada com un comentari. Les
-            regles es descriuen a <a href="#mkvmerge.escaping">la secció sobre
-               escapar en el text</a>.
-            
-         </p>
-         
-         
-         <p>
-            Tingueu en compte que les barres invertides sempre s'hauran d'escapar. Els
-            coixinets s'hauran d'escapar si no inicien cap comentari.
-            
-         </p>
-         
-         
-         <p>
-            La línia d'ordres «<span class="command">mkvmerge -o "meu_fitxer.mkv" -A "una_peli.avi"
-               so.ogg</span>» es pot convertir en el següent fitxer d'opcions heretat
-            anomenat, p. ex., «<span class="filename">opcions.txt</span>»:
-            
-         </p>
-         
-         <pre class="programlisting"># Escriu al fitxer «C:\Matroska\meu_fitxer.mkv», sota Windows.
--o
-C:\\Matroska\\meu_fitxer.mkv
-# Estableix el títol a «número 65».
---title
-\h65
-# Només pren el vídeo de «una_peli.avi».
--A
-una_peli.avi
-so.ogg</pre>
-         
-         
-         <h1><a name="mkvmerge.escaping">9. Escapar caràcters especials en el text</a></h1>
-         
-         
-         <p>
-            Hi ha pocs llocs en els quals els caràcters especials en el text puguin o
-            s'hagin d'escapar. Les regles per a l'escapament són simples: cada caràcter
-            que necessiti ser escapat serà substituït amb una barra invertida seguida
-            d'un altre caràcter.
-            
-         </p>
-         
-         
-         <p>
-            Les regles són: « » (un espai) serà «\s», «"» (cometes dobles) serà
-            «\2», «:» serà «\c», «#» serà «\h», «[» serà «\b», «]» serà «\B» i «\» (una
-            única barra invertida) serà «\\».
-            
-         </p>
-         
-         <h1><a name="mkvmerge.subtitles">10. Subtítols</a></h1>
+         <h1><a name="mkvmerge.subtitles">9. Subtítols</a></h1>
          
          
          <p>
@@ -4187,7 +4032,7 @@ so.ogg</pre>
             
          </ul>
          
-         <h1><a name="mkvmerge.file_linking">11. Vincular els fitxers</a></h1>
+         <h1><a name="mkvmerge.file_linking">10. Vincular els fitxers</a></h1>
          
          
          <p>
@@ -4254,7 +4099,7 @@ so.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.default_values">12. Valors per omissió</a></h1>
+         <h1><a name="mkvmerge.default_values">11. Valors per omissió</a></h1>
          
          
          <p>
@@ -4272,7 +4117,7 @@ so.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.attachments">13. Adjunts</a></h1>
+         <h1><a name="mkvmerge.attachments">12. Adjunts</a></h1>
          
          
          <p>
@@ -4310,7 +4155,7 @@ so.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.chapters">14. Capítols</a></h1>
+         <h1><a name="mkvmerge.chapters">13. Capítols</a></h1>
          
          
          <p>
@@ -4333,7 +4178,7 @@ so.ogg</pre>
          </p>
          
          
-         <h2><a name="mkvmerge.chapters.simple">14.1. El format de capítols senzill</a></h2>
+         <h2><a name="mkvmerge.chapters.simple">13.1. El format de capítols senzill</a></h2>
          
          
          
@@ -4371,7 +4216,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.chapters.xml">14.2. El format de capítols basat en XML</a></h2>
+         <h2><a name="mkvmerge.chapters.xml">13.2. El format de capítols basat en XML</a></h2>
          
          
          <p>
@@ -4469,7 +4314,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
           ChapterProcessData (binari)</pre>
          
          
-         <h2><a name="d4e6026">14.3. Notes generals</a></h2>
+         <h2><a name="d4e5890">13.3. Notes generals</a></h2>
          
          
          <p>
@@ -4497,11 +4342,11 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          </p>
          
          
-         <h1><a name="mkvmerge.tags">15. Etiquetes</a></h1>
+         <h1><a name="mkvmerge.tags">14. Etiquetes</a></h1>
          
          
          
-         <h2><a name="d4e6092">15.1. Introducció</a></h2>
+         <h2><a name="d4e5955">14.1. Introducció</a></h2>
          
          
          
@@ -4518,7 +4363,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.scope">15.2. Àmbit de les etiquetes</a></h2>
+         <h2><a name="mkvmerge.tags.scope">14.2. Àmbit de les etiquetes</a></h2>
          
          
          
@@ -4561,7 +4406,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.example">15.3. Exemple</a></h2>
+         <h2><a name="mkvmerge.tags.example">14.3. Exemple</a></h2>
          
          
          <p>
@@ -4577,7 +4422,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          <pre class="screen">$ mkvmerge -o fitxer.mkv --tags 0:etiquetes.xml fitxer.avi</pre>
          
          
-         <h2><a name="mkvmerge.tags.file_format">15.4. Format del fitxer d'etiquetes</a></h2>
+         <h2><a name="mkvmerge.tags.file_format">14.4. Format del fitxer d'etiquetes</a></h2>
          
          
          <p>
@@ -4622,7 +4467,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.data_types">15.5. Tipus de dades</a></h2>
+         <h2><a name="mkvmerge.tags.data_types">14.5. Tipus de dades</a></h2>
          
          
          <p>
@@ -4665,7 +4510,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.xml">15.6. Etiquetes conegudes per al format de fitxer en XML</a></h2>
+         <h2><a name="mkvmerge.tags.xml">14.6. Etiquetes conegudes per al format de fitxer en XML</a></h2>
          
          
          
@@ -4692,7 +4537,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
       String (cadena en UTF-8)
       Binary (binari)</pre>
          
-         <h1><a name="mkvmerge.segmentinfo">16. Els fitxers XML d'informació del segment</a></h1>
+         <h1><a name="mkvmerge.segmentinfo">15. Els fitxers XML d'informació del segment</a></h1>
          
          
          
@@ -4741,7 +4586,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
     ChapterTranslateEditionUID (enter sense signe)
     ChapterTranslateCodec (enter sense signe)
     ChapterTranslateID (binari)</pre>
-         <h1><a name="mkvmerge.file_layout">17. Disposició dels fitxers Matroska</a></h1>
+         <h1><a name="mkvmerge.file_layout">16. Disposició dels fitxers Matroska</a></h1>
          
          
          <p>
@@ -4814,7 +4659,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timestamp_files">18. Fitxers externs pels codis de temps</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">17. Fitxers externs pels codis de temps</a></h1>
          
          
          <p>
@@ -4849,7 +4694,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          </p>
          
          
-         <h2><a name="d4e6543">18.1.  Format v1 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6407">17.1.  Format v1 pel fitxer del codi de temps</a></h2>
          
          
          <p>
@@ -4870,7 +4715,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6567">18.2.  Format v2 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6431">17.2.  Format v2 pel fitxer del codi de temps</a></h2>
          
          
          
@@ -4890,7 +4735,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6582">18.3.  Format v3 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6446">17.3.  Format v3 pel fitxer del codi de temps</a></h2>
          
          
          <p>
@@ -4914,7 +4759,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6600">18.4.  Format v4 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6464">17.4.  Format v4 pel fitxer del codi de temps</a></h2>
          
          
          <p>
@@ -4924,7 +4769,7 @@ gap, 10.050
          </p>
          
          
-         <h1><a name="mkvmerge.exit_codes">19. Codis de sortida</a></h1>
+         <h1><a name="mkvmerge.exit_codes">18. Codis de sortida</a></h1>
          
          
          
@@ -4976,7 +4821,7 @@ gap, 10.050
             
          </ul>
          
-         <h1><a name="mkvmerge.environment_variables">20. Variables d'entorn</a></h1>
+         <h1><a name="mkvmerge.environment_variables">19. Variables d'entorn</a></h1>
          
          
          
@@ -5016,24 +4861,10 @@ gap, 10.050
                      
                   </td>
                </tr>
-               <tr>
-                  <td class="varlistoption"><span class="varname">MKVMERGE_OPTIONS</span>, <span class="varname">MKVTOOLNIX_OPTIONS</span> i
-                     la seva forma abreujada <span class="varname">MTX_OPTIONS</span></td>
-                  <td>
-                     
-                     <p>El contingut serà dividit en espais en blanc. Les cadenes parcials
-                        resultants seran tractades com si haguessin estat passades com a opcions a
-                        la línia d'ordres. Si necessiteu passar caràcters especials (p. ex., espais)
-                        llavors els haureu d'escapar (vegeu <a href="#mkvmerge.escaping">la
-                           secció sobre escapar caràcters especials en el text</a>).
-                     </p>
-                     
-                  </td>
-               </tr>
             </tbody>
          </table>
          
-         <h1><a name="mkvmerge.seealso">21. Vegeu també</a></h1>
+         <h1><a name="mkvmerge.seealso">20. Vegeu també</a></h1>
          
          
          <p>
@@ -5041,7 +4872,7 @@ gap, 10.050
             
          </p>
          
-         <h1><a name="mkvmerge.www">22. WWW</a></h1>
+         <h1><a name="mkvmerge.www">21. WWW</a></h1>
          
          
          <p>

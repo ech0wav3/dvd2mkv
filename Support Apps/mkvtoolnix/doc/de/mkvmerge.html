@@ -21,20 +21,19 @@
             <li><a href="#mkvmerge.track_ids">6. Spur-IDs</a></li>
             <li><a href="#mkvmerge.text_files_and_charsets">7. Umwandlungen von Textdateien und Zeichensätzen</a></li>
             <li><a href="#mkvmerge.option_files">8. Optionsdateien</a></li>
-            <li><a href="#mkvmerge.escaping">9. Sonderzeichen in Text maskieren</a></li>
-            <li><a href="#mkvmerge.subtitles">10. Untertitel</a></li>
-            <li><a href="#mkvmerge.file_linking">11. Verknüpfen von Dateien</a></li>
-            <li><a href="#mkvmerge.default_values">12. Vorgabewerte</a></li>
-            <li><a href="#mkvmerge.attachments">13. Anhänge</a></li>
-            <li><a href="#mkvmerge.chapters">14. Kapitel</a></li>
-            <li><a href="#mkvmerge.tags">15. Tags</a></li>
-            <li><a href="#mkvmerge.segmentinfo">16. Die Segmentinformations-XML-Dateien</a></li>
-            <li><a href="#mkvmerge.file_layout">17. Matroska-Dateilayout</a></li>
-            <li><a href="#mkvmerge.external_timestamp_files">18. Externe Zeitstempeldateien</a></li>
-            <li><a href="#mkvmerge.exit_codes">19. Rückgabewerte</a></li>
-            <li><a href="#mkvmerge.environment_variables">20. Umgebungsvariablen</a></li>
-            <li><a href="#mkvmerge.seealso">21. Siehe auch</a></li>
-            <li><a href="#mkvmerge.www">22. WWW</a></li>
+            <li><a href="#mkvmerge.subtitles">9. Untertitel</a></li>
+            <li><a href="#mkvmerge.file_linking">10. Verknüpfen von Dateien</a></li>
+            <li><a href="#mkvmerge.default_values">11. Vorgabewerte</a></li>
+            <li><a href="#mkvmerge.attachments">12. Anhänge</a></li>
+            <li><a href="#mkvmerge.chapters">13. Kapitel</a></li>
+            <li><a href="#mkvmerge.tags">14. Tags</a></li>
+            <li><a href="#mkvmerge.segmentinfo">15. Die Segmentinformations-XML-Dateien</a></li>
+            <li><a href="#mkvmerge.file_layout">16. Matroska-Dateilayout</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">17. Externe Zeitstempeldateien</a></li>
+            <li><a href="#mkvmerge.exit_codes">18. Rückgabewerte</a></li>
+            <li><a href="#mkvmerge.environment_variables">19. Umgebungsvariablen</a></li>
+            <li><a href="#mkvmerge.seealso">20. Siehe auch</a></li>
+            <li><a href="#mkvmerge.www">21. WWW</a></li>
          </ul>
       </div>
       <div class="content">
@@ -3010,36 +3009,6 @@ $ mkvmerge -o Ausgabe.mkv '(' Datei.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><a name="mkvmerge.description.identify_verbose"><span class="option">-I</span>, <span class="option">--identify-verbose</span>
-                        <span class="parameter">Dateiname</span></a></td>
-                  <td>
-                     
-                     <p>
-                        wird <span class="productname">mkvmerge</span>(1) veranlassen, die einzelne Datei eingehend zu untersuchen und
-                        ihren Typ, die in der Datei enthaltenen Spuren und ihre Spur-IDs zu
-                        melden. Falls diese Option benutzt wird, ist der Dateiname die einzige
-                        weitere erlaubte Option.
-                        
-                     </p>
-                     
-                     
-                     <p>
-                        Die Ausgabe wird ebenfalls die Eigenschaften aller gefundenen Elemente
-                        enthalten, z.B. den Dateititel oder die Spursprache.
-                        
-                     </p>
-                     
-                     
-                     <div class="note">
-                        <p class="note-title">Note:</p>
-                        
-                        <p>Diese Option ist überholt. Sie wird in 2018 entfernt werden.</p>
-                        
-                     </div>
-                     
-                  </td>
-               </tr>
-               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.identification_format"><span class="option">-F</span>, <span class="option">--identification-format</span>
                         <span class="parameter">Format</span></a></td>
                   <td>
@@ -3047,8 +3016,8 @@ $ mkvmerge -o Ausgabe.mkv '(' Datei.mkv ')'</pre>
                      <p>
                         Legt das Format für die Ausgabe der Option <a href="#mkvmerge.description.identify">--identify</a>
                         fest. Die folgenden Formate werden unterstützt: <span class="literal">text</span> (das
-                        Standardformat, wenn diese Option nicht genutzt wird),
-                        <span class="literal">verbose-text</span> und <span class="literal">json</span>.
+                        Standardformat, wenn diese Option nicht genutzt wird) und
+                        <span class="literal">json</span>.
                         
                      </p>
                      
@@ -3065,40 +3034,6 @@ $ mkvmerge -o Ausgabe.mkv '(' Datei.mkv ')'</pre>
                            <p>Dieses Format wurde nicht dafür entworfen, geparset zu werden. Die Ausgabe
                               wird in die von <span class="productname">mkvmerge</span>(1) benutzte Sprache übersetzt (siehe auch <a href="#mkvmerge.description.ui_language">--ui-language</a>).
                            </p>
-                           
-                        </li>
-                        
-                        
-                        <li>
-                           
-                           <p>
-                              Das Format <span class="literal">verbose-text</span> erweitert das Format
-                              <span class="literal">text</span> um zusätzliche Eigeschaften zu jedem Element. Die
-                              zusätzlichen Informationen werden in eckige Klammern eingeschlossen. Sie
-                              bestehen aus durch Leerzeichen getrennten Schlüssel/Wert-Paaren, bei denen
-                              Schlüssel und Werte durch einen Doppelpunkt getrennt werden.
-                              
-                           </p>
-                           
-                           
-                           <p>
-                              Jeder Wert wird entsprechend den im <a href="#mkvmerge.escaping">Abschnitt über Maskieren von Sonderzeichen in
-                                 Text</a> beschriebenen Regeln maskiert.
-                              
-                           </p>
-                           
-                           
-                           <p>Dieses Format wurde nicht dafür entworfen, geparset zu werden. Die Ausgabe
-                              wird in die von <span class="productname">mkvmerge</span>(1) benutzte Sprache übersetzt (siehe auch <a href="#mkvmerge.description.ui_language">--ui-language</a>).
-                           </p>
-                           
-                           
-                           <div class="note">
-                              <p class="note-title">Note:</p>
-                              
-                              <p>Diese Option ist überholt. Sie wird in 2018 entfernt werden.</p>
-                              
-                           </div>
                            
                         </li>
                         
@@ -4003,23 +3938,10 @@ Spur-ID 1: Ton (A_MPEG/L3)</pre>
          
          
          <p>
-            Es gibt zwei Formate für Optionsdateien: ein JSON-Format sowie ein
-            proprietäres Altformat. Das Altformat ist überholt, und seine Unterstützung
-            wird voraussichtlich in 2018 entfernt werden.
-            
-         </p>
-         
-         
-         <h2><a name="mkvmerge.option_files.json_format">8.1. Das JSON-Format</a></h2>
-         
-         
-         
-         <p>
-            Der Name einer JSON-Options-Datei muss in '<span class="filename">.json</span>'
-            enden. Der Inhalt muss aus einem gültigen JSON-Array bestehen, das
-            ausschließlich JSON-Zeichenketten enthält. Der Kodierung der Datei muss
-            UTF-8 sein. Die Datei sollte nicht mit einer
-            <span class="foreignphrase">Byte-Reihenfolgemarkierung</span>
+            Eine Options-Datei enthält Daten im JSON-Format. Ihr Inhalt muss aus einem
+            gültigen JSON-Array bestehen, das ausschließlich JSON-Zeichenketten
+            enthält. Der Kodierung der Datei muss UTF-8 sein. Die Datei sollte nicht mit
+            einer <span class="foreignphrase">Byte-Reihenfolgemarkierung</span>
             (<span class="abbrev">BOM</span>) beginnen; tut sie es aber doch, so wird die
             Markierung übersprungen.
             
@@ -4049,84 +3971,7 @@ Spur-ID 1: Ton (A_MPEG/L3)</pre>
   "ein Film.avi",
   "Ton.ogg"
 ]</pre>
-         
-         
-         <h2><a name="mkvmerge.option_files.legacy_format">8.2. Das Altformat</a></h2>
-         
-         
-         
-         <p>
-            Es gibt mehrere Regeln bezüglich Optionsdateien. Zeilen, deren erstes
-            Nichtleerraumzeichen ein Rautenzeichen (»<span class="literal">#</span>«) ist, werden
-            als Kommentare betrachtet und ignoriert. Leerräume am Anfang und Ende einer
-            Zeile werden entfernt. Jede Zeile muss genau eine Option enthalten.
-            
-         </p>
-         
-         
-         <p>
-            Eine Zeile, die sonst nichts enthält, wird auch ignoriert. Ein leeres
-            Argument wird durch die Zeile »<span class="literal">#EMPTY#</span>« dargestellt.
-            
-         </p>
-         
-         
-         <p>
-            Verschiedene Zeichen können maskiert werden, z.B. falls Sie möchten, dass
-            eine Nichtkommentarzeile mit einem »#« beginnt. Die Regeln werden im <a href="#mkvmerge.escaping">Abschnitt über Maskieren von Text</a>
-            beschrieben.
-            
-         </p>
-         
-         
-         <p>
-            Beachten Sie, dass Rückwärtsschrägstriche immer maskiert werden
-            müssen. Rautenzeichen (»#«) müssen maskiert werden, falls sie keine
-            Kommentarzeile einleiten.
-            
-         </p>
-         
-         
-         <p>
-            Die Befehlszeile »<span class="command">mkvmerge -o "Meine Datei.mkv" -A "ein Film.avi"
-               Ton.ogg</span>« kann in die folgende Altdaten-Optionsdatei z.B. mit dem
-            Namen '<span class="filename">Optionen.txt</span>' umgewandelt werden:
-            
-         </p>
-         
-         <pre class="programlisting"># Unter Windows in die Datei »c:\Matroska\meine Datei.mkv« schreiben
--o
-c:\\Matroska\\meine Datei.mkv
-# den Titel auf »#65« setzen
---title
-\h65
-# nur das Video aus »ein Film.avi« nehmen
--A
-ein Film.avi
-Ton.ogg</pre>
-         
-         
-         <h1><a name="mkvmerge.escaping">9. Sonderzeichen in Text maskieren</a></h1>
-         
-         
-         <p>
-            Es gibt ein paar Stellen, an denen Sonderzeichen in Text maskiert werden
-            müssen oder sollen. Die Regeln zum Maskieren sind einfach: Jedes Zeichen,
-            das maskiert werden soll, wird durch einen Rückwärtsschrägstrich gefolgt von
-            einem weiteren Zeichen ersetzt.
-            
-         </p>
-         
-         
-         <p>
-            Die Regeln lauten: » « (ein Leerzeichen) wird »\s«, »"« (doppeltes
-            Anführungszeichen) wird »\2«, »:« wird »\c«, »#« wird »\h«, »[« wird »\b«,
-            »]« wird »\B« und »\« (ein einfacher Rückwärtsschrägstrich selbst) wird
-            »\\«.
-            
-         </p>
-         
-         <h1><a name="mkvmerge.subtitles">10. Untertitel</a></h1>
+         <h1><a name="mkvmerge.subtitles">9. Untertitel</a></h1>
          
          
          <p>
@@ -4210,7 +4055,7 @@ Ton.ogg</pre>
             
          </ul>
          
-         <h1><a name="mkvmerge.file_linking">11. Verknüpfen von Dateien</a></h1>
+         <h1><a name="mkvmerge.file_linking">10. Verknüpfen von Dateien</a></h1>
          
          
          <p>
@@ -4279,7 +4124,7 @@ Ton.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.default_values">12. Vorgabewerte</a></h1>
+         <h1><a name="mkvmerge.default_values">11. Vorgabewerte</a></h1>
          
          
          <p>
@@ -4297,7 +4142,7 @@ Ton.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.attachments">13. Anhänge</a></h1>
+         <h1><a name="mkvmerge.attachments">12. Anhänge</a></h1>
          
          
          <p>
@@ -4337,7 +4182,7 @@ Ton.ogg</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.chapters">14. Kapitel</a></h1>
+         <h1><a name="mkvmerge.chapters">13. Kapitel</a></h1>
          
          
          <p>
@@ -4359,7 +4204,7 @@ Ton.ogg</pre>
          </p>
          
          
-         <h2><a name="mkvmerge.chapters.simple">14.1. Das einfache Kapitelformat</a></h2>
+         <h2><a name="mkvmerge.chapters.simple">13.1. Das einfache Kapitelformat</a></h2>
          
          
          
@@ -4397,7 +4242,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
          
          
          
-         <h2><a name="mkvmerge.chapters.xml">14.2. Das XML-basierte Kapitelformat</a></h2>
+         <h2><a name="mkvmerge.chapters.xml">13.2. Das XML-basierte Kapitelformat</a></h2>
          
          
          <p>
@@ -4496,7 +4341,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
           ChapterProcessData (binary)</pre>
          
          
-         <h2><a name="d4e6045">14.3. Allgemeine Hinweise</a></h2>
+         <h2><a name="d4e5909">13.3. Allgemeine Hinweise</a></h2>
          
          
          <p>
@@ -4526,11 +4371,11 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
          </p>
          
          
-         <h1><a name="mkvmerge.tags">15. Tags</a></h1>
+         <h1><a name="mkvmerge.tags">14. Tags</a></h1>
          
          
          
-         <h2><a name="d4e6111">15.1. Einleitung</a></h2>
+         <h2><a name="d4e5974">14.1. Einleitung</a></h2>
          
          
          
@@ -4547,7 +4392,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.scope">15.2. Geltungsbereich der Tags</a></h2>
+         <h2><a name="mkvmerge.tags.scope">14.2. Geltungsbereich der Tags</a></h2>
          
          
          
@@ -4593,7 +4438,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.example">15.3. Beispiel</a></h2>
+         <h2><a name="mkvmerge.tags.example">14.3. Beispiel</a></h2>
          
          
          <p>
@@ -4608,7 +4453,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
          <pre class="screen">$ mkvmerge -o Datei.mkv --tags 0:Tags.xml Datei.avi</pre>
          
          
-         <h2><a name="mkvmerge.tags.file_format">15.4. Format der Tag-Datei</a></h2>
+         <h2><a name="mkvmerge.tags.file_format">14.4. Format der Tag-Datei</a></h2>
          
          
          <p>
@@ -4651,7 +4496,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.data_types">15.5. Datentypen</a></h2>
+         <h2><a name="mkvmerge.tags.data_types">14.5. Datentypen</a></h2>
          
          
          <p>
@@ -4695,7 +4540,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.xml">15.6. Bekannte Tags des XML-Dateiformats</a></h2>
+         <h2><a name="mkvmerge.tags.xml">14.6. Bekannte Tags des XML-Dateiformats</a></h2>
          
          
          
@@ -4722,7 +4567,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
       String (UTF-8 string)
       Binary (binary)</pre>
          
-         <h1><a name="mkvmerge.segmentinfo">16. Die Segmentinformations-XML-Dateien</a></h1>
+         <h1><a name="mkvmerge.segmentinfo">15. Die Segmentinformations-XML-Dateien</a></h1>
          
          
          
@@ -4771,7 +4616,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
     ChapterTranslateEditionUID (unsigned integer)
     ChapterTranslateCodec (unsigned integer)
     ChapterTranslateID (binary)</pre>
-         <h1><a name="mkvmerge.file_layout">17. Matroska-Dateilayout</a></h1>
+         <h1><a name="mkvmerge.file_layout">16. Matroska-Dateilayout</a></h1>
          
          
          <p>
@@ -4843,7 +4688,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timestamp_files">18. Externe Zeitstempeldateien</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">17. Externe Zeitstempeldateien</a></h1>
          
          
          <p>
@@ -4877,7 +4722,7 @@ CHAPTER03NAME=Baby stellt das Haus auf den Kopf</pre>
          </p>
          
          
-         <h2><a name="d4e6561">18.1. Zeitstempeldateiformat v1</a></h2>
+         <h2><a name="d4e6425">17.1. Zeitstempeldateiformat v1</a></h2>
          
          
          <p>
@@ -4898,7 +4743,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6585">18.2. Zeitstempeldateiformat v2</a></h2>
+         <h2><a name="d4e6449">17.2. Zeitstempeldateiformat v2</a></h2>
          
          
          
@@ -4918,7 +4763,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6600">18.3. Zeitstempeldateiformat v3</a></h2>
+         <h2><a name="d4e6464">17.3. Zeitstempeldateiformat v3</a></h2>
          
          
          <p>
@@ -4941,7 +4786,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6618">18.4. Zeitstempeldateiformat v4</a></h2>
+         <h2><a name="d4e6482">17.4. Zeitstempeldateiformat v4</a></h2>
          
          
          <p>
@@ -4952,7 +4797,7 @@ gap, 10.050
          </p>
          
          
-         <h1><a name="mkvmerge.exit_codes">19. Rückgabewerte</a></h1>
+         <h1><a name="mkvmerge.exit_codes">18. Rückgabewerte</a></h1>
          
          
          
@@ -5005,7 +4850,7 @@ gap, 10.050
             
          </ul>
          
-         <h1><a name="mkvmerge.environment_variables">20. Umgebungsvariablen</a></h1>
+         <h1><a name="mkvmerge.environment_variables">19. Umgebungsvariablen</a></h1>
          
          
          
@@ -5047,24 +4892,10 @@ gap, 10.050
                      
                   </td>
                </tr>
-               <tr>
-                  <td class="varlistoption"><span class="varname">MKVMERGE_OPTIONS</span>, <span class="varname">MKVTOOLNIX_OPTIONS</span>
-                     und ihre Kurzform <span class="varname">MTX_OPTIONS</span></td>
-                  <td>
-                     
-                     <p>Der Inhalt wird bei Leerräumen aufgeteilt. Die resultierenden
-                        Teilzeichenketten werden behandelt, als ob sie als Befehlszeilenoptionen
-                        übergeben worden wären. Falls Sie Sonderzeichen übergeben möchten
-                        (z.B. Leerzeichen), müssen Sie sie maskieren (siehe <a href="#mkvmerge.escaping">den Abschnitt über Maskieren von Sonderzeichen
-                           in Text</a>).
-                     </p>
-                     
-                  </td>
-               </tr>
             </tbody>
          </table>
          
-         <h1><a name="mkvmerge.seealso">21. Siehe auch</a></h1>
+         <h1><a name="mkvmerge.seealso">20. Siehe auch</a></h1>
          
          
          <p>
@@ -5072,7 +4903,7 @@ gap, 10.050
             
          </p>
          
-         <h1><a name="mkvmerge.www">22. WWW</a></h1>
+         <h1><a name="mkvmerge.www">21. WWW</a></h1>
          
          
          <p>
