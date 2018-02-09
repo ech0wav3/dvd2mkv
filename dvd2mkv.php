@@ -9,7 +9,7 @@ if (file_exists("settings.conf")) {
 }
 
 ###### Version #######
-$d2m_ver = "1.0";
+$d2m_ver = "2018.02";
 
 ## Declare global variables
 if ($win == 1) {
@@ -698,14 +698,13 @@ if ($complete == 1) {
 			fwrite($avsfile, "LoadPlugin(\"" . $qt_loc . "\")" . "\r\n");
 			fwrite($avsfile, "MPEG2Source(\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
 			if ($post_proc == 2 || $post_proc == 3) {
-				fwrite($avsfile, "deint = TDeint(mode=2, mtnmode=3, blim=100)" . "\r\n");
-			}
-			if ($post_proc == 3) {
-				fwrite($avsfile, "tfm(cthresh=4, slow=2, MI=30, clip2=deint, d2v=\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
+				fwrite($avsfile, "A=Last\r\n");
+				fwrite($avsfile, "B=A.QTGMC()\r\n");
+				fwrite($avsfile, "C=A\r\n");
+				fwrite($avsfile, "D=A.TDeint(tryWeave=true,mode=2,cthresh=3,mtnmode=3,blim=100,slow=2,edeint=B)\r\n");
+				fwrite($avsfile, "ConditionalFilter(A,D,C, \"IsCombed(5)\", \"equals\", \"true\", show=false)\r\n");
 			} elseif ($post_proc == 1) {
 				fwrite($avsfile, "tfm(d2v=\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
-			} elseif ($post_proc == 2) {
-				fwrite($avsfile, "tfm(cthresh=4, slow=2, MI=30, clip2=deint, d2v=\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
 			}
 			if ($post_proc == 1 || $post_proc == 3) {
 				if ($content_type == 1) {
@@ -745,22 +744,21 @@ if ($complete == 1) {
 		fwrite($avsfile, "LoadPlugin(\"" . $qt_loc . "\")" . "\r\n");
 		fwrite($avsfile, "MPEG2Source(\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
 		if ($post_proc == 2 || $post_proc == 3) {
-				fwrite($avsfile, "deint = TDeint(mode=2, mtnmode=3, blim=100)" . "\r\n");
+			fwrite($avsfile, "A=Last\r\n");
+			fwrite($avsfile, "B=A.QTGMC()\r\n");
+			fwrite($avsfile, "C=A\r\n");
+			fwrite($avsfile, "D=A.TDeint(tryWeave=true,mode=2,cthresh=3,mtnmode=3,blim=100,slow=2,edeint=B)\r\n");
+			fwrite($avsfile, "ConditionalFilter(A,D,C, \"IsCombed(5)\", \"equals\", \"true\", show=false)\r\n");
+		} elseif ($post_proc == 1) {
+			fwrite($avsfile, "tfm(d2v=\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
+		}
+		if ($post_proc == 1 || $post_proc == 3) {
+			if ($content_type == 1) {
+				fwrite($avsfile, "TDecimate(mode=1)" . "\r\n");
+			} elseif ($content_type == 0) {
+				fwrite($avsfile, "TDecimate()" . "\r\n");
 			}
-			if ($post_proc == 3) {
-				fwrite($avsfile, "tfm(cthresh=4, slow=2, MI=30, clip2=deint, d2v=\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
-			} elseif ($post_proc == 1) {
-				fwrite($avsfile, "tfm(d2v=\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
-			} elseif ($post_proc == 2) {
-				fwrite($avsfile, "tfm(cthresh=4, slow=2, MI=30, clip2=deint, d2v=\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
-			}
-			if ($post_proc == 1 || $post_proc == 3) {
-				if ($content_type == 1) {
-					fwrite($avsfile, "TDecimate(mode=1)" . "\r\n");
-				} elseif ($content_type == 0) {
-					fwrite($avsfile, "TDecimate()" . "\r\n");
-				}
-			}
+		}
 		if ($aspect_ratio == 1) {
 			fwrite($avsfile, "BicubicResize(640,480,0,0.5)" . "\r\n");
 		} else {
