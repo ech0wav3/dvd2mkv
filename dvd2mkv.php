@@ -694,8 +694,9 @@ if ($complete == 1) {
 			fwrite($avsfile, "LoadPlugin(\"" . $de_loc . "\")" . "\r\n");
 			fwrite($avsfile, "LoadPlugin(\"" . $nn_loc . "\")" . "\r\n");
 			fwrite($avsfile, "LoadPlugin(\"" . $rg_loc . "\")" . "\r\n");
-			fwrite($avsfile, "LoadPlugin(\"" . $sm_loc . "\")" . "\r\n");
-			fwrite($avsfile, "LoadPlugin(\"" . $qt_loc . "\")" . "\r\n");
+			fwrite($avsfile, "LoadPlugin(\"" . $dc_loc . "\")" . "\r\n");
+			fwrite($avsfile, "Import(\"" . $sm_loc . "\")" . "\r\n");
+			fwrite($avsfile, "Import(\"" . $qt_loc . "\")" . "\r\n");
 			fwrite($avsfile, "MPEG2Source(\"" . $d2v_destination[$i] . ".d2v\")" . "\r\n");
 			if ($post_proc == 2 || $post_proc == 3) {
 				fwrite($avsfile, "A=Last\r\n");
@@ -740,8 +741,9 @@ if ($complete == 1) {
 		fwrite($avsfile, "LoadPlugin(\"" . $de_loc . "\")" . "\r\n");
 		fwrite($avsfile, "LoadPlugin(\"" . $nn_loc . "\")" . "\r\n");
 		fwrite($avsfile, "LoadPlugin(\"" . $rg_loc . "\")" . "\r\n");
-		fwrite($avsfile, "LoadPlugin(\"" . $sm_loc . "\")" . "\r\n");
-		fwrite($avsfile, "LoadPlugin(\"" . $qt_loc . "\")" . "\r\n");
+		fwrite($avsfile, "LoadPlugin(\"" . $dc_loc . "\")" . "\r\n");
+		fwrite($avsfile, "Import(\"" . $sm_loc . "\")" . "\r\n");
+		fwrite($avsfile, "Import(\"" . $qt_loc . "\")" . "\r\n");
 		fwrite($avsfile, "MPEG2Source(\"" . $d2v_destination[1] . ".d2v\")" . "\r\n");
 		if ($post_proc == 2 || $post_proc == 3) {
 			fwrite($avsfile, "A=Last\r\n");
