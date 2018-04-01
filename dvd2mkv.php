@@ -422,9 +422,9 @@ while ($i <= $num_items) {
 	echo "\n";
 	
 	# Question 19
-	$next_pri_audio_title = $audio_title[$i][$h-1];
+	$next_pri_audio_title = $audio_title[$i-1][$h];
 	if ($next_pri_audio_title != "") {
-		echo "What should the title of the primary audio track be?\n[ $sb $next_pri_audio_title" . $eb . "]: ";
+		echo "What should the title of the primary audio track be?\n[$sb $next_pri_audio_title" . $eb . "]: ";
 	} else {
 		echo "What should the title of the primary audio track be?\n[ ]: ";
 	}
@@ -460,10 +460,12 @@ while ($i <= $num_items) {
 			echo "\n";
 		
 			# Question 21 (conditional)
-			if ($audio_stream[$i][$x-1] == "") {
+			if ($audio_stream[$i-1][$x] == "") {
 				$next_additional_audio_stream = $default_additional_audio_stream;
-			} elseif ($audio_stream[$i][$x-1] != "" && $audio_stream[$i][$x-1] != $default_additional_audio_stream) {
-				$next_additional_audio_stream = $audio_stream[$i][$x-1];
+			} elseif ($audio_stream[$i-1][$x] != "" && $audio_stream[$i-1][$x] != $default_additional_audio_stream) {
+				$next_additional_audio_stream = $audio_stream[$i-1][$x];
+			} else {
+				$next_additional_audio_stream = $default_additional_audio_stream;
 			}
 			if ($additional_audio_type[$i][$x] == 0) {
 				echo "Which stream contains the additional audio?\n[$sb $next_additional_audio_stream" . $eb . "]: ";
@@ -475,7 +477,7 @@ while ($i <= $num_items) {
 				$audio_stream[$i][$x] = $next_additional_audio_stream;
 			} else {
 				$audio_stream[$i][$x] = trim($answer);
-				$default_additional_audio_stream = trim($answer);
+				#$default_additional_audio_stream = trim($answer);
 			}
 			echo "\n";
 		
@@ -500,10 +502,10 @@ while ($i <= $num_items) {
 			echo "\n";
 		
 			# Question 23 (conditional)
-			$next_sec_audio_title = $audio_title[$i][$x-1];
-			if ($audio_type[$i][$x] == 0) {
+			$next_sec_audio_title = $audio_title[$i-1][$x];
+			if ($additional_audio_type[$i][$x] == 0) {
 				if ($next_sec_audio_title != "") {
-					echo "What should the title of this additional audio track be?\n[ $sb $next_sec_audio_title" . $eb . "]: ";
+					echo "What should the title of this additional audio track be?\n[$sb $next_sec_audio_title" . $eb . "]: ";
 				} else {
 					echo "What should the title of this additional audio track be?\n[ ]: ";
 				}
