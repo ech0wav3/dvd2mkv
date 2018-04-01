@@ -422,9 +422,16 @@ while ($i <= $num_items) {
 	echo "\n";
 	
 	# Question 19
-	echo "What should the title of the primary audio track be?\n[ ]: ";
+	$next_pri_audio_title = $audio_title[$i][$h-1];
+	if ($next_pri_audio_title != "") {
+		echo "What should the title of the primary audio track be?\n[ $sb $next_pri_audio_title" . $eb . "]: ";
+	} else {
+		echo "What should the title of the primary audio track be?\n[ ]: ";
+	}
 	$answer = fgets($handle);
-	if (trim($answer) != "") {
+	if (trim($answer) == "" && $next_pri_audio_title != "") {
+		$audio_title[$i][$h] = $next_pri_audio_title;
+	} elseif (trim($answer) != "") {
 		$audio_title[$i][$h] = trim($answer);
 	} else {
 		echo "Invalid answer. Defaulting to a generic title.";
@@ -437,15 +444,14 @@ while ($i <= $num_items) {
 	if ($audio_quantity[$i] != 1) {
 		while ($x <= ($audio_quantity[$i] - 1)) {
 			echo $st . "Additional Audio " . $x . "$et\n";
-			$default_additional_audio_stream = "0x8" . $x;
 	
 			# Question 20 (conditional)
 			echo "Does this audio track contain additional audio or director's comments?\n[$sb dc$eb /$sp aa ]: ";
 			$answer = fgets($handle);
 			if (trim($answer) == "dc" || trim($answer) == "") {
-				$audio_type[$i][$x] = 1;
+				$additional_audio_type[$i][$x] = 1;
 			} elseif (trim($answer) == "aa") {
-				$audio_type[$i][$x] = 0;
+				$additional_audio_type[$i][$x] = 0;
 			} else {
 				echo "Invalid answer. Defaulting to director's comments.";
 				echo "\n";
@@ -454,14 +460,19 @@ while ($i <= $num_items) {
 			echo "\n";
 		
 			# Question 21 (conditional)
+			if ($audio_stream[$i][$x-1] == "") {
+				$next_additional_audio_stream = $default_additional_audio_stream;
+			} elseif ($audio_stream[$i][$x-1] != "" && $audio_stream[$i][$x-1] != $default_additional_audio_stream) {
+				$next_additional_audio_stream = $audio_stream[$i][$x-1];
+			}
 			if ($additional_audio_type[$i][$x] == 0) {
-				echo "Which stream contains the additional audio?\n[$sb $default_additional_audio_stream" . $eb . "]: ";
+				echo "Which stream contains the additional audio?\n[$sb $next_additional_audio_stream" . $eb . "]: ";
 			} else {
-				echo "Which stream contains the director's comments?\n[$sb $default_additional_audio_stream" . $eb . "]: ";
+				echo "Which stream contains the director's comments?\n[$sb $next_additional_audio_stream" . $eb . "]: ";
 			}
 			$answer = fgets($handle);
 			if (trim($answer) == "") {
-				$audio_stream[$i][$x] = $default_additional_audio_stream;
+				$audio_stream[$i][$x] = $next_additional_audio_stream;
 			} else {
 				$audio_stream[$i][$x] = trim($answer);
 				$default_additional_audio_stream = trim($answer);
@@ -469,7 +480,7 @@ while ($i <= $num_items) {
 			echo "\n";
 		
 			# Question 22 (conditional)
-			if ($audio_type[$i][$x] == 0) {
+			if ($additional_audio_type[$i][$x] == 0) {
 				echo "What language is the additional audio in?\n";
 				echo "(must be the three character language code, e.g. eng)\n[$sb eng$eb]: ";
 			} else {
@@ -489,13 +500,20 @@ while ($i <= $num_items) {
 			echo "\n";
 		
 			# Question 23 (conditional)
+			$next_sec_audio_title = $audio_title[$i][$x-1];
 			if ($audio_type[$i][$x] == 0) {
-				echo "What should the title of this additional audio track be?\n[ ]: ";
+				if ($next_sec_audio_title != "") {
+					echo "What should the title of this additional audio track be?\n[ $sb $next_sec_audio_title" . $eb . "]: ";
+				} else {
+					echo "What should the title of this additional audio track be?\n[ ]: ";
+				}
 				$answer = fgets($handle);
 			} else {
 				$answer = "Commentary";
 			}
-			if (trim($answer) != "") {
+			if (trim($answer) == "" && $next_sec_audio_title != "") {
+				$audio_title[$i][$x] = $next_sec_audio_title;
+			} elseif (trim($answer) != "") {
 				$audio_title[$i][$x] = trim($answer);
 			} else {
 				echo "Invalid answer. Defaulting to a generic title.";
