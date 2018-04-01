@@ -1,5 +1,8 @@
 <?php
 
+###### Version #######
+$d2m_ver = "2018.04";
+
 ## Load program location variables from outside source
 if (file_exists("settings.conf")) {
 	include('settings.conf');
@@ -7,9 +10,6 @@ if (file_exists("settings.conf")) {
 	echo "The required settings.conf file cannot be found. Please create it and try running this script again.";
 	exit;
 }
-
-###### Version #######
-$d2m_ver = "2018.02";
 
 ## Declare global variables
 if ($win == 1) {
@@ -214,7 +214,7 @@ if (trim($answer) == "anim" || trim($answer) == "") {
 echo "\n";
 
 ## Question 10
-echo "What type of post processing should be performed?\n[$sb ivtc$eb /$sp deint / both / none ]: ";
+echo "What type of post processing should be performed?\n[$sb ivtc$eb /" . $sp . "deint / both / none ]: ";
 $answer = fgets($handle);
 if (trim($answer) == "ivtc" || trim($answer) == "") {
 	$post_proc = 1;
@@ -255,44 +255,108 @@ while ($i <= $num_items) {
 	# Question 12
 	if ($dvd_type == 1) {
 		echo "What is the episode's number in this season?\n";
-		echo "(must be two digits, e.g. 01)\n[ ]: ";
-		$answer = fgets($handle);
-		if ((int)trim($answer) != 0 && strlen(trim($answer)) == 2) {
-			$episode_number[$i] = trim($answer);
+		if ($prev_ep_number == 0) {
+			echo "(must be two digits, e.g. 01)\n[ ]: ";
 		} else {
-			echo "Invalid answer. Defaulting to 01.";
-			echo "\n";
-			$episode_number[$i] = "01";
+			echo "(must be two digits, e.g. 01)\n[ $prev_ep_number ]: ";
+		}
+		$answer = fgets($handle);
+		if ($prev_ep_number != 0) {
+			if (trim($answer) == "") {
+				$working_ep_number = (int)$prev_ep_number + 1;
+				if ($working_ep_number < 10) {
+					$episode_number[$i] = "0" . $working_ep_number;
+				} else {
+					$episode_number[$i] = $working_ep_number;
+				}
+			} else {
+				if ((int)trim($answer) != 0 && strlen(trim($answer)) == 2) {
+					$episode_number[$i] = trim($answer);
+				} else {
+					echo "Invalid answer. Defaulting to 01.";
+					echo "\n";
+					$episode_number[$i] = "01";
+				}
+			}
+		} else {
+			if ((int)trim($answer) != 0 && strlen(trim($answer)) == 2) {
+				$episode_number[$i] = trim($answer);
+			} else {
+				echo "Invalid answer. Defaulting to 01.";
+				echo "\n";
+				$episode_number[$i] = "01";
+			}
 		}
 		echo "\n";
 	}
 	
+	$hist_1 = $i - 1;
+	$hist_2 = $i - 2;
+	
 	# Question 13
-	echo "Which VTS on the DVD contains this item?\n[ ]: ";
-	$answer = fgets($handle);
-	if ((int)trim($answer) != 0) {
-		$vts_id[$i] = (int)trim($answer);
+	if ($vts_id[$hist_1] != "" && $vts_id[$hist_2] != "") {
+		if ($vts_id[$hist_1] == ($vts_id[$hist_2] + 1)) {
+			$prev_vts = 1;
+			$next_vts = $vts_id[$hist_1] + 1;
+		} elseif ($vts_id[$hist_1] == $vts_id[$hist_2]) {
+			$prev_vts = 1;
+			$next_vts = $vts_id[$hist_1];
+		}
+	} elseif ($vts_id[$hist_1] != "" && $vts_id[$hist_2] == "") {
+		$prev_vts = 1;
+		$next_vts = $vts_id[$hist_1] + 1;
 	} else {
-		echo "Invalid answer. Defaulting to 1.";
-		echo "\n";
-		$vts_id[$i] = 1;
+		$prev_vts = 0;
+	}
+	
+	if ($prev_vts == 0) {
+		echo "Which VTS on the DVD contains this item?\n[ ]: ";
+	} else {
+		echo "Which VTS on the DVD contains this item?\n[$sb " . $next_vts . "$eb]: ";
+	}
+	$answer = fgets($handle);
+	if ($prev_vts == 1) {
+		if (trim($answer) == "") {
+			$vts_id[$i] = $next_vts;
+		} else {
+			$vts_id[$i] = (int)trim($answer);
+		}
+	} else {
+		if ((int)trim($answer) != 0) {
+			$vts_id[$i] = (int)trim($answer);
+		} else {
+			echo "Invalid answer. Defaulting to 1.";
+			echo "\n";
+			$vts_id[$i] = 1;
+		}
 	}
 	echo "\n";
 	
 	# Question 14
-	$j = $i - 1;
-	$next_pgc = $pgc_id[$j] + 1;
-	if ($pgc_id[$j] == "") {
+	if ($pgc_id[$hist_1] != "" && $pgc_id[$hist_2] != "") {
+		if ($pgc_id[$hist_1] == ($pgc_id[$hist_2] + 1)) {
+			$prev_pgc = 1;
+			$next_pgc = $pgc_id[$hist_1] + 1;
+		} elseif ($pgc_id[$hist_1] == $pgc_id[$hist_2]) {
+			$prev_pgc = 1;
+			$next_pgc = $pgc_id[$hist_1];
+		}
+	} elseif ($pgc_id[$hist_1] != "" && $pgc_id[$hist_2] == "") {
+		$prev_pgc = 1;
+		$next_pgc = $pgc_id[$hist_1] + 1;
+	} else {
 		$prev_pgc = 0;
+	}
+	
+	if ($prev_pgc == 0) {
 		echo "Which PGC within the VTS contains this item?\n[ ]: ";
 	} else {
-		$prev_pgc = 1;
 		echo "Which PGC within the VTS contains this item?\n[$sb " . $next_pgc . "$eb]: ";
 	}
 	$answer = fgets($handle);
 	if ($prev_pgc == 1) {
 		if (trim($answer) == "") {
-			$pgc_id[$i] = $pgc_id[$j] + 1;
+			$pgc_id[$i] = $next_pgc;
 		} else {
 			$pgc_id[$i] = (int)trim($answer);
 		}
@@ -523,7 +587,7 @@ if ($complete == 1) {
 				fwrite($prmfile, "CLOSE\r\n");
 				fclose($prmfile);
 				fwrite($batfile, "ECHO Creating subtitles for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-				fwrite($batfile, "START \"Fixing vsparam files for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /D \"C:\dvd2mkv10\" /wait /min \"" . $pe_loc . "\" \"--param\" \"" . $vob_destination[$i] . "\\\" \"MAIN.vsparam\"\r\n");
+				fwrite($batfile, "START \"Fixing vsparam files for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /D \"". $d2m_loc . "\" /wait /min \"" . $pe_loc . "\" \"--param\" \"" . $vob_destination[$i] . "\\\" \"MAIN.vsparam\"\r\n");
 				fwrite($batfile, "START \"Creating subtitles for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min rundll32 \"" . $vu_loc . "\",Configure " . $prm_destination[$i] . "\r\n");
 				$i++;
 				echo ".";
@@ -548,7 +612,7 @@ if ($complete == 1) {
 			fwrite($prmfile, "CLOSE\r\n");
 			fclose($prmfile);
 			fwrite($batfile, "ECHO Creating subtitles for " . $content_title . "...\r\n");
-			fwrite($batfile, "START \"Fixing vsparam files for episode " . $episode_number[1] . ": " . $episode_title[1] . "...\" /wait /min \"" . $pe_loc . "\" --param \"" . $vob_destination[1] . "\\\" \"MAIN.vsparam\"\r\n");
+			fwrite($batfile, "START \"Fixing vsparam files for episode " . $episode_number[1] . ": " . $episode_title[1] . "...\" /D \"". $d2m_loc . "\" /wait /min \"" . $pe_loc . "\" --param \"" . $vob_destination[1] . "\\\" \"MAIN.vsparam\"\r\n");
 			fwrite($batfile, "START \"Creating subtitles for episode " . $episode_number[1] . ": " . $episode_title[1] . "...\" /wait /min rundll32 \"" . $vu_loc . "\",Configure " . $prm_destination[1] . "\r\n");
 			echo ".";
 		}
@@ -847,7 +911,7 @@ if ($complete == 1) {
 					if ($r == 1) {
 						$audio_options = " --language 0:eng --track-name ^\"0:" . $audio_title[$i][$r-1] . "^\" --default-track 0:yes --compression 0:none ^\"^(^\" ^\"" . $audio_destination[$i][$r] . "^\" ^\"^)^\"";
 					} else {
-						$audio_options = $audio_options . " --language 0:eng --track-name ^\"0:" . $audio_title[$i][$r] . "^\" --default-track 0:no --compression 0:none ^\"^(^\" ^\"" . $audio_destination[$i][$r] . "^\" ^\"^)^\"";
+						$audio_options = $audio_options . " --language 0:eng --track-name ^\"0:" . $audio_title[$i][$r-1] . "^\" --default-track 0:no --compression 0:none ^\"^(^\" ^\"" . $audio_destination[$i][$r] . "^\" ^\"^)^\"";
 					}
 					$r++;
 				}
@@ -897,7 +961,7 @@ if ($complete == 1) {
 				if ($r == 1) {
 					$audio_options = " --language 0:eng --track-name ^\"0:" . $audio_title[1][$r-1] . "^\" --default-track 0:yes --compression 0:none ^\"^(^\" ^\"" . $audio_destination[1][$r] . "^\" ^\"^)^\"";
 				} else {
-					$audio_options = $audio_options . " --language 0:eng --track-name ^\"0:" . $audio_title[1][$r] . "^\" --default-track 0:no --compression 0:none ^\"^(^\" ^\"" . $audio_destination[1][$r] . "^\" ^\"^)^\"";
+					$audio_options = $audio_options . " --language 0:eng --track-name ^\"0:" . $audio_title[1][$r-1] . "^\" --default-track 0:no --compression 0:none ^\"^(^\" ^\"" . $audio_destination[1][$r] . "^\" ^\"^)^\"";
 				}
 				$r++;
 			}

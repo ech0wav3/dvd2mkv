@@ -23,7 +23,7 @@
          <h1><a name="mkvtoolnix-gui.synopsis">1. 書式</a></h1>
          
          
-         <div class="cmdsynopsis"><span class="commandname">mkvtoolnix-gui</span> [[configuration-file-name.mtxcfg] | [source-file.ext] | [chapter-file.ext] | [matroska-file.mkv]]
+         <div class="cmdsynopsis"><span class="commandname">mkvtoolnix-gui</span> [[configuration-file-name.mtxcfg] | [source-file.ext] | [matroska-file.mkv] | [chapter-file.ext] | [matroska-file.mkv]]
          </div>
          
          <h1><a name="mkvtoolnix-gui.description">2. 説明</a></h1>
@@ -31,10 +31,10 @@
          
          <p>
             <span class="productname">mkvtoolnix-gui</span>(1) is a <span class="productname">Qt</span><sup>(tm)</sup> based
-            <span class="abbrev">GUI</span> for <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> (and will evolve to cover <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a> and
-            <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a> as well). It offers easy access to most of <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>'s
-            options. All settings (e.g. source files, track options etc) can be saved
-            and restored.
+            <span class="abbrev">GUI</span> for <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>. It also implements <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a>'s and
+            <a href="mkvpropedit.html"><span class="productname">mkvpropedit</span>(1)</a>'s functionality and will evolve to cover <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a> as
+            well. All settings (e.g. source files, track options etc) can be saved and
+            restored.
             
          </p>
          
@@ -43,11 +43,11 @@
             Listing configuration file names with the extension
             <span class="literal">.mtxcfg</span> causes the GUI to load the those configuration
             files in the appropriate tool. Any other file name is added as a source file
-            for multiplexing, opened in the chapter editor or in the header editor
-            depending on the current mode. The current mode can be changed with
-            <span class="option">--merge</span>, <span class="option">--edit-chapters</span> or
-            <span class="option">--edit-headers</span>. The default mode is adding files for
-            multiplexing.
+            for multiplexing, opened in the info tool, the chapter editor or in the
+            header editor depending on the current mode. The current mode can be changed
+            with <span class="option">--merge</span>, <span class="option">--info</span>,
+            <span class="option">--edit-chapters</span> or <span class="option">--edit-headers</span>. The
+            default mode is adding files for multiplexing.
             
          </p>
          
@@ -75,6 +75,14 @@
                      <p>All following file names will be added as source files to the current
                         multiplex job. This is the default mode.
                      </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--info</span></td>
+                  <td>
+                     
+                     <p>All following file names will be opened in the info tool.</p>
                      
                   </td>
                </tr>

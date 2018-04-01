@@ -1,3 +1,72 @@
+# Version 21.0.0 "Tardigrades Will Inherit The Earth" 2018-02-24
+
+## New features and enhancements
+
+* mkvmerge: track statistics tags: the `TagDefault` element will not be
+  written anymore as it was always set to the default value `1`
+  anyway. Implements #2202.
+* mkvmerge, MKVToolNix GUI: JSON files can now contain C++-style line comments
+  outside of strings (e.g. something like this: `// this is ignored`). Such
+  comments, even though not part of the official JSON specifications, are now
+  ignored when reading JSON files.
+* MKVToolNix GUI: chapter editor: opening a Matroska file without chapters in
+  it will now open the file in an empty chapter editor instead of showing an
+  error message. Implements #2218.
+* MKVToolNix GUI: an "info" tool has been added, replacing the functionality
+  of mkvinfo's GUI. The functionality is not on par yet but will be for
+  release v22. Implements most of the functionality of #2104.
+
+## Bug fixes
+
+* build system: `configure` was treating `--disable-ubsan` and
+  `--disable-addrsan` the same as `--enable-ubsan` and
+  `--enable-addrsan`. Fixes #2199.
+* build system: an error message is output if a command to execute is not
+  found instead of silently failing.
+* build system: in addition to looking for the `gettext` C function and
+  library, `configure` now also verifies the presence of the `msgfmt` program
+  instead of simply relying on it.
+* mkvmerge: appending files with additional parts at the same time was broken
+  if more than one additional part was appended (e.g. when appending files
+  from DVDs with something like `'(' VTS_01_1.VOB VTS_01_2.VOB ')' + '('
+  VTS_02_1.VOB VTS_02_2.VOB ')'`). In such a situation the content from files
+  `VTS_02_1.VOB` and `VTS_02_2.VOB` where laid out in parallel to the content
+  from the earlier files.
+* mkvmerge: FLV reader: a single invalid AAC frame was written for AAC audio
+  tracks with codec initialization data longer than five bytes.
+* mkvmerge: FLV reader: timestamps will be normalized down to 0. Fixes #2220.
+* mkvmerge: MP4 reader: if an AAC track doesn't contain an AAC-specific
+  decoder configuration in the ESDS portion, then a default decoder
+  configuration will be generated based on the track's header data instead of
+  skipping the track. Fixes #2221.
+* mkvmerge: MP4 reader: fixed reading HEVC/h.265 video tracks if they're
+  stored as Annex B byte streams inside MP4. Fixes #2215.
+* mkvmerge: Ogg Opus reader: mkvmerge will now emit a warning instead of
+  aborting when it encounters an Ogg Opus page with no data in the
+  packet. Fixes #2217.
+* mkvmerge, mkvextract: Matroska parser: fixed a segmentation fault that
+  occurred whenever the first level 1 element after resyncing after an error
+  in the file structure isn't a cluster. Fixes #2211.
+* mkvmerge, MKVToolNix GUI multiplexer & header editor: fixed a crash during
+  file type detection for attachments if MKVToolNix is installed in a path
+  with non-ASCII characters (e.g. German Umlauts). Fixes #2212.
+* mkvinfo: the `--hex-positions` parameter did nothing in summary mode.
+* mkvinfo: Windows: line endings will be written as `\r\n` (carriage return &
+  line feed) again instead of just `\n` (line feed).
+* mkvpropedit: adding track statistics tags: for tracks with content encoding
+  (compression) mkvpropedit is now accounting the uncompressed number of
+  bytes, not the encoded (compressed) number of bytes. Fixes #2200.
+* MKVToolNix GUI: multiplexer: the subtitle character set can now be set for
+  appended subtitle files, too. Fixes #2214.
+* MKVToolNix GUI: multiplexer: when appending, all tracks appended to disabled
+  tracks will start out disabled, too.
+
+## Build system changes
+
+* mkvinfo: the GUI portion has been removed. mkvinfo is now a pure
+  command-line program again.
+
+
 # Version 20.0.0 "I Am The Sun" 2018-01-15
 
 ## Important notes
@@ -2818,8 +2887,8 @@
 * mkvmerge: bug fix: Fixed reading MPEG transport streams in which all PATs and/or
   PMTs have CRC errors. Fixes #1100.
 * all: bug fix: Re-wrote the whole checksum calculation code. This lead to a fix for the
-  Adler32 checksum algorithm that was triggered under certain circumstances.
-  Adler32 is used in mkvinfo's output (e.g. in summary mode or if checksums are
+  Adler-32 checksum algorithm that was triggered under certain circumstances.
+  Adler-32 is used in mkvinfo's output (e.g. in summary mode or if checksums are
   activated), in the h.265/HEVC bitstream and TrueAudio (TTA) file headers.
 * mkvmerge: bug fix: fixed handling of HE-AACv2 with object type "parametric
   stereo".
@@ -7265,7 +7334,7 @@
 
 ## New features and enhancements
 
-* mkvinfo: Added Adler32 calculation and display for frame contents with the -c
+* mkvinfo: Added Adler-32 calculation and display for frame contents with the -c
   option.
 
 ## Bug fixes

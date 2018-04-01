@@ -26,7 +26,7 @@
          <h1><a name="mkvtoolnix-gui.synopsis">1. Übersicht</a></h1>
          
          
-         <div class="cmdsynopsis"><span class="commandname">mkvtoolnix-gui</span> [[Konfigurationsdateiname.mtxcfg] | [Quelldatei.ext] | [Kapiteldatei.ext] | [Matroska-Datei.mkv]]
+         <div class="cmdsynopsis"><span class="commandname">mkvtoolnix-gui</span> [[Konfigurationsdateiname.mtxcfg] | [Quelldatei.ext] | [Matroska-Datei.mkv] | [Kapiteldatei.ext] | [Matroska-Datei.mkv]]
          </div>
          
          <h1><a name="mkvtoolnix-gui.description">2. Beschreibung</a></h1>
@@ -34,11 +34,10 @@
          
          <p>
             <span class="productname">mkvtoolnix-gui</span>(1) ist eine auf <span class="productname">Qt</span><sup>(tm)</sup> basierende
-            graphische Benutzeroberfläche für <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> (und wird sich dahin
-            weiterentwickeln, auch <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a> und <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a> abzudecken). Es bietet
-            einen einfachen Zugang zu den meisten Optionen von <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>. Alle
-            Einstellungen (z.B. Quelldateien, Spuroptionen etc.) können gespeichert und
-            wiederhergestellt werden.
+            graphische Benutzeroberfläche für <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>. Weiterhin implementiert sie
+            die Funktionalität von <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a> und <a href="mkvpropedit.html"><span class="productname">mkvpropedit</span>(1)</a> und wird in Zukunft auch
+            <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a> abdecken. Alle Einstellungen (z.B. Quelldateien, Spuroptionen
+            etc.) können gespeichert und wiederhergestellt werden.
             
          </p>
          
@@ -48,10 +47,11 @@
             <span class="literal">.mtxcfg</span> sorgt dafür, dass die GUI diese
             Konfigurationsdateien im dazugehörigen Werkzeug lädt. Jeglicher anderer
             Dateiname wird abhängig vom aktuellen Modus als Quelldatei zum Multiplexen
-            hinzugefügt, im Kapiteleditor oder im Kopfdateneditor geöffnet. Der aktuelle
-            Modus kann mit <span class="option">--merge</span>, <span class="option">--edit-chapters</span>
-            oder <span class="option">--edit-headers</span> geändert werden. Der Standardmodus ist
-            das Hinzufügen zum Multiplexen.
+            hinzugefügt, im Info-Werkzeug, im Kapiteleditor oder im Kopfdateneditor
+            geöffnet. Der aktuelle Modus kann mit <span class="option">--merge</span>,
+            <span class="option">--info</span>, <span class="option">--edit-chapters</span> oder
+            <span class="option">--edit-headers</span> geändert werden. Der Standardmodus ist das
+            Hinzufügen zum Multiplexen.
             
          </p>
          
@@ -79,6 +79,14 @@
                      <p>Alle folgenden Dateinamen werden als Quelldateien zum aktuellen
                         Multiplex-Job hinzugefügt. Dies ist der Standardmodus.
                      </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--info</span></td>
+                  <td>
+                     
+                     <p>Alle folgenden Dateinamen werden im Info-Werkzeug geöffnet.</p>
                      
                   </td>
                </tr>

@@ -23,7 +23,7 @@
          <h1><a name="mkvtoolnix-gui.synopsis">1. Sinopsis</a></h1>
          
          
-         <div class="cmdsynopsis"><span class="commandname">mkvtoolnix-gui</span> [[archivo-configuración.mtxcfg] | [archivo-origen.ext] | [archivo-capítulos.ext] | [archivo-matroska.mkv]]
+         <div class="cmdsynopsis"><span class="commandname">mkvtoolnix-gui</span> [[archivo-configuración.mtxcfg] | [archivo-origen.ext] | [archivo-matroska.mkv] | [archivo-capítulos.ext] | [archivo-matroska.mkv]]
          </div>
          
          <h1><a name="mkvtoolnix-gui.description">2. Descripción</a></h1>
@@ -31,10 +31,10 @@
          
          <p>
             <span class="productname">mkvtoolnix-gui</span>(1) es una <span class="abbrev">GUI</span>, basada en
-            <span class="productname">Qt</span><sup>(tm)</sup>, para <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> (y evolucionará para abarcar
-            <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a> y <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a>). Ofrece un fácil acceso a la mayoría de opciones
-            de <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>. Todos los ajustes (p.e. archivos origen, opciones de pista,
-            etc...) pueden ser guardados y cargados.
+            <span class="productname">Qt</span><sup>(tm)</sup>, para <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>. También tiene implementadas
+            las funcionalidades <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a> y <a href="mkvpropedit.html"><span class="productname">mkvpropedit</span>(1)</a> y evolucionará hasta cubrir
+            <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a>. Todos los ajustes (p.e. archivos fuente, opciones de pista,
+            etc) pueden ser guardados y restaurados.
             
          </p>
          
@@ -43,10 +43,11 @@
             Listar los archivos de configuración con la extensión
             <span class="literal">.mtxcfg</span> provoca que la GUI cargue esos archivos de
             configuración en la herramienta adecuada. Cualquier otro nombre de archivo
-            de configuración se añade como fuente para el multiplexado, o se abre en el
-            editor de capítulos o cabeceras, dependiendo del modo actual. El modo actual
-            se puede cambiar con <span class="option">--merge</span>,
-            <span class="option">--edit-chapters</span> o <span class="option">--edit-headers</span>. El modo
+            de configuración se añade como fuente para el multiplexado, o se abre en la
+            herramienta de información, el editor de capítulos o cabeceras, dependiendo
+            del modo actual. El modo actual se puede cambiar con
+            <span class="option">--merge</span>, <span class="option">--info</span>,
+            <span class="option">--edit-chapters</span> o <span class="option">--edit-headers</span>.. El modo
             por defecto es añadir archivos para multiplexar.
             
          </p>
@@ -75,6 +76,16 @@
                      
                      <p>Todos los siguientes nombres de archivos serán añadidos como fuente de
                         archivos a la actual tarea de multiplexado. Este es el modo por defecto.
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--info</span></td>
+                  <td>
+                     
+                     <p>Los siguientes nombres de archivo serán abiertos en la herramienta de
+                        información.
                      </p>
                      
                   </td>

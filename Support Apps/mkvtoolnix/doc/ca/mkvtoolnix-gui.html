@@ -23,18 +23,18 @@
          <h1><a name="mkvtoolnix-gui.synopsis">1. Sinopsis</a></h1>
          
          
-         <div class="cmdsynopsis"><span class="commandname">mkvtoolnix-gui</span> [[nom_fitxer_configuració.mtxcfg] | [fitxer_origen.ext] | [fitxer_capítols.ext] | [fitxer_matroska.mkv]]
+         <div class="cmdsynopsis"><span class="commandname">mkvtoolnix-gui</span> [[nom_fitxer_configuració.mtxcfg] | [fitxer_origen.ext] | [fitxer_matroska.mkv] | [fitxer_capítols.ext] | [fitxer_matroska.mkv]]
          </div>
          
          <h1><a name="mkvtoolnix-gui.description">2. Descripció</a></h1>
          
          
          <p>
-            El <span class="productname">mkvtoolnix-gui</span>(1) és una <span class="productname">IGU</span><sup>(tm)</sup> basada en les
-            <span class="abbrev">Qt</span> pel <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> (i evolucionarà per cobrir el <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a> i
-            el <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a>). Ofereix un fàcil accés a la majoria d'opcions del
-            <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>. Tots els ajustaments (p. ex., fitxers d'origen, opcions de les
-            pistes, etc.) es poden desar i restaurar.
+            El <span class="productname">mkvtoolnix-gui</span>(1) és una <span class="abbrev">IGU</span> basada en les
+            <span class="productname">Qt</span><sup>(tm)</sup> pel <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>. També implementa la
+            funcionalitat del <a href="mkvinfo.html"><span class="productname">mkvinfo</span>(1)</a> i el <a href="mkvpropedit.html"><span class="productname">mkvpropedit</span>(1)</a> i evolucionarà per cobrir el
+            <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a>. Es poden desar i restaurar tots els ajustaments (p. ex.,
+            fitxers d'origen, opcions de les pistes, etc.)
             
          </p>
          
@@ -42,10 +42,11 @@
          <p>
             El fet de llistar noms de fitxer de configuració amb l'extensió
             <span class="literal">.mtxcfg</span> farà que la IGU els carregui a l'eina
-            corresponent. Qualsevol altre nom de fitxer serà afegit (en funció del mode
-            actual) com un fitxer d'origen per a multiplexar, obert a l'editor de
-            capítols o a l'editor de la capçalera. El mode actual es pot canviar amb les
-            opcions <span class="option">--merge</span>, <span class="option">--edit-chapters</span> o
+            corresponent. Qualsevol altre nom de fitxer serà afegit com un fitxer
+            d'origen per a multiplexar, obert a l'eina d'informació, l'editor de
+            capítols o a l'editor de la capçalera -en funció del mode actual-. El mode
+            actual es pot canviar amb les opcions <span class="option">--merge</span>,
+            <span class="option">--info</span>, <span class="option">--edit-chapters</span> o
             <span class="option">--edit-headers</span>. El mode per omissió és afegir fitxers pel
             multiplexat.
             
@@ -75,6 +76,14 @@
                      <p>Tots els noms de fitxer que segueixen s'afegiran com a fitxers d'origen a la
                         tasca de multiplexat actual. Aquest és el mode per omissió.
                      </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><span class="option">--info</span></td>
+                  <td>
+                     
+                     <p>Tots els següents noms de fitxer s'obriran a l'eina d'informació.</p>
                      
                   </td>
                </tr>
