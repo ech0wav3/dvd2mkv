@@ -1,7 +1,7 @@
 <?php
 
 ###### Version #######
-$d2m_ver = "2018.04";
+$d2m_ver = "2018.09";
 
 ## Load program location variables from outside source
 if (file_exists("settings.conf")) {
@@ -917,13 +917,15 @@ if ($complete == 1) {
 			$mkv_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\" . filename($content_title . " S" . $season . "E" . $episode_number[$i] . " - " . $episode_title[$i]) . ".mkv";
 			if ($aspect_ratio == 0) {
 				$video_ar = "16/9";
+				$video_dimensions = "852x480";
 			} elseif ($aspect_radio == 1) {
 				$video_ar = "4/3";
+				$video_dimensions = "640x480";
 			}
 			if ($post_proc == 2) {
-				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:30000/1001p ^\"^(^\" ^\"" . $x264_destination[$i] . "^\" ^\"^)^\"";
+				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --display-dimensions 0:" . $video_dimensions . " --compression 0:none --default-duration 0:30000/1001p ^\"^(^\" ^\"" . $x264_destination[$i] . "^\" ^\"^)^\"";
 			} elseif ($post_proc == 1 || $post_proc == 3) {
-				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:24000/1001p ^\"^(^\" ^\"" . $x264_destination[$i] . "^\" ^\"^)^\"";
+				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --display-dimensions 0:" . $video_dimensions . " --compression 0:none --default-duration 0:24000/1001p ^\"^(^\" ^\"" . $x264_destination[$i] . "^\" ^\"^)^\"";
 			}
 			if ($audio_quantity[$i] > 1) {
 				$r = 1;
@@ -958,6 +960,7 @@ if ($complete == 1) {
 			$generator_options = " --track-order " . $track_order . " --attachment-name COMPILED_USING_DVD2MKV_" . $d2m_ver . " --attachment-mime-type text/plain --attach-file ^\"" . $version_destination[$i] . "^\" --title ^\"" . $episode_title[$i] . "^\"";
 			fwrite($batfile, "ECHO Compiling output for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
 			fwrite($batfile, "START \"Compiling output for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $mk_loc . "\" --ui-language en --output ^\"" . $mkv_destination[$i] . "^\"" .  $video_options . $audio_options . $sub_options . $generator_options . $chapter_options . "\r\n");
+			fwrite($batfile, "START \"Modifying header properties for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $mp_loc . "\" \"" . $mkv_destination[$i] . "\" --edit track:v1 --set display-unit=3" . "\r\n");
 			$i++;
 			$r = 1;
 			echo ".";
@@ -967,13 +970,15 @@ if ($complete == 1) {
 		$mkv_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\" . filename($content_title) . ".mkv";
 		if ($aspect_ratio == 0) {
 			$video_ar = "16/9";
+			$video_dimensions = "852x480";
 		} elseif ($aspect_radio == 1) {
 			$video_ar = "4/3";
+			$video_dimensions = "640x480";
 		}
 		if ($post_proc == 2) {
-				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:30000/1001p ^\"^(^\" ^\"" . $x264_destination[1] . "^\" ^\"^)^\"";
+				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --display-dimensions 0:" . $video_dimensions . " --compression 0:none --default-duration 0:30000/1001p ^\"^(^\" ^\"" . $x264_destination[1] . "^\" ^\"^)^\"";
 			} elseif ($post_proc == 1 || $post_proc == 3) {
-				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --compression 0:none --default-duration 0:24000/1001p ^\"^(^\" ^\"" . $x264_destination[1] . "^\" ^\"^)^\"";
+				$video_options = " --language 0:und --track-name 0:Video --aspect-ratio 0:" . $video_ar . " --display-dimensions 0:" . $video_dimensions . " --compression 0:none --default-duration 0:24000/1001p ^\"^(^\" ^\"" . $x264_destination[1] . "^\" ^\"^)^\"";
 			}
 		if ($audio_quantity[1] > 1) {
 			$r = 1;
@@ -1008,6 +1013,7 @@ if ($complete == 1) {
 		$generator_options = " --track-order " . $track_order . " --attachment-name COMPILED_USING_DVD2MKV_" . $d2m_ver . " --attachment-mime-type text/plain --attach-file ^\"" . $version_destination[1] . "^\" --title ^\"" . $content_title . "^\"";
 		fwrite($batfile, "ECHO Compiling output for " . $content_title . "...\r\n");
 		fwrite($batfile, "START \"Compiling output for " . $content_title . "...\" /wait /min \"" . $mk_loc . "\" --ui-language en --output ^\"" . $mkv_destination[1] . "^\"" .  $video_options . $audio_options . $sub_options . $generator_options . $chapter_options . "\r\n");
+		fwrite($batfile, "START \"Modifying header properties for " . $content_title . "...\" /wait /min \"" . $mp_loc . "\" \"" . $mkv_destination[1] . "\" --edit track:v1 --set display-unit=3" . "\r\n");
 		$r = 1;
 		echo ".";
 	}
