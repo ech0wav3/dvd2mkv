@@ -189,7 +189,7 @@
                   <td>
                      
                      <p>
-                        Sets the segment UIDs to use. This is a comma-separated list of 128bit segment UIDs
+                        Sets the segment UIDs to use. This is a comma-separated list of 128-bit segment UIDs
                         in the usual UID form: hex numbers with or without
                         the "0x" prefix, with or without spaces, exactly 32 digits.
                         
@@ -275,6 +275,40 @@
                         This switch does also apply to chapters that are copied from certain container types,
                         e.g. Ogg/OGM and MP4 files.
                         See the section about chapters below for details.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.chapter_sync"><span class="option">--chapter-sync</span> <span class="parameter">d[,o[/p]]</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Adjust the timestamps of the chapters in the following source file by <span class="parameter">d</span> ms. Alternatively you can use the
+                        <span class="option">--sync</span> option with the special track ID <span class="constant">-2</span> (see section <a href="#mkvmerge.track_ids.special_ids">special track IDs</a>).
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        <span class="parameter">o</span>/<span class="parameter">p</span>: adjust the timestamps by <span class="parameter">o</span>/<span class="parameter">p</span> to fix
+                        linear drifts. <span class="parameter">p</span> defaults to 1 if omitted. Both <span class="parameter">o</span> and <span class="parameter">p</span> can be
+                        floating point numbers.
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        Defaults: no manual sync correction (which is the same as <span class="parameter">d</span> = <span class="constant">0</span> and
+                        <span class="parameter">o</span>/<span class="parameter">p</span> = <span class="constant">1.0</span>).
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        This option can be used multiple times for an input file applying to several tracks
+                        by selecting different track IDs each time.
                         
                      </p>
                      
@@ -544,7 +578,7 @@
          
          
          
-         <h2><a name="d4e766">2.4. General output control (advanced global options)</a></h2>
+         <h2><a name="d4e844">2.4. General output control (advanced global options)</a></h2>
          
          
          
@@ -719,7 +753,7 @@
          
          
          
-         <h2><a name="d4e1052">2.5. File splitting, linking, appending and concatenation (more global options)</a></h2>
+         <h2><a name="d4e1130">2.5. File splitting, linking, appending and concatenation (more global options)</a></h2>
          
          
          
@@ -1509,7 +1543,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2113">2.6. Attachment support (more global options)</a></h2>
+         <h2><a name="d4e2191">2.6. Attachment support (more global options)</a></h2>
          
          
          
@@ -1588,7 +1622,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2254">2.7. Options that can be used for each input file</a></h2>
+         <h2><a name="d4e2332">2.7. Options that can be used for each input file</a></h2>
          
          
          
@@ -2103,6 +2137,25 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><span class="option">--remove-dialog-normalization-gain</span> <span class="parameter">TID</span></td>
+                  <td>
+                     
+                     <p>
+                        Some audio codecs contain header fields that tell the decoder or player to apply a
+                        (usually negative) gain for dialog
+                        normalization. This option tells <span class="productname">mkvmerge</span>(1) to remove or minimize that gain by modifying the corresponding header fields.
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        Currently only <span class="abbrev">AC-3</span>, <span class="abbrev">DTS</span> and <span class="abbrev">TrueHD</span> tracks are affected by this option.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><span class="option">--timestamps</span> <span class="parameter">TID:file-name</span></td>
                   <td>
                      
@@ -2218,7 +2271,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e3341">2.8. Options that only apply to video tracks</a></h2>
+         <h2><a name="d4e3453">2.8. Options that only apply to video tracks</a></h2>
          
          
          
@@ -2654,7 +2707,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4165">2.9. Options that only apply to text subtitle tracks</a></h2>
+         <h2><a name="d4e4277">2.9. Options that only apply to text subtitle tracks</a></h2>
          
          
          
@@ -2694,7 +2747,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4205">2.10. Other options</a></h2>
+         <h2><a name="d4e4317">2.10. Other options</a></h2>
          
          
          
@@ -2773,7 +2826,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                            
                            
                            <p>
-                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v10.json">mkvmerge-identification-output-schema-v10.json</a>
+                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v11.json">mkvmerge-identification-output-schema-v11.json</a>
                               
                            </p>
                            
@@ -3296,6 +3349,10 @@ $ mkvmerge -o MM-complete.mkv MyMovie-with-sound.mkv MyMovie-add-audio.ogg</pre>
          
          
          
+         <h2><a name="mkvmerge.track_ids.regular_ids">6.1. Regular track IDs</a></h2>
+         
+         
+         
          <p>
             Some of the options for <span class="productname">mkvmerge</span>(1) need a track ID to specify which track they should be applied to.  Those track IDs
             are printed by the
@@ -3369,6 +3426,26 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
+            The options that use the track IDs are the ones whose description contains '<span class="literal">TID</span>'.  The following options use track IDs
+            as well: <span class="option">--audio-tracks</span>, <span class="option">--video-tracks</span>, <span class="option">--subtitle-tracks</span>,
+            <span class="option">--button-tracks</span> and <span class="option">--track-tags</span>.
+            
+         </p>
+         
+         
+         
+         <h2><a name="mkvmerge.track_ids.special_ids">6.2. Special track IDs</a></h2>
+         
+         
+         
+         <p>
+            There are several IDs that have special meaning and do not occur in the identification
+            output.
+            
+         </p>
+         
+         
+         <p>
             The special track ID '<span class="constant">-1</span>' is a wild card and applies the given switch to all tracks that are read from an
             input
             file.
@@ -3377,11 +3454,11 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
-            The options that use the track IDs are the ones whose description contains '<span class="literal">TID</span>'.  The following options use track IDs
-            as well: <span class="option">--audio-tracks</span>, <span class="option">--video-tracks</span>, <span class="option">--subtitle-tracks</span>,
-            <span class="option">--button-tracks</span> and <span class="option">--track-tags</span>.
+            The special track ID '<span class="constant">-2</span>' refers to the chapters in a source file. Currently only the <span class="option">--sync</span>
+            option uses this special ID. As an alternative to <span class="option">--sync -2:…</span> the option <span class="option">--chapter-sync …</span> can be used.
             
          </p>
+         
          
          <h1><a name="mkvmerge.text_files_and_charsets">7. Text files and character set conversions</a></h1>
          
@@ -3946,7 +4023,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
           ChapterProcessData (binary)</pre>
          
          
-         <h2><a name="d4e5879">13.3. General notes</a></h2>
+         <h2><a name="d4e6021">13.3. General notes</a></h2>
          
          
          <p>
@@ -3974,16 +4051,14 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="d4e5944">14.1. Introduction</a></h2>
+         <h2><a name="d4e6086">14.1. Introduction</a></h2>
          
          
          
          <p>
-            <span class="productname">Matroska</span><sup>(tm)</sup> supports an extensive set of tags that is deprecated and a new, simpler system like
-            it is is used in most other containers:
-            <span class="parameter">KEY=VALUE</span>. However, in <span class="productname">Matroska</span><sup>(tm)</sup> these tags can also be nested, and both the <span class="parameter">KEY</span> and the
-            <span class="parameter">VALUE</span> are elements of their own. The example file <span class="filename">example-tags-2.xml</span> shows how to use this
-            new system.
+            <span class="productname">Matroska</span><sup>(tm)</sup>'s tag system is similar to that of other containers: a set of <span class="parameter">KEY=VALUE</span> pairs. However, in <span class="productname">Matroska</span><sup>(tm)</sup>
+            these tags can also be nested, and both the <span class="parameter">KEY</span> and the <span class="parameter">VALUE</span> are elements of their
+            own. The example file <span class="filename">example-tags-2.xml</span> shows how to use this system.
             
          </p>
          
@@ -4284,7 +4359,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          </p>
          
          
-         <h2><a name="d4e6398">17.1. Timestamp file format v1</a></h2>
+         <h2><a name="d4e6540">17.1. Timestamp file format v1</a></h2>
          
          
          <p>
@@ -4302,7 +4377,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6422">17.2. Timestamp file format v2</a></h2>
+         <h2><a name="d4e6564">17.2. Timestamp file format v2</a></h2>
          
          
          
@@ -4321,7 +4396,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6437">17.3. Timestamp file format v3</a></h2>
+         <h2><a name="d4e6579">17.3. Timestamp file format v3</a></h2>
          
          
          <p>
@@ -4342,7 +4417,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6455">17.4. Timestamp file format v4</a></h2>
+         <h2><a name="d4e6597">17.4. Timestamp file format v4</a></h2>
          
          
          <p>

@@ -29,7 +29,7 @@
             <li><a href="#mkvmerge.tags">14. 标签</a></li>
             <li><a href="#mkvmerge.segmentinfo">15. 剪辑信息 XML 文件</a></li>
             <li><a href="#mkvmerge.file_layout">16. Matroska 文件规划</a></li>
-            <li><a href="#mkvmerge.external_timestamp_files">17. 外部时间码文件</a></li>
+            <li><a href="#mkvmerge.external_timestamp_files">17. 外部时间戳文件</a></li>
             <li><a href="#mkvmerge.exit_codes">18. 退出代码</a></li>
             <li><a href="#mkvmerge.environment_variables">19. 环境变量</a></li>
             <li><a href="#mkvmerge.seealso">20. 参阅</a></li>
@@ -253,6 +253,44 @@
                      
                      <p>
                         此开关亦可应用到从特定容器类型，如 Ogg/OGM 和 MP4 文件中复制而来的章节。 详情参见下文关于章节的段落。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.chapter_sync"><span class="option">--chapter-sync</span>
+                        <span class="parameter">d[,o[/p]]</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Adjust the timestamps of the chapters in the following source file by
+                        <span class="parameter">d</span> ms. Alternatively you can use the
+                        <span class="option">--sync</span> option with the special track ID
+                        <span class="constant">-2</span> (see section <a href="#mkvmerge.track_ids.special_ids">special track IDs</a>).
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        <span class="parameter">o</span>/<span class="parameter">p</span>: 按
+                        <span class="parameter">o</span>/<span class="parameter">p</span> 调整时间戳以修复线性偏移。如果省略
+                        <span class="parameter">p</span> 则默认为 1。<span class="parameter">o</span> 与
+                        <span class="parameter">p</span> 均可为浮点数。
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        默认: 无手动同步校正 (与 <span class="parameter">d</span> = <span class="constant">0</span> 及
+                        <span class="parameter">o</span>/<span class="parameter">p</span> = <span class="constant">1.0</span>
+                        效果相同)。
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        此选项可以对同一输入文件多次使用，通过每次选择不同轨道 ID 分别应用到多个轨道。
                         
                      </p>
                      
@@ -509,7 +547,7 @@
          
          
          
-         <h2><a name="d4e764">2.4. 全局输出控制 (高级全局选项)</a></h2>
+         <h2><a name="d4e842">2.4. 全局输出控制 (高级全局选项)</a></h2>
          
          
          
@@ -643,7 +681,7 @@
                   <td>
                      
                      <p>
-                        强制时间码缩放系数为 <span class="parameter">系数</span>。有效值域为
+                        强制时间戳缩放系数为 <span class="parameter">系数</span>。有效值域为
                         <span class="constant">1000</span>..<span class="constant">10000000</span> 或特殊值
                         <span class="constant">-1</span>。
                         
@@ -651,9 +689,9 @@
                      
                      
                      <p>
-                        通常 <span class="productname">mkvmerge</span>(1) 会使用数值 <span class="constant">1000000</span>，这样时间码和时长的精度为
+                        通常 <span class="productname">mkvmerge</span>(1) 会使用数值 <span class="constant">1000000</span>，这样时间戳和时长的精度为
                         1ms。对于不包含视频轨但含有至少一条音频轨的文件，<span class="productname">mkvmerge</span>(1)
-                        将自动选择一个时间码缩放系数以使各轨的音频采样精度相同。这将引起更大的额外开销，但将允许更为精确的定位与提取。
+                        将自动选择一个时间戳缩放系数以使各轨的音频采样精度相同。这将引起更大的额外开销，但将允许更为精确的定位与提取。
                         
                      </p>
                      
@@ -670,7 +708,7 @@
          
          
          
-         <h2><a name="d4e1050">2.5. 文件切割、连接、追加及合并 (其他全局选项)</a></h2>
+         <h2><a name="d4e1128">2.5. 文件切割、连接、追加及合并 (其他全局选项)</a></h2>
          
          
          
@@ -780,7 +818,7 @@
                         <li>
                            
                            <p>
-                              在指定时间码后切割。
+                              在指定时间戳后切割。
                               
                            </p>
                            
@@ -801,8 +839,8 @@
                            <p>
                               参数
                               <span class="parameter">A</span>、<span class="parameter">B</span>、<span class="parameter">C</span>
-                              等等的格式与按时长切割模式（见上文）所用的格式相同。时间码表以逗号分隔。
-                              输入流达到当前切割点的时间码后将创建新的输出文件。然后将使用所给定的下一个切割点。
+                              等等的格式与按时长切割模式（见上文）所用的格式相同。时间戳表以逗号分隔。
+                              输入流达到当前切割点的时间戳后将创建新的输出文件。然后将使用所给定的下一个切割点。
                               
                            </p>
                            
@@ -818,7 +856,7 @@
                         <li>
                            
                            <p>
-                              通过指定时间码范围，保留特定部分，并丢弃其余部分。
+                              通过指定时间戳范围，保留特定部分，并丢弃其余部分。
                               
                            </p>
                            
@@ -852,30 +890,30 @@
                            
                            
                            <p>
-                              <span class="literal">parts</span> 模式可以告诉 <span class="productname">mkvmerge</span>(1) 保留特定时间码范围，而丢弃其余部分。要保留的范围需要在
-                              <span class="literal">parts:</span> 关键词后列出，以逗号隔开。各分段由起始及终止时间码组成，格式与其他
+                              <span class="literal">parts</span> 模式可以告诉 <span class="productname">mkvmerge</span>(1) 保留特定时间戳范围，而丢弃其余部分。要保留的范围需要在
+                              <span class="literal">parts:</span> 关键词后列出，以逗号隔开。各分段由起始及终止时间戳组成，格式与其他
                               <span class="parameter">--split</span> 模式所能接受的相同 (如 <span class="literal">00:01:20</span> 与
-                              <span class="literal">80s</span> 代表相同的时间码)。
+                              <span class="literal">80s</span> 代表相同的时间戳)。
                               
                            </p>
                            
                            
                            <p>
-                              若起始时间码留空，则默认为前一段的终止时间码。若不存在前一段，则默认为文件开头 (参见示例 3)。
+                              若起始时间戳留空，则默认为前一段的终止时间戳。若不存在前一段，则默认为文件开头 (参见示例 3)。
                               
                            </p>
                            
                            
                            <p>
-                              若终止时间码留空，则默认为输入文件末尾，亦即告诉 <span class="productname">mkvmerge</span>(1) 保留其余部分 (参见示例 3)。
+                              若终止时间戳留空，则默认为输入文件末尾，亦即告诉 <span class="productname">mkvmerge</span>(1) 保留其余部分 (参见示例 3)。
                               
                            </p>
                            
                            
                            <p>
-                              通常每一段都会写入新的文件。该行为也可以调整，以便将连续的分段写入同一个文件。要实现这种效果，用户可以在起始时间码开头加上
+                              通常每一段都会写入新的文件。该行为也可以调整，以便将连续的分段写入同一个文件。要实现这种效果，用户可以在起始时间戳开头加上
                               <span class="literal">+</span> 前缀。这样可以告诉 <span class="productname">mkvmerge</span>(1)
-                              不要创建新文件，而是将该分段写入与之前一段相同的文件当中。时间码也会自动调整，确保即使输入文件中两分段不连续，输出文件中也不出现间隙。
+                              不要创建新文件，而是将该分段写入与之前一段相同的文件当中。时间戳也会自动调整，确保即使输入文件中两分段不连续，输出文件中也不出现间隙。
                               
                            </p>
                            
@@ -908,7 +946,7 @@
                               
                               <p>
                                  请注意，<span class="productname">mkvmerge</span>(1)
-                                 只在关键帧位置决定是否切割。每段切割区域的起始点与结束点均为关键帧。因此即使结束时间码介于两个关键帧之间，<span class="productname">mkvmerge</span>(1)
+                                 只在关键帧位置决定是否切割。每段切割区域的起始点与结束点均为关键帧。因此即使结束时间戳介于两个关键帧之间，<span class="productname">mkvmerge</span>(1)
                                  也将继续输出帧，直到下一关键帧为止（不包括）。
                                  
                               </p>
@@ -977,7 +1015,7 @@
                            <p>
                               通常每一段都会写入新的文件。该行为也可以调整，以便将连续的分段写入同一个文件。要实现这种效果，用户可以在起始序号开头加上
                               <span class="literal">+</span> 前缀。这样可以告诉 <span class="productname">mkvmerge</span>(1)
-                              不要创建新文件，而是将该分段写入与之前一段相同的文件当中。时间码也会自动调整，确保即使输入文件中两分段不连续，输出文件中也不出现间隙。
+                              不要创建新文件，而是将该分段写入与之前一段相同的文件当中。时间戳也会自动调整，确保即使输入文件中两分段不连续，输出文件中也不出现间隙。
                               
                            </p>
                            
@@ -1121,7 +1159,7 @@
                            <p>
                               参数
                               <span class="parameter">A</span>、<span class="parameter">B</span>、<span class="parameter">C</span>
-                              等等必须全为正整数。编号从 1 开始。 章节编号列表以逗号分隔。 切割将在时间码等于或大于所列编号对应章节的起始时间码的首个关键帧之前进行。从 0s
+                              等等必须全为正整数。编号从 1 开始。 章节编号列表以逗号分隔。 切割将在时间戳等于或大于所列编号对应章节的起始时间戳的首个关键帧之前进行。从 0s
                               开始的章节将不作考虑，并不作提示，直接丢弃。
                               
                            </p>
@@ -1216,7 +1254,7 @@
                   <td>
                      
                      <p>
-                        决定追加合并文件时如何计算时间码。 参数 <span class="parameter">模式</span> 可以有两个数值: 默认的
+                        决定追加合并文件时如何计算时间戳。 参数 <span class="parameter">模式</span> 可以有两个数值: 默认的
                         '<span class="literal">file（文件）</span>' 和 '<span class="literal">track（轨道）</span>'。
                         
                      </p>
@@ -1226,9 +1264,9 @@
                         当 mkvmerge 将来自另一文件 (本段中假设为 '<span class="literal">文件2</span>') 的一条轨道 (假设为
                         '<span class="literal">轨道2_1</span>' ) 追加合并到首个文件 (假设为 '<span class="literal">文件1</span>')的一条轨道
                         (假设为 '<span class="literal">轨道1_1</span>') 时，它将为 '<span class="literal">轨道2_1</span>'
-                        的所有时间码设定一定量的延时。 对于 '<span class="literal">file（文件）</span>' 模式此延时量是
-                        '<span class="literal">文件1</span>' 中遇到的最大时间码，即使此时间码不属于轨道 '<span class="literal">轨道1_1</span>'。而在
-                        track （轨道模式）下此延时为 '<span class="literal">轨道1_1</span>' 的最大时间码。
+                        的所有时间戳设定一定量的延时。 对于 '<span class="literal">file（文件）</span>' 模式此延时量是
+                        '<span class="literal">文件1</span>' 中遇到的最大时间戳，即使此时间戳不属于轨道 '<span class="literal">轨道1_1</span>'。而在
+                        track （轨道模式）下此延时为 '<span class="literal">轨道1_1</span>' 的最大时间戳。
                         
                      </p>
                      
@@ -1399,7 +1437,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2111">2.6. 附件支持 (其他全局选项)</a></h2>
+         <h2><a name="d4e2189">2.6. 附件支持 (其他全局选项)</a></h2>
          
          
          
@@ -1478,7 +1516,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2252">2.7. 用于各输入文件的选项</a></h2>
+         <h2><a name="d4e2330">2.7. 用于各输入文件的选项</a></h2>
          
          
          
@@ -1769,7 +1807,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        将 id 为 <span class="parameter">TID</span> 的轨道的时间码按 <span class="parameter">d</span> ms
+                        将 id 为 <span class="parameter">TID</span> 的轨道的时间戳按 <span class="parameter">d</span> ms
                         进行调整。轨道 ID 与 <a href="#mkvmerge.description.identify">--identify</a>
                         所给出的相同 (参见 <a href="#mkvmerge.track_ids">轨道 ID</a> 段落)。
                         
@@ -1979,12 +2017,32 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><span class="option">--remove-dialog-normalization-gain</span>
+                     <span class="parameter">轨道ID</span></td>
+                  <td>
+                     
+                     <p>
+                        部分音频编码包含告知解码器/播放器如何应用音量增益（通常是降低）的头部字段，从而实现对白正规化。此选项可让 <span class="productname">mkvmerge</span>(1)&nbsp;
+                        修改相应头部字段，移除或减小增益。
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        目前只有 <span class="abbrev">AC-3</span>、<span class="abbrev">DTS</span> 与 <span class="abbrev">TrueHD</span>
+                        轨道受此选项影响。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><span class="option">--timestamps</span> <span class="parameter">TID:文件名</span></td>
                   <td>
                      
                      <p>
-                        从 <span class="parameter">文件名</span> 读取要应用到指定轨道 ID 的时间码。 这些时间码将强制覆盖 <span class="productname">mkvmerge</span>(1)
-                        默认计算出的时间码。参阅关于 <a href="#mkvmerge.external_timestamp_files">外部时间码文件</a> 的章节。
+                        从 <span class="parameter">文件名</span> 读取要应用到指定轨道 ID 的时间戳。 这些时间戳将强制覆盖 <span class="productname">mkvmerge</span>(1)
+                        默认计算出的时间戳。参阅关于 <a href="#mkvmerge.external_timestamp_files">外部时间戳文件</a> 的章节。
                         
                      </p>
                      
@@ -1995,7 +2053,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        强制指定轨道的默认时长为指定数值。 将同时修改轨道的时间码以匹配该默认时长。 变量 <span class="parameter">x</span> 必须有
+                        强制指定轨道的默认时长为指定数值。 将同时修改轨道的时间戳以匹配该默认时长。 变量 <span class="parameter">x</span> 必须有
                         '<span class="literal">s</span>', '<span class="literal">ms</span>', '<span class="literal">us</span>',
                         '<span class="literal">ns</span>', '<span class="literal">fps</span>', '<span class="literal">p</span>' 或
                         '<span class="literal">i</span>' 作为后缀，分别以秒、毫秒、微秒、纳秒、“帧每秒”、“逐行帧每秒”或“隔行帧每秒”为单位指定默认时长。数字
@@ -2012,7 +2070,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                      
                      
                      <p>
-                        此选项也可用于在不使用外部时间码文件的情况下更改视频轨的 <span class="abbrev">FPS（帧率）</span>。
+                        此选项也可用于在不使用外部时间戳文件的情况下更改视频轨的 <span class="abbrev">FPS（帧率）</span>。
                         
                      </p>
                      
@@ -2085,7 +2143,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e3339">2.8. 仅用于视频轨的选项</a></h2>
+         <h2><a name="d4e3451">2.8. 仅用于视频轨的选项</a></h2>
          
          
          
@@ -2518,7 +2576,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4163">2.9. 仅适用于文本字幕轨道的选项</a></h2>
+         <h2><a name="d4e4275">2.9. 仅适用于文本字幕轨道的选项</a></h2>
          
          
          
@@ -2555,7 +2613,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4203">2.10. 其他选项</a></h2>
+         <h2><a name="d4e4315">2.10. 其他选项</a></h2>
          
          
          
@@ -2630,7 +2688,7 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                            
                            
                            <p>
-                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v10.json">mkvmerge-identification-output-schema-v10.json</a>
+                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v11.json">mkvmerge-identification-output-schema-v11.json</a>
                               
                            </p>
                            
@@ -3119,6 +3177,10 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          
+         <h2><a name="mkvmerge.track_ids.regular_ids">6.1. Regular track IDs</a></h2>
+         
+         
+         
          <p>
             <span class="productname">mkvmerge</span>(1) 的一些选项要求提供轨道 ID 以指定应应用到的轨道。 当读取器分离当前输入文件时，或者使用 <a href="#mkvmerge.description.identify">--identify</a>
             选项调用 <span class="productname">mkvmerge</span>(1) 时这些轨道 ID 会被显示出来。此类输出的一个示例：
@@ -3186,17 +3248,39 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          <p>
+            使用轨道 ID 的选项的描述中均含有 '<span class="literal">TID</span>'。此外下列选项也使用轨道 ID:
+            <span class="option">--audio-tracks</span>、<span class="option">--video-tracks</span>、<span class="option">--subtitle-tracks</span>、<span class="option">--button-tracks</span>
+            以及 <span class="option">--track-tags</span>。
+            
+         </p>
+         
+         
+         
+         <h2><a name="mkvmerge.track_ids.special_ids">6.2. Special track IDs</a></h2>
+         
+         
+         
+         <p>
+            There are several IDs that have special meaning and do not occur in the
+            identification output.
+            
+         </p>
+         
+         
+         <p>
             特殊的轨道 ID '<span class="constant">-1</span>' 是个百搭号，它将使给定的开关应用到从输入文件中读到的所有轨道。
             
          </p>
          
          
          <p>
-            使用轨道 ID 的选项的描述中均含有 '<span class="literal">TID</span>'。此外下列选项也使用轨道 ID:
-            <span class="option">--audio-tracks</span>、<span class="option">--video-tracks</span>、<span class="option">--subtitle-tracks</span>、<span class="option">--button-tracks</span>
-            以及 <span class="option">--track-tags</span>。
+            The special track ID '<span class="constant">-2</span>' refers to the chapters in a
+            source file. Currently only the <span class="option">--sync</span> option uses this
+            special ID. As an alternative to <span class="option">--sync -2:…</span> the option
+            <span class="option">--chapter-sync …</span> can be used.
             
          </p>
+         
          
          <h1><a name="mkvmerge.text_files_and_charsets">7. 文本文件与字符集转换</a></h1>
          
@@ -3514,8 +3598,8 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          <p>
-            如果文件被切割为多段，且启用了链接功能，则文件的时间码不会重新从 0
-            开始，而是会从上一个文件结束的地方继续计算。这样可以保留绝对时间，即使之前的文件不可用 (如进行流式处理时)。如果未使用链接功能，各文件的时间码应从 0
+            如果文件被切割为多段，且启用了链接功能，则文件的时间戳不会重新从 0
+            开始，而是会从上一个文件结束的地方继续计算。这样可以保留绝对时间，即使之前的文件不可用 (如进行流式处理时)。如果未使用链接功能，各文件的时间戳应从 0
             开始。<span class="productname">mkvmerge</span>(1) 默认不启用文件链接。如果您希望启用，可以通过 <span class="option">--link</span>
             选项打开。此选项仅当同时启用切割功能时有用。
             
@@ -3612,7 +3696,7 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          <p>
             此格式由成对的相继以 '<span class="literal">CHAPTERxx=</span>' 与
-            '<span class="literal">CHAPTERxxNAME=</span>' 开头的行组成。单数行包含起始时间码，而双数行包含标题。这是一个示例：
+            '<span class="literal">CHAPTERxxNAME=</span>' 开头的行组成。单数行包含起始时间戳，而双数行包含标题。这是一个示例：
             
          </p>
          
@@ -3733,11 +3817,11 @@ CHAPTER03NAME=宝宝摇屋子</pre>
           ChapterProcessData (二进制)</pre>
          
          
-         <h2><a name="d4e5875">13.3. 一般性备注</a></h2>
+         <h2><a name="d4e6017">13.3. 一般性备注</a></h2>
          
          
          <p>
-            <span class="productname">mkvmerge</span>(1) 切割文件时会同时适当调整章节。这意味着每个文件只包含应用到该文件的章节项，时间码也将被调整到与各输出文件相匹配。
+            <span class="productname">mkvmerge</span>(1) 切割文件时会同时适当调整章节。这意味着每个文件只包含应用到该文件的章节项，时间戳也将被调整到与各输出文件相匹配。
             
          </p>
          
@@ -3757,15 +3841,16 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          
-         <h2><a name="d4e5940">14.1. 介绍</a></h2>
+         <h2><a name="d4e6082">14.1. 介绍</a></h2>
          
          
          
          <p>
-            <span class="productname">Matroska</span><sup>(tm)</sup> 广泛支持废弃标签，还支持一种新式的、类似其他大多数容器使用的较简单的标签系统:
-            <span class="parameter">KEY=VALUE</span>。然而，在 <span class="productname">Matroska</span><sup>(tm)</sup>
-            中这些标签也可以嵌套，<span class="parameter">KEY</span> 与 <span class="parameter">VALUE</span>
-            都是属于它们自身的元素。示例文件 <span class="filename">example-tags-2.xml</span> 展示了如何使用这个新系统。
+            <span class="productname">Matroska</span><sup>(tm)</sup>'s tag system is similar to that of other containers: a set of
+            <span class="parameter">KEY=VALUE</span> pairs. However, in <span class="productname">Matroska</span><sup>(tm)</sup> these tags
+            can also be nested, and both the <span class="parameter">KEY</span> and the
+            <span class="parameter">VALUE</span> are elements of their own. The example file
+            <span class="filename">example-tags-2.xml</span> shows how to use this system.
             
          </p>
          
@@ -4022,11 +4107,11 @@ CHAPTER03NAME=宝宝摇屋子</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.external_timestamp_files">17. 外部时间码文件</a></h1>
+         <h1><a name="mkvmerge.external_timestamp_files">17. 外部时间戳文件</a></h1>
          
          
          <p>
-            <span class="productname">mkvmerge</span>(1) 允许用户为各轨道选择特定的时间码。这可用来创建包含可变帧率视频或音频中有空隙的文件。这种情况下的帧是 <span class="productname">mkvmerge</span>(1) 创建各
+            <span class="productname">mkvmerge</span>(1) 允许用户为各轨道选择特定的时间戳。这可用来创建包含可变帧率视频或音频中有空隙的文件。这种情况下的帧是 <span class="productname">mkvmerge</span>(1) 创建各
             <span class="productname">Matroska</span><sup>(tm)</sup> 块的单位。对视频来说恰好是一帧，对音频来说是相应音频类型的一个数据包。例如对 <span class="abbrev">AC-3</span>
             来说是包含 <span class="constant">1536</span> 采样的一个数据包。
             
@@ -4034,21 +4119,21 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          <p>
-            用于轨道追加合并的时间码必须只指定给一系列（同一）轨道的第一部分。例如当您追加合并两个文件，v1.avi 与
-            v2.avi，且希望使用时间码时，您的命令行必须像这样组织：
+            用于轨道追加合并的时间戳必须只指定给一系列（同一）轨道的第一部分。例如当您追加合并两个文件，v1.avi 与
+            v2.avi，且希望使用时间戳时，您的命令行必须像这样组织：
             
          </p>
          
-         <pre class="screen">$ mkvmerge ... --timestamps 0:我的时间码.txt v1.avi +v2.avi</pre>
+         <pre class="screen">$ mkvmerge ... --timestamps 0:我的时间戳.txt v1.avi +v2.avi</pre>
          
          <p>
-            <span class="productname">mkvmerge</span>(1) 可识别四种格式的时间码。版本号在时间码文件的第一行内。空行，只含有空格的行，以及以 '<span class="literal">#</span>'
+            <span class="productname">mkvmerge</span>(1) 可识别四种格式的时间戳。版本号在时间戳文件的第一行内。空行，只含有空格的行，以及以 '<span class="literal">#</span>'
             开头的行在处理时将被忽略。
             
          </p>
          
          
-         <h2><a name="d4e6392">17.1. 时间码文件格式 v1</a></h2>
+         <h2><a name="d4e6534">17.1. 时间戳文件格式 v1</a></h2>
          
          
          <p>
@@ -4064,13 +4149,13 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6416">17.2. 时间码文件格式 v2</a></h2>
+         <h2><a name="d4e6558">17.2. 时间戳文件格式 v2</a></h2>
          
          
          
          <p>
-            此格式中每行包含相应帧的时间码。此时间码必须以毫秒为精度。可以使浮点数，但不强求。您指定的时间码行数 <em>必须</em>
-            不少于对应轨道的帧数。此类文件中的时间码必须经过排序。 以 25fps 为例：
+            此格式中每行包含相应帧的时间戳。此时间戳必须以毫秒为精度。可以使浮点数，但不强求。您指定的时间戳行数 <em>必须</em>
+            不少于对应轨道的帧数。此类文件中的时间戳必须经过排序。 以 25fps 为例：
             
          </p>
          
@@ -4080,12 +4165,12 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6431">17.3. 时间码文件格式 v3</a></h2>
+         <h2><a name="d4e6573">17.3. 时间戳文件格式 v3</a></h2>
          
          
          <p>
             此格式中各行包含时长（秒数），后接（可选）帧率。 二者均可为浮点数。 如果未提供帧率，则采用默认的帧率。
-            对于音频，您应当让编解码器自行计算各帧的时间码。 这样您应当使用 <span class="constant">0.0</span> 作为帧率。 您可以使用
+            对于音频，您应当让编解码器自行计算各帧的时间戳。 这样您应当使用 <span class="constant">0.0</span> 作为帧率。 您可以使用
             '<span class="literal">gap</span>' 关键词后接空隙时长在流中创建空隙。 以音频文件为例：
             
          </p>
@@ -4098,11 +4183,11 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6449">17.4. 时间码文件格式 v4</a></h2>
+         <h2><a name="d4e6591">17.4. 时间戳文件格式 v4</a></h2>
          
          
          <p>
-            此格式与 v2 格式相似。 唯一的不同在于时间码不必经过排序。 通常不应使用此格式。
+            此格式与 v2 格式相似。 唯一的不同在于时间戳不必经过排序。 通常不应使用此格式。
             
          </p>
          

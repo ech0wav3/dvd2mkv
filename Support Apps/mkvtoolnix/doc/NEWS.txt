@@ -1,3 +1,347 @@
+# Version 27.0.0 "Metropolis" 2018-09-26
+
+## New features and enhancements
+
+* mkvmerge: chapters: the timestamps of chapters read from containers or from
+  chapter files can be adjusted (multiplication and addition) with the new
+  `--chapter-sync` option or using the special track ID `-2` for the existing
+  `--sync` option. Part of the implementation of #2358.
+* MKVToolNix GUI: multiplexer: adjusted & added controls for mkvmerge's new
+  feature of being able to adjust chapter timestamps. Part of the
+  implementation of #2358.
+* MKVToolNix GUI: multiplexer: the GUI can now ask for confirmation when the
+  user is about to create a file that won't contain audio tracks. It does this
+  by default if at least one source file contains an audio track. Implements
+  #2380.
+
+## Bug fixes
+
+* mkvmerge: AC-3: dialog normalization gain removal was corrupting E-AC-3
+  frames irreversibly by writing checksums in places where they didn't
+  belong. Additionally only the first E-AC-3 frame in a Matroska was processed
+  but not additional dependent frames in the same block. Fixes #2386.
+* MKVToolNix GUI: fixed a leak of Windows font resources leading to a general
+  slowdown and subsequent crash. Fixes #2372.
+
+
+# Version 26.0.0 "In The Game" 2018-08-26
+
+## New features and enhancements
+
+* mkvmerge: chapter generation: if the name template given by
+  `--generate-chapters-name-template` is empty, no names (`ChapterDisplay`
+  master elements with `ChapterString`/`ChapterLanguage` children) will be
+  generated for the chapter atoms. Part of the implementation of #2275.
+* mkvmerge: chapters: chapter names generated from MPLS files will now use the
+  name template if one is set via `--generate-chapters-name-template`. Part of
+  the implementation of #2275.
+* mkvmerge: mkvmerge will no longer abort with an error message if no audio,
+  video and subtitle tracks should be multiplexed. This allows copying of
+  chapters from non-chapter source files (e.g. Matroska or MP4 files).
+* MKVToolNix GUI: the font size in the tool selector on the left will scale
+  with the font size the user selects in the preferences.
+* MKVToolNix GUI: the GUI will no longer automatically resize the columns in
+  tree and list views to match the content size. Instead it remembers and
+  restores the widths set by the user. Implements #2353.
+* MKVToolNix GUI: multiplexer: the chapter name template will now be set
+  automatically to the name template in the preferences' "chapter editor"
+  section. Additionally the option `--generate-chapters-name-template …` will
+  be passed to mkvmerge in situations when mkvmerge will generate chapters
+  (either because automatic generation is enabled or if chapters are generated
+  for MPLS playlists). Part of the implementation of #2275.
+* MKVToolNix GUI: chapter editor: if the chapter name template is empty,
+  chapters will be generated without names. Part of the implementation of
+  #2275.
+* MKVToolNix GUI: chapter editor: added an option to remove all chapter names
+  to the "additional modifications" dialog. Part of the implementation of
+  #2275.
+
+## Bug fixes
+
+* mkvmerge: Matroska reader: fixed wrong timestamps when appending Matroska
+  files where the second Matroska file's first timestamp is bigger
+  than 0. Fixes #2345.
+* mkvmerge: MP4 reader: fixed division by zero errors during file
+  identification if the timescale is 0 in the `MVHD` atom.
+* mkvmerge: Windows Television DVR files are now recognized as an unsupported
+  file type. This prevents mis-detection as MPEG-2 with an accompanying flood
+  of error messages. Fixes #2347.
+* MKVToolNix GUI: info tool: under certain circumstances "cues" were shown at
+  the wrong level (inside the previous master element instead of on level
+  1). Fixes #2361.
+* MKVToolNix GUI: job queue: fixed invalid memory handling and consequent
+  crashes when using the "edit in corresponding tool & remove from job queue"
+  option if one of the files in that job contained attached files. Fixes
+  #2368.
+
+## Build system changes
+
+* An AppStream metadata file will be installed in `$prefix/share/metainfo`.
+
+
+# Version 25.0.0 "Prog Noir" 2018-07-12
+
+## New features and enhancements
+
+* mkvmerge: SRT/ASS/SSA text subtitles: for files for which no encoding has
+  been specified, mkvmerge will try UTF-8 first before falling back to the
+  system's default encoding. Part of the implementation of #2246.
+* mkvmerge: SRT/ASS/SSA/WebVTT text subtitles: a warning is now emitted if
+  invalid 8-bit characters are encountered outside valid multi-byte UTF-8
+  sequences. Part of the implementation of #2246.
+* mkvmerge: Matroska & MPEG transport stream readers: the encoding of text
+  subtitles read from Matroska files can now be changed with the
+  `--sub-charset` parameter.
+* Linux: starting with release 25 an AppImage will be provided which should
+  run on any Linux distribution released around the time of CentOS 7/Ubuntu
+  14.04 or later.
+* macOS: translations: updated the `build.sh` script to build `libiconv` and a
+  complete `gettext`. Together with an additional fix to how translation files
+  are located, MKVToolNix can now use all interface languages on macOS,
+  too. Fixes #2110, #2307, #2323.
+
+## Bug fixes
+
+* mkvmerge: AVC/h.264: fixed file identification failing for certain
+  elementary streams due to internal buffers not being cleared properly. Fixes
+  #2325.
+* mkvmerge: HEVC/h.265: fixed file identification failing for certain
+  elementary streams due to internal buffers not being cleared properly. This
+  is the HEVC analog to what was fixed for AVC in #2325.
+* mkvmerge: MLP code: fixed various issues preventing MLP from being parsed
+  correctly. Fixes #2326.
+* mkvmerge: TrueHD/MLP packetizer; dialog volume normalization removal isn't
+  attempted if the track is an MLP track as the operation is only supported
+  for TrueHD, not MLP.
+* mkvmerge: MPEG TS reader: when reading MPLS mkvmerge will now compare the
+  MPLS's start and end timestamps against the transport stream's PTS instead
+  of its DTS. Otherwise the first key frame of a video track might be dropped
+  if it isn't the first in presentation order. Fixes #2321.
+* mkvmerge: JSON identification: mkvmerge will ensure that all strings passed
+  to the JSON output modules are valid UTF-8 encoded strings by replacing
+  invalid bytes with placeholder characters. This avoids the JSON library
+  throwing an exception and mkvmerge aborting on such data. Fixes #2327.
+* mkvmerge: audio packetizers: mkvmerge will now keep discard padding values
+  if they're present for packets read from Matroska files. Fixes #2296.
+* mkvmerge: Ogg Opus reader: packet timestamps aren't calculated by summing up
+  the duration of all packets starting with timestamp 0 anymore. Instead the
+  algorithm is based on the Ogg page's granule position and which packet
+  number is currently timestamped (special handling for the first and last
+  packets in the stream).
+
+  * This fixes the first timestamp if the first Ogg packet's granule position
+    is larger than the number of samples in the first packet (= if the first
+    sample's timestamp is bigger than 0). mkvmerge will keep those offsets now
+    and inserts "discard padding" only where it's actually needed.
+  * It also improves handling of invalid files where the first Ogg packet's
+    granule position is smaller than the number of samples in the first packet
+    (= the first sample's timestamp is smaller than 0). mkvmerge will now
+    shift all timestamps up to 0 in such a case instead of inserting "discard
+    padding" elements all over the place.
+  * mkvmerge will no longer insert "discard padding" elements if the
+    difference between a) the calculated number of samples in the packet
+    according to the granule position and b) the actual number of samples as
+    calculated from the bitstream is one sample or less and if the packet
+    isn't the last one in the stream. This circumvents certain rounding
+    errors.
+  * The timestamp of the first packet after a gap in the middle of the stream
+    is now calculated based on the Ogg page the packet belongs to, and not
+    based on the timestamps before the gap.
+
+  Fixes #2280.
+* mkvmerge: complete rewrite of the progress handling. It's now based upon the
+  total size of all source files and the current position within them instead
+  of the number of frames/blocks to be processed. This simplifies calculation
+  when appending files and fixes rare cases of when progress report was
+  obvious wrong (e.g. stuck at 0% right until the end). Fixes #2150 and #2330.
+* MKVToolNix GUI: header editor: non-mandatory elements couldn't be removed
+  anymore due to a regression while fixing #2320. They can now be removed
+  again. Fixes #2322.
+
+
+# Version 24.0.0 "Beyond The Pale" 2018-06-10
+
+## New features and enhancements
+
+* mkvmerge: MP4 reader: improved the detection of edit lists consisting of two
+  identical entries, each spanning the file's duration as given in the movie
+  header atom. The second entry is ignored in such cases. See #2306.
+* mkvmerge: JSON identification: the "display unit" video track property is
+  now reported as `display_unit`. The JSON schema has been bumped to v11 for
+  this change.
+* mkvmerge, mkvextract: AVC/h.264: empty NALUs will now be removed.
+* mkvextract: VobSub extraction: empty SPU packets will now be dropped during
+  extraction as other tools such as MP4Box cannot handle them
+  correctly. Implements #2293.
+
+## Bug fixes
+
+* mkvmerge: E-AC-3 parser: fixed determining the number of channels for
+  streams that contain an AC-3 core with dependent E-AC-3 frames. Fixes #2283.
+* mkvmerge: Matroska reader: fixed mkvmerge buffering the whole file if a
+  video track is multiplexed that consists of only one or a few frames. Fixes
+  #2304.
+* mkvmerge: the "display unit" video track property will now be kept if it is
+  set in the source file. Fixes #2317.
+* MKVToolNix GUI: multiplexer: when scanning playlists, all playlists were
+  offered for selection regardless of the value of the "minimum playlist
+  duration" setting. Fixes #2299.
+* MKVToolNix GUI: multiplexer: deriving track languages from file names: the
+  regular sub-expressions for ISO 639-1 codes could match on empty strings,
+  too, causing matches in wrong places and hence no language being recognized
+  in certain situations. Fixes #2298.
+* MKVToolNix GUI: header editor: fixed a crash when saving the file fails
+  (e.g. because it isn't writable). Fixes #2319.
+* MKVToolNix GUI: header editor: the editor was wrongfully claiming that
+  mandatory elements with default values cannot be removed in the "status"
+  text. Fixes #2320.
+* MKVToolNix GUI: preferences: on macOS & Linux the setting "enable copying
+  tracks by their type" wasn't restored on program start. Fixes #2297.
+
+## Other changes
+
+* Niels Lohmann's JSON library: the bundled version has been updated from
+  v1.1.0 (git revision 54d3cab) to v3.1.1 (git revision g183390c1).
+* pugixml library: the bundled version has been updated from v1.8 to v1.9 (git
+  revision e584ea3).
+
+
+# Version 23.0.0 "The Bride Said No" 2018-05-02
+
+## New features and enhancements
+
+* mkvmerge: input: format detection uses file-extension to improve performance
+  and to give preference when several formats match.
+* mkvmerge: AV1: added support for reading AV1 video from Open Bitstream Unit
+  files.
+* mkvmerge: AV1: adjusted the code for the AV1 bitstream format changes made
+  up to 2018-05-02 (git revision d14e878).
+* mkvmerge: MP4 reader: if a track has an edit list with two identical
+  entries, each spanning the file's duration as given in the movie header
+  atom, then the second entry will now be ignored. Improves the handling of
+  files with bogus data; see #2196 and #2270.
+* MKVToolNix GUI: multiplexer: added options to only enable tracks of certain
+  types by default. Implements #2271.
+* MKVToolNix GUI: multiplexer: added an option to enable dialog normalization
+  gain removal by default for all audio tracks for which the operation is
+  supported. Implements #2272.
+* MKVToolNix GUI: multiplexer: when deriving track languages from the file
+  names is active and the file name contains the usual season/episode pattern
+  (e.g. "S02E14"), then only the part after the season/episode pattern will be
+  used for detecting the language. Part of the improvements for #2267.
+* MKVToolNix GUI: multiplexer: the regular expression used for deriving track
+  languages from the file names can now be customized in the preferences. Part
+  of the improvements for #2267.
+* MKVToolNix GUI: multiplexer: the user can now customize the list of track
+  languages the GUI recognizes in file names. This list defaults to a handful
+  of common languages instead of the full list of supported languages. Part of
+  the improvements for #2267.
+
+## Bug fixes
+
+* mkvmerge: MP3 packetizer: removed a memory leak growing linearly with the
+  track's size.
+* mkvmerge: VobSub packetizer: whenever a VobSub packet doesn't contain a
+  duration on the container level, mkvmerge will now set it from the duration
+  in the SPU packets. Before it was accidentally setting the SPU-level
+  duration to 0 instead. Fixes #2260.
+* mkvmerge: track statistics tags: if writing the `Date` element is
+  deactivated via `--no-date`, the `_STATISTICS_WRITING_DATE_UTC` isn't
+  written either anymore. Fixes #2286.
+* mkvmerge, mkvextract, mkvpropedit: removed several small, constant-size
+  memory leaks.
+* mkvextract: fixed a crash when mkvextract with a non-Matroska file as the
+  source file. Fixes #2281.
+* MKVToolNix GUI: the central area is now scrollable, allowing the GUI to be
+  resized to almost arbitrary sizes. Fixes #2265.
+* MKVToolNix GUI: multiplexer: the "copy file title to destination file name"
+  functionality will now replace everything in the destination file name up to
+  the last period instead of only up to the first period. Fixes #2276.
+
+## Build system changes
+
+* build system: MKVToolNix now requires a compiler that supports the following
+  features of the C++14 standard: "user-defined literals for
+  `std::string`". For the GNU Compiler Collection (gcc) this means v5.x or
+  newer; for clang it means v3.4 or newer.
+* Windows: linking against and installing shared version of the libraries with
+  MXE is now supported by setting `configure`'s `host` triplet accordingly,
+  e.g. `--host=x86_64-w64-mingw32.shared`.
+
+## Other changes
+
+* mkvmerge: AV1: support for AV1 must be activated manually by adding
+  `--engage enable_av1` as the AV1 bitstream specification hasn't been
+  finalized yet.
+
+
+# Version 22.0.0 "At The End Of The World" 2018-04-01
+
+## New features and enhancements
+
+* mkvmerge, MKVToolNix GUI multiplexer: AC-3, DTS, TrueHD: added an option for
+  removing/minimizing the dialog normalization gain for all supported types of
+  the mentioned codecs. Implements #1981.
+* mkvmerge: AV1: added support for reading AV1 video from IVF, WebM and
+  Matroska files.
+* mkvmerge: FLAC: mkvmerge can now ignore ID3 tags in FLAC files which would
+  otherwise prevent mkvmerge from detecting the file type. Implements #2243.
+* mkvinfo: the size and positions of frames within "SimpleBlock" and
+  "BlockGroup" elements are now shown the same way they're shown for other
+  elements (by adding the `-v -v` and `-z` options).
+* MKVToolNix GUI: multiplexer: added options for deriving the track languages
+  from the file name by searching for ISO 639-1/639-2 language codes or
+  language names enclosed in non-word, non-space characters (e.g. "…[ger]…"
+  for German or "…+en+…" for English). Implements #1808.
+* MKVToolNix GUI: info tool: implemented reading all elements in the file
+  after the first cluster. Only top-level elements are shown; child elements
+  are only loaded on demand. Implements the rest of #2104.
+* MKVToolNix GUI: info tool: added a context menu with the option to show a
+  hex dump of the element with the bytes making up the EBML ID and the size
+  portion highlighted in different colors. In-depth highlighting is done for
+  the data in `SimpleBlock` and `Block` elements.
+* MKVToolNix GUI: chapter editor: added an option to remove all end timestamps
+  to the "additional modifications" dialog. Implements #2231.
+
+## Bug fixes
+
+* mkvmerge: MP4 reader: fixed reading the ESDS audio header atom if it is
+  located inside a "wave" atom inside the "stsd" atom.
+* mkvmerge: MP4 reader: AAC audio tracks signalling eight channels in the
+  track headers but only seven in the codec-specific configuration will be
+  treated as having eight channels.
+* mkvmerge: MPEG TS reader: fixed wrong handling of the continuity counter for
+  TS packets that signal that TS payload is present but where the adaptation
+  field spans the whole TS packet.
+* mkvmerge: the 'document type version' and 'document type read version'
+  header fields are now set depending on which elements are actually written,
+  not on which features are active (e.g. if a `SimpleBlock` is never written,
+  then the 'read version' won't be set to 2 anymore). Part of the fix for
+  #2240.
+* mkvmerge: the 'document type version' header field is now set to 4 correctly
+  if any of the version 4 Matroska elements is written. Part of the fix for
+  #2240.
+* mkvinfo: summary mode: the file positions reported for frames in
+  `BlockGroup` elements did not take the bytes used for information such as
+  timestamp, track number flags or lace sizes into account. They were
+  therefore too low.
+* mkvpropedit, MKVToolNix GUI header editor: the 'document type version' and
+  'document type read version' header fields are now updated if elements
+  written by the changes require higher version numbers. Part of the fix for
+  #2240.
+* mkvpropedit, MKVToolNix GUI header editor: mandatory elements can now be
+  deleted if there's a default value for them in the specifications. Fixes
+  #2241.
+* source code: fixed a compilation error on FreeBSD with clang++ 5.0. Fixes
+  #2255.
+
+## Build system changes
+
+* A compilation database (in the form of a file `compile_commands.json`) can
+  be built automatically if the variable `BUILD_COMPILATION_DATABASE` is set
+  to `yes` (e.g. as `rake BUILD_COMPILATION_DATABASE=yes`).
+
+
 # Version 21.0.0 "Tardigrades Will Inherit The Earth" 2018-02-24
 
 ## New features and enhancements

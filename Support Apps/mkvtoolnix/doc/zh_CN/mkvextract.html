@@ -473,7 +473,7 @@
          
          
          
-         <h2><a name="mkvextract.description.timestamps_v2">2.7. 时间码提取模式</a></h2>
+         <h2><a name="mkvextract.description.timestamps_v2">2.7. 时间戳提取模式</a></h2>
          
          
          
@@ -500,7 +500,7 @@
                   <td>
                      
                      <p>
-                        如果输入文件中存在 ID 为 <span class="parameter">TID</span> 的轨道，则将其时间码提取为文件
+                        如果输入文件中存在 ID 为 <span class="parameter">TID</span> 的轨道，则将其时间戳提取为文件
                         <span class="parameter">输出文件名</span>。本选项可多次给出。轨道 ID 与 <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a> 的
                         <span class="option">--identify</span> 选项所输出的相同。
                         
@@ -586,10 +586,10 @@
             </thead>
             <tbody>
                <tr>
-                  <td class="varlistoption">时间码</td>
+                  <td class="varlistoption">时间戳</td>
                   <td>
                      
-                     <p>cue point 的时间码，精确到纳秒。格式为 <span class="literal">HH:MM:SS.nnnnnnnnn</span>。该元素必有值。
+                     <p>cue point 的时间戳，精确到纳秒。格式为 <span class="literal">HH:MM:SS.nnnnnnnnn</span>。该元素必有值。
                      </p>
                      
                   </td>
@@ -837,7 +837,7 @@
                      
                      <p>
                         <span class="productname">TrueAudio</span><sup>(tm)</sup> 轨道将被输出为 <span class="abbrev">TTA</span> 文件。请注意，由于
-                        <span class="productname">Matroska</span><sup>(tm)</sup> 时间码的精度限制，解开来的文件的头部有两个字段不同：<span class="varname">data_length</span>
+                        <span class="productname">Matroska</span><sup>(tm)</sup> 时间戳的精度限制，解开来的文件的头部有两个字段不同：<span class="varname">data_length</span>
                         (文件的总采样数) 与 <span class="abbrev">CRC</span>。
                         
                      </p>
@@ -1075,11 +1075,11 @@
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption">时间码</td>
+                  <td class="varlistoption">时间戳</td>
                   <td>
                      
                      <p>
-                        时间码会先被排序，然后以 timestamp v2 格式文件输出，该文件适用于 <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>。不支持提取为其他格式 (v1, v3 或 v4)。
+                        时间戳会先被排序，然后以 timestamp v2 格式文件输出，该文件适用于 <a href="mkvmerge.html"><span class="productname">mkvmerge</span>(1)</a>。不支持提取为其他格式 (v1, v3 或 v4)。
                         
                      </p>
                      

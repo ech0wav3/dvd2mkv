@@ -202,8 +202,8 @@
                      <p>
                         Estableix els UID dels segments a emprar. Aquesta és una llista separada per
                         comes dels UID dels segments de 128 bits en la forma usual de l'UID: nombres
-                        hexadecimals, amb el «0x» com a prefix o sense, amb espais o sense,
-                        exactament 32 dígits.
+                        hexadecimals, amb el prefix «0x» o sense, amb espais o sense, exactament 32
+                        dígits.
                         
                      </p>
                      
@@ -288,6 +288,49 @@
                         Aquest ajustament també s'aplica als capítols que es copien des de certs
                         tipus de contenidors, p. ex., fitxers Ogg/OGM i MP4. Per a més detalls,
                         vegeu més endavant la secció sobre els capítols.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.chapter_sync"><span class="option">--chapter-sync</span>
+                        <span class="parameter">d[,o[/p]]</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Ajusta els codis de temps dels capítols en el fitxer d'origen per
+                        <span class="parameter">d</span> ms. De manera alternativa, podeu utilitzar l'opció
+                        <span class="option">--sync</span> amb l'ID <span class="constant">-2</span> de pista especial
+                        (vegeu la secció de els <a href="#mkvmerge.track_ids.special_ids">ID de
+                           pista especial</a>).
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        <span class="parameter">o</span>/<span class="parameter">p</span>: ajusta les marques de
+                        temps per <span class="parameter">o</span>/<span class="parameter">p</span>, per a fixar
+                        desfasaments lineals. Si s'omet, <span class="parameter">p</span> per omissió serà
+                        1. Tant <span class="parameter">o</span> com <span class="parameter">p</span> poden ser
+                        nombres decimals.
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        Per omissió: no hi haurà cap correcció de sincronització manual (el qual és
+                        el mateix que <span class="parameter">d</span> = <span class="constant">0</span> i
+                        <span class="parameter">o</span>/<span class="parameter">p</span> =
+                        <span class="constant">1.0</span>).
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        Aquesta opció es pot emprar múltiples vegades per a un fitxer d'entrada
+                        aplicant-la a diverses pistes, seleccionant els diferents ID de les pistes
+                        cada vegada.
                         
                      </p>
                      
@@ -576,7 +619,7 @@
          
          
          
-         <h2><a name="d4e762">2.4. Control general de la sortida (opcions globals avançades)</a></h2>
+         <h2><a name="d4e840">2.4. Control general de la sortida (opcions globals avançades)</a></h2>
          
          
          
@@ -768,7 +811,7 @@
          
          
          
-         <h2><a name="d4e1048">2.5. Divisió, vinculació, annexat i concatenació dels fitxers (més opcions
+         <h2><a name="d4e1126">2.5. Divisió, vinculació, annexat i concatenació dels fitxers (més opcions
                globals)</a></h2>
          
          
@@ -1607,7 +1650,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                            
                            <p>
                               Alguns intèrprets d'ordres tracten els parèntesis com a caràcters
-                              especials. Per tant, s'hauran d'escapar o posar entre cometes simples tal
+                              especials. Per tant, s'hauran d'escapar o posar entre cometes senzilles tal
                               com es mostra en l'exemple anterior.
                               
                            </p>
@@ -1624,7 +1667,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2127">2.6. Implementació per a adjunts (més opcions globals)</a></h2>
+         <h2><a name="d4e2205">2.6. Implementació per a adjunts (més opcions globals)</a></h2>
          
          
          
@@ -1713,7 +1756,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2268">2.7. Opcions que es poden emprar per a cada fitxer d'entrada</a></h2>
+         <h2><a name="d4e2346">2.7. Opcions que es poden emprar per a cada fitxer d'entrada</a></h2>
          
          
          
@@ -2298,11 +2341,34 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><span class="option">--remove-dialog-normalization-gain</span>
+                     <span class="parameter">TID</span></td>
+                  <td>
+                     
+                     <p>
+                        Alguns códecs d'àudio contenen camps de capçalera que indiquen al
+                        decodificador o al reproductor quin guany aplicar (generalment negatiu) per
+                        a la normalització del diàleg. Aquesta opció indica al <span class="productname">mkvmerge</span>(1) que
+                        elimini o minimitzi aquest guany modificant els camps de capçalera
+                        corresponents.
+                        
+                     </p>
+                     
+                     
+                     <p>
+                        En l'actualitat no més es veuen afectades per aquesta opció les pistes
+                        <span class="abbrev">AC-3</span>, <span class="abbrev">DTS</span> i <span class="abbrev">TrueHD</span>.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><span class="option">--timestamps</span> <span class="parameter">TID:nom_fitxer</span></td>
                   <td>
                      
                      <p>
-                        Llegeix els codis de temps que s'empraran per a l'ID de la pista específica
+                        Llegeix els codis de temps que s'empraran per a l'ID específic de la pista
                         des del <span class="parameter">nom_fitxer</span>. Aquests codis de temps
                         substitueixen de manera forçosa els codis de temps que normalment calcula el
                         <span class="productname">mkvmerge</span>(1). Llegiu la secció sobre <a href="#mkvmerge.external_timestamp_files">els fitxers externs pels codis
@@ -2427,7 +2493,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e3355">2.8. Opcions que només s'apliquen a les pistes de vídeo</a></h2>
+         <h2><a name="d4e3467">2.8. Opcions que només s'apliquen a les pistes de vídeo</a></h2>
          
          
          
@@ -2915,7 +2981,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4179">2.9. Opcions que només s'apliquen a les pistes de subtítols de text</a></h2>
+         <h2><a name="d4e4291">2.9. Opcions que només s'apliquen a les pistes de subtítols de text</a></h2>
          
          
          
@@ -2933,7 +2999,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                      
                      <p>
                         Estableix el joc de caràcters per a la conversió a UTF-8 dels subtítols per
-                        a un ID de pista indicat. Si no s'especifica el joc de caràcters, aquest
+                        a un ID indicat de pista. Si no s'especifica el joc de caràcters, aquest
                         derivarà dels ajustaments per a la configuració regional. Tingueu en compte
                         que no és necessari un joc de caràcters per a llegir els subtítols des de
                         fitxers <span class="productname">Matroska</span><sup>(tm)</sup> o des de fluxos Kate, ja que aquests sempre
@@ -2958,7 +3024,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4219">2.10. Altres opcions</a></h2>
+         <h2><a name="d4e4331">2.10. Altres opcions</a></h2>
          
          
          
@@ -3040,7 +3106,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                            
                            
                            <p>
-                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v10.json">mkvmerge-identification-output-schema-v10.json</a>
+                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v11.json">mkvmerge-identification-output-schema-v11.json</a>
                               
                            </p>
                            
@@ -3447,8 +3513,8 @@ $ mkvmerge -o MM-completa.mkv meva_peli-amb-so.mkv meva_peli-afegeix-àudio.ogg<
          
          
          <p>
-            Si necessiteu una pista d'àudio sincronitzada ho podeu fer amb facilitat. El
-            primer és esbrinar quin ID de pista té la pista Vorbis, amb:
+            Si necessiteu una pista d'àudio sincronitzada, ho podeu fer amb
+            facilitat. El primer és esbrinar quin ID de pista té la pista Vorbis, amb:
             
          </p>
          
@@ -3599,6 +3665,10 @@ $ mkvmerge -o MM-completa.mkv meva_peli-amb-so.mkv meva_peli-afegeix-àudio.ogg<
          
          
          
+         <h2><a name="mkvmerge.track_ids.regular_ids">6.1. Els ID de pista normal</a></h2>
+         
+         
+         
          <p>
             Algunes opcions pel <span class="productname">mkvmerge</span>(1) necessiten un ID de pista per especificar a
             quina pista s'han d'aplicar. Aquests ID de pista són mostrats pels lectors
@@ -3678,6 +3748,28 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
+            Les opcions que empren els ID de les pistes són aquelles en què la
+            descripció conté un «<span class="literal">TID</span>». Les següents opcions també
+            empren els ID de les pistes: <span class="option">--audio-tracks</span>,
+            <span class="option">--video-tracks</span>, <span class="option">--subtitle-tracks</span>,
+            <span class="option">--button-tracks</span> i <span class="option">--track-tags</span>.
+            
+         </p>
+         
+         
+         
+         <h2><a name="mkvmerge.track_ids.special_ids">6.2. Els ID de pista normal</a></h2>
+         
+         
+         
+         <p>
+            Hi ha diversos ID que tenen un significat especial i que no apareixen a la
+            sortida d'identificació.
+            
+         </p>
+         
+         
+         <p>
             L'ID de pista especial «<span class="constant">-1</span>» és un comodí i aplica
             l'opció indicada a totes les pistes que es llegeixen des d'un fitxer
             d'entrada.
@@ -3686,13 +3778,14 @@ ID de la pista 1: audio (A_MPEG/L3)</pre>
          
          
          <p>
-            Les opcions que empren els ID de les pistes són aquelles en què la
-            descripció conté un «<span class="literal">TID</span>». Les següents opcions també
-            empren els ID de les pistes: <span class="option">--audio-tracks</span>,
-            <span class="option">--video-tracks</span>, <span class="option">--subtitle-tracks</span>,
-            <span class="option">--button-tracks</span> i <span class="option">--track-tags</span>.
+            L'ID «<span class="constant">-2</span>» de pista especial fa referència als capítols
+            en un fitxer d'origen. Actualment només l'opció <span class="option">--sync</span>
+            utilitza aquest ID especial. Com a alternativa a <span class="option">--sync
+               -2:«...»</span>, es pot utilitzar l'opció <span class="option">--chapter-sync
+               «...»</span>.
             
          </p>
+         
          
          <h1><a name="mkvmerge.text_files_and_charsets">7. Conversió per a fitxers de text i jocs de caràcters</a></h1>
          
@@ -4249,7 +4342,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          <p>
             Amb aquest format es poden realitzar tres coses que no es poden amb el
-            format simple:
+            format de capítol senzill:
             
          </p>
          
@@ -4314,7 +4407,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
           ChapterProcessData (binari)</pre>
          
          
-         <h2><a name="d4e5890">13.3. Notes generals</a></h2>
+         <h2><a name="d4e6032">13.3. Notes generals</a></h2>
          
          
          <p>
@@ -4346,18 +4439,17 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          
          
-         <h2><a name="d4e5955">14.1. Introducció</a></h2>
+         <h2><a name="d4e6097">14.1. Introducció</a></h2>
          
          
          
          <p>
-            <span class="productname">Matroska</span><sup>(tm)</sup> admet un ampli conjunt d'etiquetes que estan obsoletes, així com
-            un nou sistema, més simple, que s'empra en la majoria d'altres contenidors:
-            <span class="parameter">CLAU=VALOR</span>. No obstant això, al <span class="productname">Matroska</span><sup>(tm)</sup>, aquestes
-            etiquetes també es poden aniuar, i tant la <span class="parameter">CLAU</span> com
-            el <span class="parameter">VALOR</span> són elements propis. El fitxer d'exemple
-            <span class="filename">example-tags-2.xml</span> mostra com emprar aquest nou
-            sistema.
+            El sistema d'etiquetes de <span class="productname">Matroska</span><sup>(tm)</sup> és similar al d'altres contenidors: un
+            conjunt de parelles <span class="parameter">CLAU=VALOR</span>. No obstant això, al
+            <span class="productname">Matroska</span><sup>(tm)</sup>, aquestes etiquetes també es poden aniuar, i tant la
+            <span class="parameter">CLAU</span> com el <span class="parameter">VALOR</span> són elements
+            propis. El fitxer d'exemple <span class="filename">example-tags-2.xml</span> mostra
+            com emprar aquest sistema.
             
          </p>
          
@@ -4472,9 +4564,10 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          <p>
             El nou sistema d'etiquetatge del <span class="productname">Matroska</span><sup>(tm)</sup> només reconeix dos tipus de
-            dades, una cadena en UTF-8 i un tipus binari. La primera s'empra pel nom de
-            l'etiqueta i l'element <span class="classname">&lt;String&gt;</span>, mentre que el
-            tipus binari s'empra per a l'element <span class="classname">&lt;Binary&gt;</span>.
+            dades, una cadena en UTF-8 i un tipus binari. La primera s'empra per al nom
+            de l'etiqueta i l'element <span class="classname">&lt;String&gt;</span>, mentre que
+            el tipus binari s'empra per a l'element
+            <span class="classname">&lt;Binary&gt;</span>.
             
          </p>
          
@@ -4694,7 +4787,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          </p>
          
          
-         <h2><a name="d4e6407">17.1.  Format v1 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6549">17.1.  Format v1 pel fitxer del codi de temps</a></h2>
          
          
          <p>
@@ -4715,7 +4808,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6431">17.2.  Format v2 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6573">17.2.  Format v2 pel fitxer del codi de temps</a></h2>
          
          
          
@@ -4735,13 +4828,13 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6446">17.3.  Format v3 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6588">17.3.  Format v3 pel fitxer del codi de temps</a></h2>
          
          
          <p>
             En aquest format cada línia conté una durada en segons seguida per un nombre
             opcional de fotogrames per segon. Ambdós camps poden ser nombres
-            decimals. Si no s'especifica el nombre de fotogrames per segon s'emprarà el
+            decimals. Si no s'especifica el nombre de fotogrames per segon, s'emprarà el
             valor per omissió. Per a l'àudio s'hauria de deixar calcular al còdec els
             codis de temps dels fotogrames. Per això, haureu d'emprar
             <span class="constant">0.0</span> com el nombre de fotogrames per segon. També podeu
@@ -4759,7 +4852,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6464">17.4.  Format v4 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6606">17.4.  Format v4 pel fitxer del codi de temps</a></h2>
          
          
          <p>
