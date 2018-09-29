@@ -918,7 +918,7 @@ if ($complete == 1) {
 			if ($aspect_ratio == 0) {
 				$video_ar = "16/9";
 				$video_dimensions = "852x480";
-			} elseif ($aspect_radio == 1) {
+			} elseif ($aspect_ratio == 1) {
 				$video_ar = "4/3";
 				$video_dimensions = "640x480";
 			}
@@ -971,7 +971,7 @@ if ($complete == 1) {
 		if ($aspect_ratio == 0) {
 			$video_ar = "16/9";
 			$video_dimensions = "852x480";
-		} elseif ($aspect_radio == 1) {
+		} elseif ($aspect_ratio == 1) {
 			$video_ar = "4/3";
 			$video_dimensions = "640x480";
 		}
