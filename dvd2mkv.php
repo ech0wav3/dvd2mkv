@@ -1,7 +1,7 @@
 <?php
 
 ###### Version #######
-$d2m_ver = "2018.09";
+$d2m_ver = "2018.10";
 
 ## Load program location variables from outside source
 if (file_exists("settings.conf")) {
@@ -67,7 +67,14 @@ function SanitizeName($strToUse) {
 	// Replace spaces with a '_'
 	$temp = str_replace(" ", "_", $temp);
 	$temp = str_replace(".", "_", $temp);
+	$temp = str_replace(":", "_", $temp);
 	$result = $temp;
+	
+	// Replace triple underscores with a single underscore
+	$result = str_replace("___", "_", $result);
+
+	// Replace double underscores with a single underscore
+	$result = str_replace("__", "_", $result);
 	
 	// Return filename
 	return $result;
@@ -83,6 +90,7 @@ function filename($filename) {
 	// Replace spaces with a '_'
 	$temp = str_replace(" ", "_", $temp);
 	$temp = str_replace(".", "_", $temp);
+	$temp = str_replace(":", "_", $temp);
 
 	// Loop through string
 	$result = '';
