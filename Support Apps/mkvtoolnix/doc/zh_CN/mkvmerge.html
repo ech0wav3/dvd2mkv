@@ -264,10 +264,8 @@
                   <td>
                      
                      <p>
-                        Adjust the timestamps of the chapters in the following source file by
-                        <span class="parameter">d</span> ms. Alternatively you can use the
-                        <span class="option">--sync</span> option with the special track ID
-                        <span class="constant">-2</span> (see section <a href="#mkvmerge.track_ids.special_ids">special track IDs</a>).
+                        将章节的时间戳平移 <span class="parameter">d</span> ms。您也可以使用 <span class="option">--sync</span>
+                        选项操作特殊轨道 ID <span class="constant">-2</span> (参见 <a href="#mkvmerge.track_ids.special_ids">特殊轨道 ID</a> 段落)。
                         
                      </p>
                      
@@ -2806,6 +2804,19 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.flush_on_close"><span class="option">--flush-on-close</span></a></td>
+                  <td>
+                     
+                     <p>
+                        让程序在关闭以写入模式打开的文件时，强制将内存中已缓存的所有数据写入到存储设备。可用于在电源中断时避免数据损失，或规避操作系统或驱动程序的特定问题。缺点是混流耗时更长，因为
+                        mkvmerge 在退出前需要等待所有数据写入存储设备。关于优劣的深入讨论，请参见 MKVToolNix bug 跟踪平台中的问题 #2469 与问题
+                        #2480。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.ui_language"><span class="option">--ui-language</span> <span class="parameter">语言代码</span></a></td>
                   <td>
                      
@@ -2813,6 +2824,17 @@ $ mkvmerge -o 输出.mkv '(' 文件.mkv ')'</pre>
                         强制使用 <span class="parameter">语言代码</span> 所对应的翻译 (例如  '<span class="literal">de_DE</span>'
                         表示德文翻译)。在 <span class="parameter">语言代码</span> 处输入 '<span class="literal">list</span>'
                         可让程序输出可用翻译的列表。
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.abort_on_warnings"><span class="option">--abort-on-warnings</span></a></td>
+                  <td>
+                     
+                     <p>
+                        让程序在出现警告时即中止。程序的退出代码将返回 1。
                         
                      </p>
                      
@@ -3177,7 +3199,7 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          
-         <h2><a name="mkvmerge.track_ids.regular_ids">6.1. Regular track IDs</a></h2>
+         <h2><a name="mkvmerge.track_ids.regular_ids">6.1. 常规轨道 ID</a></h2>
          
          
          
@@ -3256,13 +3278,12 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          
-         <h2><a name="mkvmerge.track_ids.special_ids">6.2. Special track IDs</a></h2>
+         <h2><a name="mkvmerge.track_ids.special_ids">6.2. 特殊轨道 ID</a></h2>
          
          
          
          <p>
-            There are several IDs that have special meaning and do not occur in the
-            identification output.
+            一些 ID 具有特殊含义，不会出现在 id 输出结果中。
             
          </p>
          
@@ -3274,10 +3295,9 @@ $ mkvmerge -o 影片-成品.mkv 我的有声影片.mkv 我影片的另一音轨.
          
          
          <p>
-            The special track ID '<span class="constant">-2</span>' refers to the chapters in a
-            source file. Currently only the <span class="option">--sync</span> option uses this
-            special ID. As an alternative to <span class="option">--sync -2:…</span> the option
-            <span class="option">--chapter-sync …</span> can be used.
+            特殊轨道 ID '<span class="constant">-2</span>' 指输入文件中的章节。目前只有 <span class="option">--sync</span>
+            选项会用到此特殊 ID。<span class="option">--sync -2:…</span> 与 <span class="option">--chapter-sync …</span>
+            等效。
             
          </p>
          
@@ -3817,7 +3837,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
           ChapterProcessData (二进制)</pre>
          
          
-         <h2><a name="d4e6017">13.3. 一般性备注</a></h2>
+         <h2><a name="d4e6043">13.3. 一般性备注</a></h2>
          
          
          <p>
@@ -3841,16 +3861,14 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          
          
          
-         <h2><a name="d4e6082">14.1. 介绍</a></h2>
+         <h2><a name="d4e6108">14.1. 介绍</a></h2>
          
          
          
          <p>
-            <span class="productname">Matroska</span><sup>(tm)</sup>'s tag system is similar to that of other containers: a set of
-            <span class="parameter">KEY=VALUE</span> pairs. However, in <span class="productname">Matroska</span><sup>(tm)</sup> these tags
-            can also be nested, and both the <span class="parameter">KEY</span> and the
-            <span class="parameter">VALUE</span> are elements of their own. The example file
-            <span class="filename">example-tags-2.xml</span> shows how to use this system.
+            <span class="productname">Matroska</span><sup>(tm)</sup> 的标签系统与其他容器类似: 一组 <span class="parameter">键=值</span> 对。不过，<span class="productname">Matroska</span><sup>(tm)</sup>
+            中的标签还可以嵌套，<span class="parameter">键</span> 与 <span class="parameter">值</span>
+            都是属于它们自身的元素。示例文件 <span class="filename">example-tags-2.xml</span> 展示了如何使用该系统。
             
          </p>
          
@@ -4133,7 +4151,7 @@ CHAPTER03NAME=宝宝摇屋子</pre>
          </p>
          
          
-         <h2><a name="d4e6534">17.1. 时间戳文件格式 v1</a></h2>
+         <h2><a name="d4e6560">17.1. 时间戳文件格式 v1</a></h2>
          
          
          <p>
@@ -4149,7 +4167,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6558">17.2. 时间戳文件格式 v2</a></h2>
+         <h2><a name="d4e6584">17.2. 时间戳文件格式 v2</a></h2>
          
          
          
@@ -4165,7 +4183,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6573">17.3. 时间戳文件格式 v3</a></h2>
+         <h2><a name="d4e6599">17.3. 时间戳文件格式 v3</a></h2>
          
          
          <p>
@@ -4183,7 +4201,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6591">17.4. 时间戳文件格式 v4</a></h2>
+         <h2><a name="d4e6617">17.4. 时间戳文件格式 v4</a></h2>
          
          
          <p>

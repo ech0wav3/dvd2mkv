@@ -1,7 +1,7 @@
 <?php
 
 ###### Version #######
-$d2m_ver = "2018.10";
+$d2m_ver = "2019.02";
 
 ## Load program location variables from outside source
 if (file_exists("settings.conf")) {
@@ -946,7 +946,7 @@ if ($complete == 1) {
 					$r++;
 				}
 			} else {
-				$audio_options = " --language 0:eng --track-name ^\"0:" . $audio_title[$i][1] . "^\" --default-track 0:yes --compression 0:none ^\"^(^\" ^\"" . $audio_destination[$i][1] . "^\" ^\"^)^\"";
+				$audio_options = " --language 0:eng --track-name ^\"0:" . $audio_title[$i][0] . "^\" --default-track 0:yes --compression 0:none ^\"^(^\" ^\"" . $audio_destination[$i][1] . "^\" ^\"^)^\"";
 			}
 			$chapter_options = " --chapter-language und --chapters ^\"" . $chapter_file[$i] . "^\"";
 			if ($has_subs == 1) {
@@ -999,7 +999,7 @@ if ($complete == 1) {
 				$r++;
 			}
 		} else {
-			$audio_options = " --language 0:eng --track-name ^\"0:" . $audio_title[1][1] . "^\" --default-track 0:yes --compression 0:none ^\"^(^\" ^\"" . $audio_destination[1][1] . "^\" ^\"^)^\"";
+			$audio_options = " --language 0:eng --track-name ^\"0:" . $audio_title[1][0] . "^\" --default-track 0:yes --compression 0:none ^\"^(^\" ^\"" . $audio_destination[1][1] . "^\" ^\"^)^\"";
 		}
 		$chapter_options = " --chapter-language und --chapters ^\"" . $chapter_file[1] . "^\"";
 		if ($has_subs == 1) {

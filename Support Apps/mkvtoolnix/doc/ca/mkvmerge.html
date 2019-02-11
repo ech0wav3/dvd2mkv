@@ -302,8 +302,8 @@
                         Ajusta els codis de temps dels capítols en el fitxer d'origen per
                         <span class="parameter">d</span> ms. De manera alternativa, podeu utilitzar l'opció
                         <span class="option">--sync</span> amb l'ID <span class="constant">-2</span> de pista especial
-                        (vegeu la secció de els <a href="#mkvmerge.track_ids.special_ids">ID de
-                           pista especial</a>).
+                        (vegeu la secció sobre els <a href="#mkvmerge.track_ids.special_ids">ID
+                           de pista especial</a>).
                         
                      </p>
                      
@@ -1373,9 +1373,9 @@
                      <p>
                         En aquest mode de divisió, el nom del fitxer de sortida serà tractat de
                         manera diferent que amb el funcionament normal. Pot contenir un
-                        <span class="function">printf</span> com l'expressió «<span class="code">%d</span>», incloent una
-                        amplada de camp opcional, p. ex., «<span class="code">%02d</span>». Si es fa després del
-                        número del fitxer actual, serà formatat adequadament i inserit en aquest
+                        <span class="function">printf</span> com l'expressió «<span class="code">%d</span>», incloent-hi
+                        una amplada de camp opcional, p. ex., «<span class="code">%02d</span>». Si es fa després
+                        del número del fitxer actual, serà formatat adequadament i inserit en aquest
                         punt del nom del fitxer. Si no hi ha aquest patró, llavors s'assumirà
                         «<span class="code">-%03d</span>» com a patró just abans de l'extensió del fitxer:
                         «<span class="code">-o sortida.mkv</span>» resultaria en «<span class="code">sortida-001.mkv</span>» i
@@ -1701,10 +1701,10 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                         El tipus <span class="abbrev">MIME</span> del següent adjunt. S'aplicarà a la següent
                         opció <a href="#mkvmerge.description.attach_file">--attach-file</a>
                         o <a href="#mkvmerge.description.attach_file">--attach-file-once</a>.
-                        Es pot trobar una llista oficial de tipus <span class="abbrev">MIME</span> reconeguts a
-                        <a href="http://www.iana.org/assignments/media-types/">la pàgina web de
-                           la IANA</a>. El tipus <span class="abbrev">MIME</span> és obligatori per a un
-                        adjunt.
+                        Es pot trobar una llista oficial de tipus <span class="abbrev">MIME</span> reconeguts
+                        a, p. ex., <a href="http://www.iana.org/assignments/media-types/">la
+                           pàgina web de la IANA</a>. El tipus <span class="abbrev">MIME</span> és obligatori
+                        per a un adjunt.
                         
                      </p>
                      
@@ -2356,7 +2356,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                      
                      
                      <p>
-                        En l'actualitat no més es veuen afectades per aquesta opció les pistes
+                        En l'actualitat només es veuen afectades per aquesta opció les pistes
                         <span class="abbrev">AC-3</span>, <span class="abbrev">DTS</span> i <span class="abbrev">TrueHD</span>.
                         
                      </p>
@@ -2650,7 +2650,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--chroma-subsample</span> <span class="parameter">TID:hori,vert</span></td>
+                  <td class="varlistoption"><span class="option">--chroma-subsample</span> <span class="parameter">TID:horit,vert</span></td>
                   <td>
                      
                      <p>
@@ -2670,7 +2670,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--cb-subsample</span> <span class="parameter">TID:hori,vert</span></td>
+                  <td class="varlistoption"><span class="option">--cb-subsample</span> <span class="parameter">TID:horit,vert</span></td>
                   <td>
                      
                      <p>
@@ -2693,7 +2693,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="option">--chroma-siting</span> <span class="parameter">TID:hori,vert</span></td>
+                  <td class="varlistoption"><span class="option">--chroma-siting</span> <span class="parameter">TID:horit,vert</span></td>
                   <td>
                      
                      <p>
@@ -3241,6 +3241,25 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.flush_on_close"><span class="option">--flush-on-close</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Li indica al programa que buidi totes les dades emmagatzemades a la memòria
+                        cau de l'emmagatzematge en tancar els fitxers oberts per escriure. Això es
+                        pot usar per evitar la pèrdua de dades en interrupcions d'electricitat o per
+                        evitar certs problemes en el sistema operatiu o els
+                        controladors. L'inconvenient és que la multiplexació trigarà més, ja que el
+                        «mkvmerge» esperarà fins que totes les dades s'hagin escrit a
+                        l'emmagatzematge abans de sortir. Vegeu els problemes número 2469 i 2480 en
+                        el seguiment d'errors del MKVToolNix per a un debat en profunditat sobre els
+                        pros i els contres.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.ui_language"><span class="option">--ui-language</span> <span class="parameter">codi</span></a></td>
                   <td>
                      
@@ -3250,6 +3269,18 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
                         alemany). Introduint «<span class="literal">list</span>» com a
                         <span class="parameter">codi</span>, es farà que el programa ofereixi a la sortida
                         una llista de les traduccions disponibles.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.abort_on_warnings"><span class="option">--abort-on-warnings</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Indica al programa que interrompi després d'emetre el primer avís. El codi
+                        de sortida del programa serà 1.
                         
                      </p>
                      
@@ -3449,7 +3480,7 @@ $ mkvmerge -o sortida.mkv '(' fitxer.mkv ')'</pre>
          
          <p>
             El següent exemple mostra com emprar dues vegades l'opció
-            <span class="option">--language</span>, és correcte ja que són emprades en àmbits
+            <span class="option">--language</span>, és correcte perquè són emprades en àmbits
             diferents. Tot i que apliquen al mateix ID de pista, aquestes s'apliquen a
             fitxers d'entrada diferents i per tant tenen àmbits diferents:
             
@@ -4407,7 +4438,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
           ChapterProcessData (binari)</pre>
          
          
-         <h2><a name="d4e6032">13.3. Notes generals</a></h2>
+         <h2><a name="d4e6058">13.3. Notes generals</a></h2>
          
          
          <p>
@@ -4439,7 +4470,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          
          
          
-         <h2><a name="d4e6097">14.1. Introducció</a></h2>
+         <h2><a name="d4e6123">14.1. Introducció</a></h2>
          
          
          
@@ -4787,7 +4818,7 @@ CHAPTER03NAME=El nen fa trontollar la casa</pre>
          </p>
          
          
-         <h2><a name="d4e6549">17.1.  Format v1 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6575">17.1.  Format v1 pel fitxer del codi de temps</a></h2>
          
          
          <p>
@@ -4808,7 +4839,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6573">17.2.  Format v2 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6599">17.2.  Format v2 pel fitxer del codi de temps</a></h2>
          
          
          
@@ -4828,7 +4859,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6588">17.3.  Format v3 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6614">17.3.  Format v3 pel fitxer del codi de temps</a></h2>
          
          
          <p>
@@ -4852,7 +4883,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6606">17.4.  Format v4 pel fitxer del codi de temps</a></h2>
+         <h2><a name="d4e6632">17.4.  Format v4 pel fitxer del codi de temps</a></h2>
          
          
          <p>
