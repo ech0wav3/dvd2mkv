@@ -575,6 +575,29 @@ if ($complete == 1) {
 	} else {
 		$batfile = fopen(SanitizeName($content_title) . '.bat', 'w');
 	}
+	
+	# Create folder structure
+	if ($dvd_type == 1) {
+		if (is_dir($rd_loc . "\\RIPPED\\") == false) {
+			mkdir($rd_loc . "\\RIPPED\\");
+		}
+		if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\") == false) {
+			mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\");
+		}
+		if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\") == false) {
+			mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\");
+		}
+		if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\") == false) {
+			mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\");
+		}
+	} else {
+		if (is_dir($rd_loc . "\\RIPPED\\") == false) {
+			mkdir($rd_loc . "\\RIPPED\\");
+		}
+		if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\") == false) {
+			mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\");
+		}
+	}
 
 	# Write the rip code to the script
 	fwrite($batfile, "@ECHO OFF\r\n");
@@ -605,18 +628,6 @@ if ($complete == 1) {
 		fwrite($batfile, "REM \r\n");
 		if ($dvd_type == 1) {
 			while ($i <= $num_items) {
-				if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-					mkdir($rd_loc . "\\RIPPED\\");
-				}
-				if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\") == false) {
-					mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\");
-				}
-				if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\") == false) {
-					mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\");
-				}
-				if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\") == false) {
-					mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\");
-				}
 				$idx_source[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\IFO_REPLACE";
 				$idx_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\MAIN";
 				$prm_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\MAIN.vsparam";
@@ -636,12 +647,6 @@ if ($complete == 1) {
 			}
 			$i = 1;
 		} else {
-			if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\");
-			}
-			if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\");
-			}
 			$idx_source[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\IFO_REPLACE";
 			$idx_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\MAIN";
 			$prm_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\MAIN.vsparam";
