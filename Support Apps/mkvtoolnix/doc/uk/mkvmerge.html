@@ -15,15 +15,15 @@
          <ul>
             <li><a href="#mkvmerge.synopsis">1. Короткий опис</a></li>
             <li><a href="#mkvmerge.description">2. Опис</a></li>
-            <li><a href="#mkvmerge.usage">3. Usage</a></li>
+            <li><a href="#mkvmerge.usage">3. Використання</a></li>
             <li><a href="#mkvmerge.option_order">4. Option order</a></li>
-            <li><a href="#mkvmerge.examples">5. Examples</a></li>
-            <li><a href="#mkvmerge.track_ids">6. Track IDs</a></li>
+            <li><a href="#mkvmerge.examples">5. Приклади</a></li>
+            <li><a href="#mkvmerge.track_ids">6. ID доріжок</a></li>
             <li><a href="#mkvmerge.text_files_and_charsets">7. Text files and character set conversions</a></li>
-            <li><a href="#mkvmerge.option_files">8. Option files</a></li>
-            <li><a href="#mkvmerge.subtitles">9. Subtitles</a></li>
+            <li><a href="#mkvmerge.option_files">8. Файли опцій</a></li>
+            <li><a href="#mkvmerge.subtitles">9. Субтитри</a></li>
             <li><a href="#mkvmerge.file_linking">10. File linking</a></li>
-            <li><a href="#mkvmerge.default_values">11. Default values</a></li>
+            <li><a href="#mkvmerge.default_values">11. Значення за замовчуванням</a></li>
             <li><a href="#mkvmerge.attachments">12. Вкладення</a></li>
             <li><a href="#mkvmerge.chapters">13. Розділи</a></li>
             <li><a href="#mkvmerge.tags">14. Теги</a></li>
@@ -241,7 +241,7 @@
                   <td>
                      
                      <p>
-                        Sets the ISO639-2 language code that is written for each chapter entry.
+                        Sets the ISO 639-2 language code that is written for each chapter entry.
                         Defaults to '<span class="literal">eng</span>'.  See the section about <a href="#mkvmerge.chapters">chapters</a> below for details.
                         
                      </p>
@@ -270,7 +270,7 @@
                      
                      <p>
                         Sets the character set that is used for the conversion to UTF-8 for simple
-                        chapter files. See the section about <a href="#mkvmerge.text_files_and_charsets"> text files and character
+                        chapter files. See the section about <a href="#mkvmerge.text_files_and_charsets">text files and character
                            sets</a> for an explanation how <span class="productname">mkvmerge</span>(1) converts between character
                         sets.
                         
@@ -378,7 +378,7 @@
                            
                            
                            <p>
-                              Example: <span class="literal">--generate-chapters interval:45s</span>
+                              Приклад: <span class="literal">--generate-chapters interval:45s</span>
                               
                            </p>
                            
@@ -451,7 +451,7 @@
                         
                         <li>
                            
-                           <p><span class="literal">%h</span> – hours
+                           <p><span class="literal">%h</span> – години
                            </p>
                            
                         </li>
@@ -465,7 +465,7 @@
                         
                         <li>
                            
-                           <p><span class="literal">%m</span> – minutes
+                           <p><span class="literal">%m</span> – хвилини
                            </p>
                            
                         </li>
@@ -479,7 +479,7 @@
                         
                         <li>
                            
-                           <p><span class="literal">%s</span> – seconds
+                           <p><span class="literal">%s</span> – секунди
                            </p>
                            
                         </li>
@@ -493,15 +493,15 @@
                         
                         <li>
                            
-                           <p><span class="literal">%n</span> – nanoseconds with nine places
+                           <p><span class="literal">%n</span> – наносекунди з дев'ятьма місцями
                            </p>
                            
                         </li>
                         
                         <li>
                            
-                           <p><span class="literal">%&lt;1-9&gt;n</span> – nanoseconds with up to nine places
-                              (e.g. three places with <span class="literal">%3n</span>)
+                           <p><span class="literal">%&lt;1-9&gt;n</span> – наносекунди з максимум дев'ятьма місцями
+                              (напр. три місця з <span class="literal">%3n</span>)
                            </p>
                            
                         </li>
@@ -711,6 +711,19 @@
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.no_date"><span class="option">--no-date</span></a></td>
+                  <td>
+                     
+                     <p>
+                        By default <span class="productname">mkvmerge</span>(1) sets the "date" segment information field to the time
+                        &amp; date when multiplexing started.  With this option that field is not
+                        written at all.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><span class="option">--disable-lacing</span></td>
                   <td>
                      
@@ -794,7 +807,7 @@
          
          
          
-         <h2><a name="d4e1129">2.5. File splitting, linking, appending and concatenation (more global options)</a></h2>
+         <h2><a name="d4e1148">2.5. File splitting, linking, appending and concatenation (more global options)</a></h2>
          
          
          
@@ -842,7 +855,7 @@
                            
                            
                            <p>
-                              Examples: <span class="code">--split size:700m</span> or <span class="code">--split 150000000</span>
+                              Приклад: <span class="code">--split size:700m</span> or <span class="code">--split 150000000</span>
                               
                            </p>
                            
@@ -875,14 +888,14 @@
                            
                            
                            <p>
-                              Syntax: <span class="option">--split</span>
+                              Синтаксис: <span class="option">--split</span>
                               [<span class="literal">duration:</span>]<span class="parameter">HH:MM:SS.nnnnnnnnn</span>|<span class="parameter">d</span>s
                               
                            </p>
                            
                            
                            <p>
-                              Examples: <span class="code">--split duration:00:60:00.000</span> or <span class="code">--split
+                              Приклад: <span class="code">--split duration:00:60:00.000</span> or <span class="code">--split
                                  3600s</span>
                               
                            </p>
@@ -929,7 +942,7 @@
                            
                            
                            <p>
-                              Example: <span class="code">--split timestamps:00:45:00.000,01:20:00.250,6300s</span>
+                              Приклад: <span class="code">--split timestamps:00:45:00.000,01:20:00.250,6300s</span>
                               
                            </p>
                            
@@ -970,7 +983,7 @@
                            
                            
                            <p>
-                              Examples: 
+                              Приклади: 
                               <ol>
                                  
                                  <li>
@@ -1089,7 +1102,7 @@
                            
                            
                            <p>
-                              Examples: 
+                              Приклади: 
                               <ol>
                                  
                                  <li>
@@ -1230,7 +1243,7 @@
                            
                            
                            <p>
-                              Example: <span class="code">--split frames:120,237,891</span>
+                              Приклад: <span class="code">--split frames:120,237,891</span>
                               
                            </p>
                            
@@ -1294,7 +1307,7 @@
                            
                            
                            <p>
-                              Example: <span class="code">--split chapters:5,8</span>
+                              Приклад: <span class="code">--split chapters:5,8</span>
                               
                            </p>
                            
@@ -1626,7 +1639,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2190">2.6. Attachment support (more global options)</a></h2>
+         <h2><a name="d4e2209">2.6. Attachment support (more global options)</a></h2>
          
          
          
@@ -1715,7 +1728,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e2331">2.7. Options that can be used for each input file</a></h2>
+         <h2><a name="d4e2350">2.7. Options that can be used for each input file</a></h2>
          
          
          
@@ -2001,7 +2014,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                      
                      <p>
                         Sets the charset that is used for the conversion to UTF-8 for chapter
-                        information contained in the source file. See the section about <a href="#mkvmerge.text_files_and_charsets"> text files and character
+                        information contained in the source file. See the section about <a href="#mkvmerge.text_files_and_charsets">text files and character
                            sets</a> for an explanation how <span class="productname">mkvmerge</span>(1) converts between character
                         sets.
                         
@@ -2014,7 +2027,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the ISO639-2 language code that is written for each chapter entry.
+                        Sets the ISO 639-2 language code that is written for each chapter entry.
                         This option can be used for source files that contain chapters but no
                         information about the chapters' languages, e.g. for MP4 and OGM files.
                         
@@ -2172,10 +2185,10 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Sets the language for the given track (see section <a href="#mkvmerge.track_ids">track IDs</a>). Both ISO639-2 language codes
-                        and ISO639-1 country codes are allowed. The country codes will be converted
-                        to language codes automatically.  All languages including their ISO639-2
-                        codes can be listed with the <a href="#mkvmerge.description.list_languages">--list-languages</a>
+                        Sets the language for the given track (see section <a href="#mkvmerge.track_ids">track IDs</a>). Both ISO 639-2 language
+                        codes and ISO 639-1 country codes are allowed. The country codes will be
+                        converted to language codes automatically.  All languages including their
+                        ISO 639-2 codes can be listed with the <a href="#mkvmerge.description.list_languages">--list-languages</a>
                         option.
                         
                      </p>
@@ -2324,7 +2337,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                      <p>
                         If the default duration is not forced then mkvmerge will try to derive the
                         track's default duration from the container and/or the encoded bitstream for
-                        certain track types, e.g. AVC/h.264 or MPEG-2.
+                        certain track types, e.g. AVC/H.264 or MPEG-2.
                         
                      </p>
                      
@@ -2356,7 +2369,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                      <div class="note">
                         <p class="note-title">Note:</p>
                         
-                        <p>This has only been implemented for AVC/h.264 video tracks so far.</p>
+                        <p>This has only been implemented for AVC/H.264 video tracks so far.</p>
                         
                      </div>
                      
@@ -2368,11 +2381,10 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                      
                      <p>
                         Forces the <span class="abbrev">NALU</span> size length to <span class="parameter">n</span>
-                        bytes.  This parameter is only used if the
-                        <span class="foreignphrase">AVC/h.264</span> elementary stream packetizer is
-                        used.  If left out it defaults to 4 bytes, but there are files that contain
-                        frames or slices that are all smaller than 65536 bytes.  For such files you
-                        can use this parameter and decrease the size to 2.
+                        bytes.  This parameter is only used if the AVC/H.264 elementary stream
+                        packetizer is used.  If left out it defaults to 4 bytes, but there are files
+                        that contain frames or slices that are all smaller than 65536 bytes.  For
+                        such files you can use this parameter and decrease the size to 2.
                         
                      </p>
                      
@@ -2393,8 +2405,8 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                      <p>
                         The compression method
                         '<span class="literal">mpeg4_p2</span>'/'<span class="literal">mpeg4p2</span>' is a special
-                        compression method called '<span class="foreignphrase">header removal</span>'
-                        that is only available for <span class="abbrev">MPEG4</span> part 2 video tracks.
+                        compression method called 'header removal' that is only available for
+                        <span class="abbrev">MPEG4</span> part 2 video tracks.
                         
                      </p>
                      
@@ -2413,7 +2425,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e3452">2.8. Options that only apply to video tracks</a></h2>
+         <h2><a name="d4e3465">2.8. Options that only apply to video tracks</a></h2>
          
          
          
@@ -2432,8 +2444,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                      
                      <p>
                         Forces the <span class="classname">FourCC</span> to the specified value. Works only
-                        for video tracks in the '<span class="foreignphrase">MS compatibility
-                           mode</span>'.
+                        for video tracks in the 'MS compatibility mode'.
                         
                      </p>
                      
@@ -2892,7 +2903,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4276">2.9. Options that only apply to text subtitle tracks</a></h2>
+         <h2><a name="d4e4286">2.9. Options that only apply to text subtitle tracks</a></h2>
          
          
          
@@ -2913,7 +2924,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                         the given track ID. If not specified the charset will be derived from the
                         current locale settings. Note that a charset is not needed for subtitles
                         read from <span class="productname">Matroska</span><sup>(tm)</sup> files or from Kate streams, as these are always stored
-                        in UTF-8. See the section about <a href="#mkvmerge.text_files_and_charsets"> text files and character
+                        in UTF-8. See the section about <a href="#mkvmerge.text_files_and_charsets">text files and character
                            sets</a> for an explanation how <span class="productname">mkvmerge</span>(1) converts between character
                         sets.
                         
@@ -2933,7 +2944,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          
          
-         <h2><a name="d4e4316">2.10. Other options</a></h2>
+         <h2><a name="d4e4326">2.10. Інші налаштування</a></h2>
          
          
          
@@ -3015,7 +3026,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                            
                            
                            <p>
-                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v11.json">mkvmerge-identification-output-schema-v11.json</a>
+                              <a href="https://mkvtoolnix.download/doc/mkvmerge-identification-output-schema-v12.json">mkvmerge-identification-output-schema-v12.json</a>
                               
                            </p>
                            
@@ -3070,7 +3081,8 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   <td>
                      
                      <p>
-                        Lists all languages and their ISO639-2 code which can be used with the <a href="#mkvmerge.description.language">--language</a>
+                        Lists all languages and their ISO 639-2 code which can be used with the
+                        <a href="#mkvmerge.description.language">--language</a>
                         option.
                         
                      </p>
@@ -3190,6 +3202,66 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
                   </td>
                </tr>
                <tr>
+                  <td class="varlistoption"><a name="mkvmerge.description.deterministic"><span class="option">--deterministic</span> <span class="parameter">seed</span></a></td>
+                  <td>
+                     
+                     <p>
+                        Enables the creation of byte-identical files if the same version of
+                        <span class="productname">mkvmerge</span>(1) is used with the same source files, the same set of options and
+                        the same seed.  Note that the "date" segment information field is not
+                        written in this mode.
+                        
+                     </p>
+                     
+                     
+                     <p>The seed can be an arbitrary string and does not have to be a number.</p>
+                     
+                     
+                     <p>
+                        The result of byte-identical files is only guaranteed under the following
+                        conditions:
+                        
+                     </p>
+                     
+                     
+                     <ol>
+                        
+                        <li>
+                           
+                           <p>The same version of <span class="productname">mkvmerge</span>(1) built with the same versions of libEBML and
+                              libMatroska is used.
+                           </p>
+                           
+                        </li>
+                        
+                        
+                        <li>
+                           
+                           <p>The source files used are byte-identical.</p>
+                           
+                        </li>
+                        
+                        
+                        <li>
+                           
+                           <p>The same command line options are used in the same order (with the notable
+                              exception of <span class="parameter">--output …</span>).
+                           </p>
+                           
+                        </li>
+                        
+                     </ol>
+                     
+                     
+                     <p>
+                        Using other versions of <span class="productname">mkvmerge</span>(1) or other command-line options may result
+                        in the same byte-identical file but is not guaranteed to do so.
+                        
+                     </p>
+                     
+                  </td>
+               </tr>
+               <tr>
                   <td class="varlistoption"><a name="mkvmerge.description.debug"><span class="option">--debug</span> <span class="parameter">topic</span></a></td>
                   <td>
                      
@@ -3300,7 +3372,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          </table>
          
          
-         <h1><a name="mkvmerge.usage">3. Usage</a></h1>
+         <h1><a name="mkvmerge.usage">3. Використання</a></h1>
          
          
          <p>
@@ -3372,7 +3444,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          
          <p>
             The options are processed from left to right. If an option appears multiple
-            times within the same scope then the last occurence will be used. Therefore
+            times within the same scope then the last occurrence will be used. Therefore
             the title will be set to "Something else" in the following
             example:
             
@@ -3389,7 +3461,7 @@ $ mkvmerge -o out.mkv '(' file.mkv ')'</pre>
          </p>
          
          <pre class="screen">$ mkvmerge -o output.mkv --language 0:fre français.ogg --language 0:deu deutsch.ogg</pre>
-         <h1><a name="mkvmerge.examples">5. Examples</a></h1>
+         <h1><a name="mkvmerge.examples">5. Приклади</a></h1>
          
          
          <p>
@@ -3454,7 +3526,7 @@ $ mkvmerge -o MM-complete.mkv MyMovie-with-sound.mkv MyMovie-add-audio.ogg</pre>
          <pre class="screen">$ mkvmerge --identify outofsync.ogg</pre>
          
          <p>
-            Now you can use that ID in the following command line:
+            Тепер ви можете використовувати цей ID у наступному командному рядку:
             
          </p>
          
@@ -3545,7 +3617,7 @@ $ mkvmerge -o MM-complete.mkv MyMovie-with-sound.mkv MyMovie-add-audio.ogg</pre>
          
          <p>
             If you want to specify the language for a given track then this is easily
-            done. First find out the ISO639-2 code for your language. <span class="productname">mkvmerge</span>(1) can
+            done. First find out the ISO 639-2 code for your language. <span class="productname">mkvmerge</span>(1) can
             list all of those codes for you:
             
          </p>
@@ -3592,7 +3664,7 @@ $ mkvmerge -o MM-complete.mkv MyMovie-with-sound.mkv MyMovie-add-audio.ogg</pre>
          
          <pre class="screen">$ mkvmerge -o no-compression.mkv --compression -1:none MyMovie.avi --compression -1:none mymovie.srt</pre>
          
-         <h1><a name="mkvmerge.track_ids">6. Track IDs</a></h1>
+         <h1><a name="mkvmerge.track_ids">6. ID доріжок</a></h1>
          
          
          
@@ -3653,9 +3725,9 @@ Track ID 1: audio (A_MPEG/L3)</pre>
             <li>
                
                <p>
-                  <span class="abbrev">AAC</span>, <span class="abbrev">AC-3</span>, <span class="abbrev">MP3</span>,
-                  <span class="abbrev">SRT</span> and <span class="abbrev">WAV</span> files: The one 'track' in that
-                  file gets the ID 0.
+                  Файли <span class="abbrev">AAC</span>, <span class="abbrev">AC-3</span>, <span class="abbrev">MP3</span>,
+                  <span class="abbrev">SRT</span> і <span class="abbrev">WAV</span>: одна доріжка у цьому файлі
+                  отримує ID 0.
                   
                </p>
                
@@ -3728,7 +3800,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          </div>
          
          
-         <h2><a name="mkvmerge.text_files_and_charsets.introduction">7.1. Introduction</a></h2>
+         <h2><a name="mkvmerge.text_files_and_charsets.introduction">7.1. Вступ</a></h2>
          
          
          <p>
@@ -3745,10 +3817,9 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          <p>
             <span class="productname">mkvmerge</span>(1) does this conversion automatically based on the presence of a
-            <span class="foreignphrase">byte order marker</span> (short:
-            <span class="abbrev">BOM</span>) or the system's current locale. How the character set
-            is inferred from the locale depends on the operating system that <span class="productname">mkvmerge</span>(1)
-            is run on.
+            byte order marker (short: <span class="abbrev">BOM</span>) or the system's current
+            locale. How the character set is inferred from the locale depends on the
+            operating system that <span class="productname">mkvmerge</span>(1) is run on.
             
          </p>
          
@@ -3770,7 +3841,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          
          
-         <h2><a name="mkvmerge.text_files_and_charsets.unix">7.3. Linux and Unix-like systems including Mac OS</a></h2>
+         <h2><a name="mkvmerge.text_files_and_charsets.unix">7.3. Linux and Unix-like systems including macOS</a></h2>
          
          
          
@@ -3916,7 +3987,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          </ul>
          
          
-         <h1><a name="mkvmerge.option_files">8. Option files</a></h1>
+         <h1><a name="mkvmerge.option_files">8. Файли опцій</a></h1>
          
          
          
@@ -3932,9 +4003,8 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          <p>
             An option file contains JSON-formatted data. Its content must be a valid
             JSON array consisting solely of JSON strings. The file's encoding must be
-            UTF-8. The file should not start with a <span class="foreignphrase">byte order
-               marker</span> (<span class="abbrev">BOM</span>), but if one exists, it will be
-            skipped.
+            UTF-8. The file should not start with a byte order marker
+            (<span class="abbrev">BOM</span>), but if one exists, it will be skipped.
             
          </p>
          
@@ -3962,13 +4032,13 @@ Track ID 1: audio (A_MPEG/L3)</pre>
   "a movie.avi",
   "sound.ogg"
 ]</pre>
-         <h1><a name="mkvmerge.subtitles">9. Subtitles</a></h1>
+         <h1><a name="mkvmerge.subtitles">9. Субтитри</a></h1>
          
          
          <p>
             There are several text and bitmap subtitle formats that can be embedded into
             <span class="productname">Matroska</span><sup>(tm)</sup>. Text subtitles must be recoded to UTF-8 so that they can be
-            displayed correctly by a player (see the section about <a href="#mkvmerge.text_files_and_charsets"> text files and character
+            displayed correctly by a player (see the section about <a href="#mkvmerge.text_files_and_charsets">text files and character
                sets</a> for an explanation how <span class="productname">mkvmerge</span>(1) converts between character
             sets). Kate subtitles are already encoded in UTF-8 and do not have to be
             re-encoded.
@@ -3987,7 +4057,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
             <li>
                
                <p>
-                  Subtitle Ripper (SRT) files
+                  Файли Subtitle Ripper (SRT)
                   
                </p>
                
@@ -4007,7 +4077,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
             <li>
                
                <p>
-                  Universal Subtitle Format (USF) files
+                  Файли Universal Subtitle Format (USF)
                   
                </p>
                
@@ -4017,7 +4087,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
             <li>
                
                <p>
-                  OggKate streams
+                  Потоки OggKate
                   
                </p>
                
@@ -4027,7 +4097,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
             <li>
                
                <p>
-                  VobSub bitmap subtitle files
+                  Файли субтитрів VobSub bitmap
                   
                </p>
                
@@ -4108,7 +4178,7 @@ Track ID 1: audio (A_MPEG/L3)</pre>
             
          </p>
          
-         <h1><a name="mkvmerge.default_values">11. Default values</a></h1>
+         <h1><a name="mkvmerge.default_values">11. Значення за замовчуванням</a></h1>
          
          
          <p>
@@ -4176,20 +4246,19 @@ Track ID 1: audio (A_MPEG/L3)</pre>
          
          <p>
             <span class="productname">mkvmerge</span>(1) supports two kinds of chapter files as its input. The first
-            format, called '<span class="foreignphrase">simple chapter format</span>', is
-            the same format that the <span class="abbrev">OGM</span> tools expect. The second
-            format is a <span class="abbrev">XML</span> based chapter format which supports all of <span class="productname">Matroska</span><sup>(tm)</sup>'s
-            chapter functionality.
+            format, called 'simple chapter format', is the same format that the
+            <span class="abbrev">OGM</span> tools expect. The second format is a <span class="abbrev">XML</span> based
+            chapter format which supports all of <span class="productname">Matroska</span><sup>(tm)</sup>'s chapter functionality.
             
          </p>
          
          
-         <h2><a name="mkvmerge.chapters.simple">13.1. The simple chapter format</a></h2>
+         <h2><a name="mkvmerge.chapters.simple">13.1. Простий формат глав</a></h2>
          
          
          
          <p>
-            This formmat consists of pairs of lines that start with
+            This format consists of pairs of lines that start with
             '<span class="literal">CHAPTERxx=</span>' and '<span class="literal">CHAPTERxxNAME=</span>'
             respectively. The first one contains the start timestamp while the second
             one contains the title. Here's an example:
@@ -4214,7 +4283,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          <p>
             As this is a text file character set conversion may need to be done. See the
-            section about <a href="#mkvmerge.text_files_and_charsets"> text files
+            section about <a href="#mkvmerge.text_files_and_charsets">text files
                and character sets</a> for an explanation how <span class="productname">mkvmerge</span>(1) converts between
             character sets.
             
@@ -4222,11 +4291,11 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="mkvmerge.chapters.xml">13.2. The XML based chapter format</a></h2>
+         <h2><a name="mkvmerge.chapters.xml">13.2. Формат глав, що базується на XML</a></h2>
          
          
          <p>
-            The <span class="abbrev">XML</span> based chapter format looks like this example:
+            Формат глав, що базується на <span class="abbrev">XML</span>, виглядає як у наступному прикладі:
             
          </p>
          
@@ -4320,7 +4389,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
           ChapterProcessData (binary)</pre>
          
          
-         <h2><a name="d4e6046">13.3. General notes</a></h2>
+         <h2><a name="d4e6113">13.3. Загальні примітки</a></h2>
          
          
          <p>
@@ -4352,7 +4421,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="d4e6111">14.1. Introduction</a></h2>
+         <h2><a name="d4e6178">14.1. Вступ</a></h2>
          
          
          
@@ -4375,7 +4444,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
             <span class="productname">Matroska</span><sup>(tm)</sup> tags do not automatically apply to the complete file. They can,
             but they also may apply to different parts of the file: to one or more
             tracks, to one or more chapters, or even to a combination of both. The
-            <a href="http://matroska.org/technical/specs/index.html">the Matroska
+            <a href="http://matroska.org/technical/specs/index.html">Matroska
                specification</a> gives more details about this fact.
             
          </p>
@@ -4409,7 +4478,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.example">14.3. Example</a></h2>
+         <h2><a name="mkvmerge.tags.example">14.3. Приклад</a></h2>
          
          
          <p>
@@ -4429,7 +4498,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          <p>
             <span class="productname">mkvmerge</span>(1) supports a <span class="abbrev">XML</span> based tag file format. The format is very
-            closely modeled after <a href="http://matroska.org/technical/specs/index.html">the Matroska
+            closely modeled after the <a href="http://matroska.org/technical/specs/index.html">Matroska
                specification</a>. Both the binary and the source distributions of
             MKVToolNix come with a sample file called
             <span class="filename">example-tags-2.xml</span> which simply lists all known tags
@@ -4467,7 +4536,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          
-         <h2><a name="mkvmerge.tags.data_types">14.5. Data types</a></h2>
+         <h2><a name="mkvmerge.tags.data_types">14.5. Типи даних</a></h2>
          
          
          <p>
@@ -4490,11 +4559,10 @@ CHAPTER03NAME=Baby rocks the house</pre>
          
          
          <p>
-            Otherwise the data is expected to be <span class="foreignphrase">Base64</span>
-            encoded. This is an encoding that transforms binary data into a limited set
-            of <span class="abbrev">ASCII</span> characters and is used e.g. in email
-            programs. <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a> will output <span class="foreignphrase">Base64</span>
-            encoded data for binary elements.
+            Otherwise the data is expected to be Base64 encoded. This is an encoding
+            that transforms binary data into a limited set of <span class="abbrev">ASCII</span>
+            characters and is used e.g. in email programs. <a href="mkvextract.html"><span class="productname">mkvextract</span>(1)</a> will output
+            Base64 encoded data for binary elements.
             
          </p>
          
@@ -4685,7 +4753,7 @@ CHAPTER03NAME=Baby rocks the house</pre>
          </p>
          
          
-         <h2><a name="d4e6565">17.1. Timestamp file format v1</a></h2>
+         <h2><a name="d4e6624">17.1. Timestamp file format v1</a></h2>
          
          
          <p>
@@ -4705,7 +4773,7 @@ assume 27.930
 1500,1700,30</pre>
          
          
-         <h2><a name="d4e6589">17.2. Timestamp file format v2</a></h2>
+         <h2><a name="d4e6648">17.2. Timestamp file format v2</a></h2>
          
          
          
@@ -4724,7 +4792,7 @@ assume 27.930
 80</pre>
          
          
-         <h2><a name="d4e6604">17.3. Timestamp file format v3</a></h2>
+         <h2><a name="d4e6663">17.3. Timestamp file format v3</a></h2>
          
          
          <p>
@@ -4747,7 +4815,7 @@ gap, 10.050
 2.000,38.236</pre>
          
          
-         <h2><a name="d4e6622">17.4. Timestamp file format v4</a></h2>
+         <h2><a name="d4e6681">17.4. Timestamp file format v4</a></h2>
          
          
          <p>
@@ -4773,7 +4841,7 @@ gap, 10.050
             <li>
                
                <p>
-                  <span class="constant">0</span> -- This exit codes means that muxing has completed
+                  <span class="constant">0</span> -- This exit code means that muxing has completed
                   successfully.
                   
                </p>
@@ -4830,8 +4898,8 @@ gap, 10.050
             </thead>
             <tbody>
                <tr>
-                  <td class="varlistoption"><span class="varname">MKVMERGE_DEBUG</span>, <span class="varname">MKVTOOLNIX_DEBUG</span> and
-                     its short form <span class="varname">MTX_DEBUG</span></td>
+                  <td class="varlistoption"><span class="varname">MKVMERGE_DEBUG</span>, <span class="varname">MKVTOOLNIX_DEBUG</span> і їх
+                     коротка форма <span class="varname">MTX_DEBUG</span></td>
                   <td>
                      
                      <p>The content is treated as if it had been passed via the <a href="#mkvmerge.description.debug">--debug</a> option.
@@ -4840,8 +4908,8 @@ gap, 10.050
                   </td>
                </tr>
                <tr>
-                  <td class="varlistoption"><span class="varname">MKVMERGE_ENGAGE</span>, <span class="varname">MKVTOOLNIX_ENGAGE</span> and
-                     its short form <span class="varname">MTX_ENGAGE</span></td>
+                  <td class="varlistoption"><span class="varname">MKVMERGE_ENGAGE</span>, <span class="varname">MKVTOOLNIX_ENGAGE</span> і
+                     їх коротка форма <span class="varname">MTX_ENGAGE</span></td>
                   <td>
                      
                      <p>The content is treated as if it had been passed via the <a href="#mkvmerge.description.engage">--engage</a>

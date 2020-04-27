@@ -1,7 +1,7 @@
 <?php
 
 ###### Version #######
-$d2m_ver = "2019.02";
+$d2m_ver = "2020.05";
 
 ## Load program location variables from outside source
 if (file_exists("settings.conf")) {
@@ -95,7 +95,7 @@ function filename($filename) {
 	// Loop through string
 	$result = '';
 	for ($i=0; $i<strlen($temp); $i++) {
-		if (preg_match('([0-9]|[a-z]|_)', $temp[$i])) {
+		if (preg_match('([0-9]|[a-z]|_|-)', $temp[$i])) {
 			$result = $result . $temp[$i];
 		}
 	}
@@ -239,6 +239,20 @@ if (trim($answer) == "ivtc" || trim($answer) == "") {
 }
 echo "\n";
 
+## Question 11
+echo "Should the content be cropped along the vertical edges?\n[$sb no$eb /$sp yes ]: ";
+$answer = fgets($handle);
+if (trim($answer) == "no" || trim($answer) == "") {
+	$crop_content = 0;
+} elseif (trim($answer) == "yes") {
+	$crop_content = 1;
+} else {
+	echo "Invalid answer. Defaulting to no cropping.";
+	echo "\n";
+	$crop_content = 0;
+}
+echo "\n";
+
 ## Content questions group
 $i = 1;
 while ($i <= $num_items) {
@@ -246,7 +260,7 @@ while ($i <= $num_items) {
 		echo $st . "Item " . $i . "$et\n";
 	}
 	
-	# Question 11
+	# Question 12
 	if ($dvd_type == 1) {
 		echo "What is the episode's title?\n[ ]: ";
 		$answer = fgets($handle);
@@ -260,7 +274,7 @@ while ($i <= $num_items) {
 		echo "\n";
 	}
 	
-	# Question 12
+	# Question 13
 	if ($dvd_type == 1) {
 		echo "What is the episode's number in this season?\n";
 		if ($prev_ep_number == 0) {
@@ -301,7 +315,7 @@ while ($i <= $num_items) {
 	$hist_1 = $i - 1;
 	$hist_2 = $i - 2;
 	
-	# Question 13
+	# Question 14
 	if ($vts_id[$hist_1] != "" && $vts_id[$hist_2] != "") {
 		if ($vts_id[$hist_1] == ($vts_id[$hist_2] + 1)) {
 			$prev_vts = 1;
@@ -340,7 +354,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 14
+	# Question 15
 	if ($pgc_id[$hist_1] != "" && $pgc_id[$hist_2] != "") {
 		if ($pgc_id[$hist_1] == ($pgc_id[$hist_2] + 1)) {
 			$prev_pgc = 1;
@@ -379,7 +393,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 15
+	# Question 16
 	echo "How many audio tracks will be included?\n[ ]: ";
 	$answer = fgets($handle);
 	if (trim($answer) != "") {
@@ -391,7 +405,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 16
+	# Question 17
 	echo "Which stream contains the video?\n[$sb 0xE0$eb]: ";
 	$answer = fgets($handle);
 	if (trim($answer) == "0xE0" || trim($answer) == "") {
@@ -401,7 +415,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 17
+	# Question 18
 	$h = 0;
 	echo "Which stream contains the primary audio?\n[$sb 0x80$eb]: ";
 	$answer = fgets($handle);
@@ -414,7 +428,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 18
+	# Question 19
 	echo "What language is the primary audio in?\n";
 	echo "(must be the three character language code, e.g. eng)\n[$sb eng$eb]: ";
 	$answer = fgets($handle);
@@ -429,7 +443,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 19
+	# Question 20
 	$next_pri_audio_title = $audio_title[$i-1][$h];
 	if ($next_pri_audio_title != "") {
 		echo "What should the title of the primary audio track be?\n[$sb $next_pri_audio_title" . $eb . "]: ";
@@ -453,7 +467,7 @@ while ($i <= $num_items) {
 		while ($x <= ($audio_quantity[$i] - 1)) {
 			echo $st . "Additional Audio " . $x . "$et\n";
 	
-			# Question 20 (conditional)
+			# Question 21 (conditional)
 			echo "Does this audio track contain additional audio or director's comments?\n[$sb dc$eb /$sp aa ]: ";
 			$answer = fgets($handle);
 			if (trim($answer) == "dc" || trim($answer) == "") {
@@ -467,7 +481,7 @@ while ($i <= $num_items) {
 			}
 			echo "\n";
 		
-			# Question 21 (conditional)
+			# Question 22 (conditional)
 			if ($audio_stream[$i-1][$x] == "") {
 				$next_additional_audio_stream = $default_additional_audio_stream;
 			} elseif ($audio_stream[$i-1][$x] != "" && $audio_stream[$i-1][$x] != $default_additional_audio_stream) {
@@ -489,7 +503,7 @@ while ($i <= $num_items) {
 			}
 			echo "\n";
 		
-			# Question 22 (conditional)
+			# Question 23 (conditional)
 			if ($additional_audio_type[$i][$x] == 0) {
 				echo "What language is the additional audio in?\n";
 				echo "(must be the three character language code, e.g. eng)\n[$sb eng$eb]: ";
@@ -509,7 +523,7 @@ while ($i <= $num_items) {
 			}
 			echo "\n";
 		
-			# Question 23 (conditional)
+			# Question 24 (conditional)
 			$next_sec_audio_title = $audio_title[$i-1][$x];
 			if ($additional_audio_type[$i][$x] == 0) {
 				if ($next_sec_audio_title != "") {
@@ -806,10 +820,13 @@ if ($complete == 1) {
 					fwrite($avsfile, "TDecimate()" . "\r\n");
 				}
 			}
+			if ($crop_content == 1) {
+				fwrite($avsfile, "crop(8,0,-8,0)" . "\r\n");
+			}
 			if ($aspect_ratio == 1) {
 				fwrite($avsfile, "BicubicResize(640,480,0,0.5)" . "\r\n");
 			} else {
-				fwrite($avsfile, "BicubicResize(852,480,0,0.5)" . "\r\n");
+				fwrite($avsfile, "BicubicResize(848,480,0,0.5)" . "\r\n");
 			}
 			fclose($avsfile);
 			$i++;
@@ -853,10 +870,13 @@ if ($complete == 1) {
 				fwrite($avsfile, "TDecimate()" . "\r\n");
 			}
 		}
+		if ($crop_content == 1) {
+			fwrite($avsfile, "crop(8,0,-8,0)" . "\r\n");
+		}
 		if ($aspect_ratio == 1) {
 			fwrite($avsfile, "BicubicResize(640,480,0,0.5)" . "\r\n");
 		} else {
-			fwrite($avsfile, "BicubicResize(852,480,0,0.5)" . "\r\n");
+			fwrite($avsfile, "BicubicResize(848,480,0,0.5)" . "\r\n");
 		}
 		fclose($avsfile);
 		echo ".";
@@ -922,10 +942,10 @@ if ($complete == 1) {
 	fwrite($batfile, "REM \r\n");
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			$mkv_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\" . filename($content_title . " S" . $season . "E" . $episode_number[$i] . " - " . $episode_title[$i]) . ".mkv";
+			$mkv_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\" . filename($content_title . "-S" . $season . "E" . $episode_number[$i] . "-" . $episode_title[$i]) . ".mkv";
 			if ($aspect_ratio == 0) {
 				$video_ar = "16/9";
-				$video_dimensions = "852x480";
+				$video_dimensions = "848x480";
 			} elseif ($aspect_ratio == 1) {
 				$video_ar = "4/3";
 				$video_dimensions = "640x480";
@@ -978,7 +998,7 @@ if ($complete == 1) {
 		$mkv_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\" . filename($content_title) . ".mkv";
 		if ($aspect_ratio == 0) {
 			$video_ar = "16/9";
-			$video_dimensions = "852x480";
+			$video_dimensions = "848x480";
 		} elseif ($aspect_ratio == 1) {
 			$video_ar = "4/3";
 			$video_dimensions = "640x480";
