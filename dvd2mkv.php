@@ -578,18 +578,22 @@ if ($complete == 1) {
 	
 	# Create folder structure
 	if ($dvd_type == 1) {
-		if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-			mkdir($rd_loc . "\\RIPPED\\");
+		while ($i <= $num_items) {
+			if (is_dir($rd_loc . "\\RIPPED\\") == false) {
+				mkdir($rd_loc . "\\RIPPED\\");
+			}
+			if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\") == false) {
+				mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\");
+			}
+			if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\") == false) {
+				mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\");
+			}
+			if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\") == false) {
+				mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\");
+			}
+			$i++;
 		}
-		if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\") == false) {
-			mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\");
-		}
-		if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\") == false) {
-			mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\");
-		}
-		if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\") == false) {
-			mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\");
-		}
+		$i = 1;
 	} else {
 		if (is_dir($rd_loc . "\\RIPPED\\") == false) {
 			mkdir($rd_loc . "\\RIPPED\\");
@@ -783,18 +787,6 @@ if ($complete == 1) {
 	# Write the AviSynth script file
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
-			if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\");
-			}
-			if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\");
-			}
-			if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\");
-			}
-			if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\") == false) {
-				mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\");
-			}
 			$avs_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\MAIN.avs";
 			$avsfile = fopen($avs_destination[$i], 'w');
 			fwrite($avsfile, "LoadPlugin(\"" . $gd_loc . "\")" . "\r\n");
@@ -839,12 +831,6 @@ if ($complete == 1) {
 		}
 		$i = 1;
 	} else {
-		if (is_dir($rd_loc . "\\RIPPED\\") == false) {
-			mkdir($rd_loc . "\\RIPPED\\");
-		}
-		if (is_dir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\") == false) {
-			mkdir($rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\");
-		}
 		$avs_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\MAIN.avs";
 		$avsfile = fopen($avs_destination[1], 'w');
 		fwrite($avsfile, "LoadPlugin(\"" . $gd_loc . "\")" . "\r\n");
