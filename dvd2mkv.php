@@ -61,6 +61,33 @@ function ParamEdit($filefolder, $filename) {
 	fclose($param_outfile);
 }
 
+## Function to edit the chapter markers
+// function ChapterEdit($filefolder, $filename, $chapters) {
+	// $chapterfile = file($filefolder . $filename);
+	// $chapter_outfile = fopen($filefolder . $filename, 'w');
+	// $chapters_keep = explode(" ", $chapters)
+	// $x = 0;
+	
+	// foreach($chapters_keep as $chapter) {
+		// if ($x == 
+	// foreach($chapterfile as $line) {
+		
+		// if (substr($line, -13) == "IFO_REPLACE\r\n") {
+			// exec("cmd /c dir /b \"" . $filefolder . "*.ifo\"", $ifo_file);
+			// echo $ifo_file . "\r\n";
+			// $output = str_replace("IFO_REPLACE", $ifo_file[0], $line);
+			// echo $output . "\r\n";
+			// fwrite($param_outfile, $output);
+		// } else {
+			// $output = $line;
+			// echo $output . "\r\n";
+			// fwrite($param_outfile, $output);
+		// }
+	// }
+
+	// fclose($param_outfile);
+// }
+
 function SanitizeName($strToUse) {
 	$temp = $strToUse;
 
@@ -276,31 +303,25 @@ while ($i <= $num_items) {
 	
 	# Question 13
 	if ($dvd_type == 1) {
+		$prev_ep_number = $episode_number[$i-1];
+		if ($prev_ep_number != "") {
+			if (((int)$prev_ep_number + 1) < 10) {
+				(string)$next_ep_number = "0" . ($prev_ep_number + 1);
+			} else {
+				$next_ep_number = (int)$prev_ep_number + 1;
+			}
+		}
+			
 		echo "What is the episode's number in this season?\n";
-		if ($prev_ep_number == 0) {
+		if ($prev_ep_number == "") {
 			echo "(must be two digits, e.g. 01)\n[ ]: ";
 		} else {
-			echo "(must be two digits, e.g. 01)\n[ $prev_ep_number ]: ";
+			echo "(must be two digits, e.g. 01)\n[$sb " . $next_ep_number . "$eb]: ";
 		}
 		$answer = fgets($handle);
-		if ($prev_ep_number != 0) {
-			if (trim($answer) == "") {
-				$working_ep_number = (int)$prev_ep_number + 1;
-				if ($working_ep_number < 10) {
-					$episode_number[$i] = "0" . $working_ep_number;
-				} else {
-					$episode_number[$i] = $working_ep_number;
-				}
-			} else {
-				if ((int)trim($answer) != 0 && strlen(trim($answer)) == 2) {
-					$episode_number[$i] = trim($answer);
-				} else {
-					echo "Invalid answer. Defaulting to 01.";
-					echo "\n";
-					$episode_number[$i] = "01";
-				}
-			}
-		} else {
+		if ($prev_ep_number != "" && trim($answer) == "") {
+			$episode_number[$i] = $next_ep_number;
+		} elseif ($prev_ep_number == "") {
 			if ((int)trim($answer) != 0 && strlen(trim($answer)) == 2) {
 				$episode_number[$i] = trim($answer);
 			} else {
@@ -308,6 +329,10 @@ while ($i <= $num_items) {
 				echo "\n";
 				$episode_number[$i] = "01";
 			}
+		} else {
+			echo "Invalid answer. Defaulting to 01.";
+			echo "\n";
+			$episode_number[$i] = "01";
 		}
 		echo "\n";
 	}
@@ -394,6 +419,29 @@ while ($i <= $num_items) {
 	echo "\n";
 	
 	# Question 16
+	$next_chapter_list = $chapter_list[$i-1];
+	if ($next_chapter_list != "") {
+		echo "Which chapters should be used for this item?\n";
+		echo "(space-delimited list of numbers or * for all, e.g. 1 2 3 or *)\n[$sb $next_chapter_list" . $eb . "]: ";
+	} else {
+		echo "Which chapters should be used for this item?\n";
+		echo "(space-delimited list of numbers or * for all, e.g. 1 2 3 or *)\n[$sb *$eb]: ";
+	}
+	$answer = fgets($handle);
+	if (trim($answer) == "" && $next_chapter_list != "") {
+		$chapter_list[$i] = $next_chapter_list;
+	} elseif (trim($answer) == "" && $next_chapter_list != "") {
+		$chapter_list[$i] = "*";
+	} elseif (trim($answer) != "") {
+		$chapter_list[$i] = trim($answer);
+	} else {
+		echo "Invalid answer. Defaulting to all chapters in the title.";
+		echo "\n";
+		$chapter_list[$i] = "*";
+	}
+	echo "\n";
+	
+	# Question 17
 	echo "How many audio tracks will be included?\n[ ]: ";
 	$answer = fgets($handle);
 	if (trim($answer) != "") {
@@ -405,7 +453,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 17
+	# Question 18
 	echo "Which stream contains the video?\n[$sb 0xE0$eb]: ";
 	$answer = fgets($handle);
 	if (trim($answer) == "0xE0" || trim($answer) == "") {
@@ -415,7 +463,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 18
+	# Question 19
 	$h = 0;
 	echo "Which stream contains the primary audio?\n[$sb 0x80$eb]: ";
 	$answer = fgets($handle);
@@ -428,7 +476,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 19
+	# Question 20
 	echo "What language is the primary audio in?\n";
 	echo "(must be the three character language code, e.g. eng)\n[$sb eng$eb]: ";
 	$answer = fgets($handle);
@@ -443,7 +491,7 @@ while ($i <= $num_items) {
 	}
 	echo "\n";
 	
-	# Question 20
+	# Question 21
 	$next_pri_audio_title = $audio_title[$i-1][$h];
 	if ($next_pri_audio_title != "") {
 		echo "What should the title of the primary audio track be?\n[$sb $next_pri_audio_title" . $eb . "]: ";
@@ -467,7 +515,7 @@ while ($i <= $num_items) {
 		while ($x <= ($audio_quantity[$i] - 1)) {
 			echo $st . "Additional Audio " . $x . "$et\n";
 	
-			# Question 21 (conditional)
+			# Question 22 (conditional)
 			echo "Does this audio track contain additional audio or director's comments?\n[$sb dc$eb /$sp aa ]: ";
 			$answer = fgets($handle);
 			if (trim($answer) == "dc" || trim($answer) == "") {
@@ -481,7 +529,7 @@ while ($i <= $num_items) {
 			}
 			echo "\n";
 		
-			# Question 22 (conditional)
+			# Question 23 (conditional)
 			if ($audio_stream[$i-1][$x] == "") {
 				$next_additional_audio_stream = $default_additional_audio_stream;
 			} elseif ($audio_stream[$i-1][$x] != "" && $audio_stream[$i-1][$x] != $default_additional_audio_stream) {
@@ -503,7 +551,7 @@ while ($i <= $num_items) {
 			}
 			echo "\n";
 		
-			# Question 23 (conditional)
+			# Question 24 (conditional)
 			if ($additional_audio_type[$i][$x] == 0) {
 				echo "What language is the additional audio in?\n";
 				echo "(must be the three character language code, e.g. eng)\n[$sb eng$eb]: ";
@@ -523,7 +571,7 @@ while ($i <= $num_items) {
 			}
 			echo "\n";
 		
-			# Question 24 (conditional)
+			# Question 25 (conditional)
 			$next_sec_audio_title = $audio_title[$i-1][$x];
 			if ($additional_audio_type[$i][$x] == 0) {
 				if ($next_sec_audio_title != "") {
@@ -612,7 +660,11 @@ if ($complete == 1) {
 		while ($i <= $num_items) {
 			$vob_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\";
 			fwrite($batfile, "ECHO Ripping episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-			fwrite($batfile, "\"" . $dd_loc . "\" /MODE IFO /SRC " . $dl_loc . " /DEST \"" . $vob_destination[$i] . "\" /VTS " . $vts_id[$i] . " /PGC " . $pgc_id[$i] . " /SPLIT NONE /START /CLOSE\r\n");
+			if ($chapter_list[$i] != "*" ) {
+				fwrite($batfile, "\"" . $dd_loc . "\" /MODE IFO /SRC " . $dl_loc . " /DEST \"" . $vob_destination[$i] . "\" /VTS " . $vts_id[$i] . " /PGC " . $pgc_id[$i] . " /SPLIT NONE /CHAPTERS " . $chapter_list[$i] . " /START /CLOSE\r\n");
+			} else {
+				fwrite($batfile, "\"" . $dd_loc . "\" /MODE IFO /SRC " . $dl_loc . " /DEST \"" . $vob_destination[$i] . "\" /VTS " . $vts_id[$i] . " /PGC " . $pgc_id[$i] . " /SPLIT NONE /START /CLOSE\r\n");
+			}
 			$i++;
 			echo ".";
 		}
