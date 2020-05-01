@@ -62,31 +62,20 @@ function ParamEdit($filefolder, $filename) {
 }
 
 ## Function to edit the chapter markers
-// function ChapterEdit($filefolder, $filename, $chapters) {
-	// $chapterfile = file($filefolder . $filename);
-	// $chapter_outfile = fopen($filefolder . $filename, 'w');
-	// $chapters_keep = explode(" ", $chapters)
-	// $x = 0;
+function ChapterEdit($filefolder, $filename, $chapters) {
+	$chapterfile = file($filefolder . $filename);
+	$chapter_outfile = fopen($filefolder . $filename, 'w');
+	$chapters_keep = explode(" ", $chapters);
+	$x = 0;
 	
-	// foreach($chapters_keep as $chapter) {
-		// if ($x == 
-	// foreach($chapterfile as $line) {
-		
-		// if (substr($line, -13) == "IFO_REPLACE\r\n") {
-			// exec("cmd /c dir /b \"" . $filefolder . "*.ifo\"", $ifo_file);
-			// echo $ifo_file . "\r\n";
-			// $output = str_replace("IFO_REPLACE", $ifo_file[0], $line);
-			// echo $output . "\r\n";
-			// fwrite($param_outfile, $output);
-		// } else {
-			// $output = $line;
-			// echo $output . "\r\n";
-			// fwrite($param_outfile, $output);
-		// }
-	// }
+	foreach($chapters_keep as $chapter) {
+		$line_num = $chapter * 2 - 1;
+		fwrite($chapter_outfile, $chapterfile[$line_num-1]);
+		fwrite($chapter_outfile, $chapterfile[$line_num]);
+	}
 
-	// fclose($param_outfile);
-// }
+	fclose($chapter_outfile);
+}
 
 function SanitizeName($strToUse) {
 	$temp = $strToUse;
@@ -107,6 +96,16 @@ function SanitizeName($strToUse) {
 	return $result;
 }
 
+function ScriptSanitize($strTitle) {
+	$temp = $strTitle;
+
+	$temp = str_replace("&", "^&", $temp);
+	$result = $temp;
+	
+	// Return filename
+	return $result;
+}
+
 ## Not my code. This is used to replace unusable characters in the final file name
 function filename($filename) {
 	$temp = $filename;
@@ -118,6 +117,7 @@ function filename($filename) {
 	$temp = str_replace(" ", "_", $temp);
 	$temp = str_replace(".", "_", $temp);
 	$temp = str_replace(":", "_", $temp);
+	$temp = str_replace("&", "and", $temp);
 
 	// Loop through string
 	$result = '';
@@ -139,6 +139,9 @@ function filename($filename) {
 
 if ($argv[1] == "--param") {
 	ParamEdit($argv[2], $argv[3]);
+	exit;
+} elseif ($argv[1] == "--chapteredit") {
+	ChapterEdit($argv[2], $argv[3], $argv[4]);
 	exit;
 }
 
@@ -659,7 +662,7 @@ if ($complete == 1) {
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
 			$vob_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\";
-			fwrite($batfile, "ECHO Ripping episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
+			fwrite($batfile, "ECHO Ripping episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
 			if ($chapter_list[$i] != "*" ) {
 				fwrite($batfile, "\"" . $dd_loc . "\" /MODE IFO /SRC " . $dl_loc . " /DEST \"" . $vob_destination[$i] . "\" /VTS " . $vts_id[$i] . " /PGC " . $pgc_id[$i] . " /SPLIT NONE /CHAPTERS " . $chapter_list[$i] . " /START /CLOSE\r\n");
 			} else {
@@ -671,7 +674,7 @@ if ($complete == 1) {
 		$i = 1;
 	} else {
 		$vob_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\";
-		fwrite($batfile, "ECHO Ripping " . $content_title . "...\r\n");
+		fwrite($batfile, "ECHO Ripping " . ScriptSanitize($content_title) . "...\r\n");
 		fwrite($batfile, "\"" . $dd_loc . "\" /MODE IFO /SRC " . $dl_loc . " /DEST \"" . $vob_destination[1] . "\" /VTS " . $vts_id[1] . " /PGC " . $pgc_id[1] . " /SPLIT NONE /START /CLOSE\r\n");
 		echo ".";
 	}
@@ -695,9 +698,9 @@ if ($complete == 1) {
 				fwrite($prmfile, "en\r\n");
 				fwrite($prmfile, "CLOSE\r\n");
 				fclose($prmfile);
-				fwrite($batfile, "ECHO Creating subtitles for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-				fwrite($batfile, "START \"Fixing vsparam files for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /D \"". $d2m_loc . "\" /wait /min \"" . $pe_loc . "\" \"--param\" \"" . $vob_destination[$i] . "\\\" \"MAIN.vsparam\"\r\n");
-				fwrite($batfile, "START \"Creating subtitles for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min rundll32 \"" . $vu_loc . "\",Configure " . $prm_destination[$i] . "\r\n");
+				fwrite($batfile, "ECHO Creating subtitles for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+				fwrite($batfile, "START \"Fixing vsparam files for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /D \"". $d2m_loc . "\" /wait /min \"" . $pe_loc . "\" \"--param\" \"" . $vob_destination[$i] . "\\\" \"MAIN.vsparam\"\r\n");
+				fwrite($batfile, "START \"Creating subtitles for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min rundll32 \"" . $vu_loc . "\",Configure " . $prm_destination[$i] . "\r\n");
 				$i++;
 				echo ".";
 			}
@@ -714,9 +717,9 @@ if ($complete == 1) {
 			fwrite($prmfile, "en\r\n");
 			fwrite($prmfile, "CLOSE\r\n");
 			fclose($prmfile);
-			fwrite($batfile, "ECHO Creating subtitles for " . $content_title . "...\r\n");
-			fwrite($batfile, "START \"Fixing vsparam files for episode " . $episode_number[1] . ": " . $episode_title[1] . "...\" /D \"". $d2m_loc . "\" /wait /min \"" . $pe_loc . "\" --param \"" . $vob_destination[1] . "\\\" \"MAIN.vsparam\"\r\n");
-			fwrite($batfile, "START \"Creating subtitles for episode " . $episode_number[1] . ": " . $episode_title[1] . "...\" /wait /min rundll32 \"" . $vu_loc . "\",Configure " . $prm_destination[1] . "\r\n");
+			fwrite($batfile, "ECHO Creating subtitles for " . ScriptSanitize($content_title) . "...\r\n");
+			fwrite($batfile, "START \"Fixing vsparam files for " . ScriptSanitize($content_title) . "...\" /D \"". $d2m_loc . "\" /wait /min \"" . $pe_loc . "\" --param \"" . $vob_destination[1] . "\\\" \"MAIN.vsparam\"\r\n");
+			fwrite($batfile, "START \"Creating subtitles for " . ScriptSanitize($content_title) . "...\" /wait /min rundll32 \"" . $vu_loc . "\",Configure " . $prm_destination[1] . "\r\n");
 			echo ".";
 		}
 	}
@@ -729,7 +732,7 @@ if ($complete == 1) {
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
 			$vob_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\";
-			fwrite($batfile, "ECHO Renaming VOB files for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
+			fwrite($batfile, "ECHO Renaming VOB files for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
 			fwrite($batfile, "ren " . $vob_destination[$i] . "*.vob MAIN.vob\r\n");
 			fwrite($batfile, "ren " . $vob_destination[$i] . "*.ifo MAIN.ifo\r\n");
 			$i++;
@@ -738,7 +741,7 @@ if ($complete == 1) {
 		$i = 1;
 	} else {
 		$vob_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\";
-		fwrite($batfile, "ECHO Renaming VOB files for " . $content_title . "...\r\n");
+		fwrite($batfile, "ECHO Renaming VOB files for " . ScriptSanitize($content_title) . "...\r\n");
 		fwrite($batfile, "ren " . $vob_destination[1] . "*.vob MAIN.vob\r\n");
 		fwrite($batfile, "ren " . $vob_destination[1] . "*.ifo MAIN.ifo\r\n");
 		echo ".";
@@ -752,20 +755,20 @@ if ($complete == 1) {
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
 			$m2v_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\VIDEO.m2v";
-			fwrite($batfile, "ECHO Demuxing video information for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-			fwrite($batfile, "START \"Demuxing video information for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[$i] . "MAIN.vob\" -!do\"" . $m2v_destination[$i] . "\" " . $video_stream[$i] . "\r\n");
+			fwrite($batfile, "ECHO Demuxing video information for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+			fwrite($batfile, "START \"Demuxing video information for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[$i] . "MAIN.vob\" -!do\"" . $m2v_destination[$i] . "\" " . $video_stream[$i] . "\r\n");
 			if ($audio_quantity[$i] > 1) {
 				$r = 1;
 				while ($r <= $audio_quantity[$i]) {
 					$audio_destination[$i][$r] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\AUDIO-" . ($r - 1) . ".ac3";
-					fwrite($batfile, "ECHO Demuxing audio track " . $r . " for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-					fwrite($batfile, "START \"Demuxing audio track " . $r . " for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[$i] . "MAIN.vob\" -!do\"" . $audio_destination[$i][$r] . "\" 0xBD " . $audio_stream[$i][$r-1] . "\r\n");
+					fwrite($batfile, "ECHO Demuxing audio track " . $r . " for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+					fwrite($batfile, "START \"Demuxing audio track " . $r . " for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[$i] . "MAIN.vob\" -!do\"" . $audio_destination[$i][$r] . "\" 0xBD " . $audio_stream[$i][$r-1] . "\r\n");
 					$r++;
 				}
 			} else {
 				$audio_destination[$i][1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\AUDIO-0.ac3";
-				fwrite($batfile, "ECHO Demuxing audio track 1 for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-				fwrite($batfile, "START \"Demuxing audio track 1 for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[$i] . "MAIN.vob\" -!do\"" . $audio_destination[$i][1] . "\" 0xBD " . $audio_stream[$i][0] . "\r\n");
+				fwrite($batfile, "ECHO Demuxing audio track 1 for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+				fwrite($batfile, "START \"Demuxing audio track 1 for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[$i] . "MAIN.vob\" -!do\"" . $audio_destination[$i][1] . "\" 0xBD " . $audio_stream[$i][0] . "\r\n");
 			}
 			$i++;
 			echo ".";
@@ -774,20 +777,20 @@ if ($complete == 1) {
 		$r = 1;
 	} else {
 		$m2v_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\MAIN.m2v";
-		fwrite($batfile, "ECHO Demuxing video information for " . $content_title . "...\r\n");
-		fwrite($batfile, "START \"Demuxing video information for " . $content_title . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[1] . "MAIN.vob\" -!do\"" . $m2v_destination[1] . "\" " . $video_stream[1] . "\r\n");
+		fwrite($batfile, "ECHO Demuxing video information for " . ScriptSanitize($content_title) . "...\r\n");
+		fwrite($batfile, "START \"Demuxing video information for " . ScriptSanitize($content_title) . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[1] . "MAIN.vob\" -!do\"" . $m2v_destination[1] . "\" " . $video_stream[1] . "\r\n");
 		if ($audio_quantity[$i] > 1) {
 			$r = 1;
 			while ($r <= $audio_quantity[1]) {
 				$audio_destination[1][$r] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\AUDIO-" . ($r - 1) . ".ac3";
-				fwrite($batfile, "ECHO Demuxing audio track " . $r . " for " . $content_title . "...\r\n");
-				fwrite($batfile, "START \"Demuxing audio track " . $r . " for " . $content_title . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[1] . "MAIN.vob\" -!do\"" . $audio_destination[1][$r] . "\" 0xBD " . $audio_stream[1][$r-1] . "\r\n");
+				fwrite($batfile, "ECHO Demuxing audio track " . $r . " for " . ScriptSanitize($content_title) . "...\r\n");
+				fwrite($batfile, "START \"Demuxing audio track " . $r . " for " . ScriptSanitize($content_title) . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[1] . "MAIN.vob\" -!do\"" . $audio_destination[1][$r] . "\" 0xBD " . $audio_stream[1][$r-1] . "\r\n");
 				$r++;
 			}
 		} else {
 			$audio_destination[1][1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\AUDIO-0.ac3";
-			fwrite($batfile, "ECHO Demuxing audio track 1 for " . $content_title . "...\r\n");
-			fwrite($batfile, "START \"Demuxing audio track 1 for " . $content_title . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[1] . "MAIN.vob\" -!do\"" . $audio_destination[1][1] . "\" 0xBD " . $audio_stream[1][0] . "\r\n");
+			fwrite($batfile, "ECHO Demuxing audio track 1 for " . ScriptSanitize($content_title) . "...\r\n");
+			fwrite($batfile, "START \"Demuxing audio track 1 for " . ScriptSanitize($content_title) . "...\" /wait /min \"" . $vs_loc . "\" \"" . $vob_destination[1] . "MAIN.vob\" -!do\"" . $audio_destination[1][1] . "\" 0xBD " . $audio_stream[1][0] . "\r\n");
 		}
 		echo ".";
 		$i = 1;
@@ -802,16 +805,24 @@ if ($complete == 1) {
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
 			$chapter_file[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\CHAPTERS.txt";
-			fwrite($batfile, "ECHO Getting chapter markers for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-			fwrite($batfile, "START \"Getting chapter markers for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $cx_loc . "\" \"" . $vob_destination[$i] . "MAIN.ifo\" \"" . $chapter_file[$i] . "\" -p5 -t" . $pgc_id[$i] . "\r\n");
+			fwrite($batfile, "ECHO Getting chapter markers for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+			fwrite($batfile, "START \"Getting chapter markers for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min \"" . $cx_loc . "\" \"" . $vob_destination[$i] . "MAIN.ifo\" \"" . $chapter_file[$i] . "\" -p5 -t" . $pgc_id[$i] . "\r\n");
+			if ($chapter_list[$i] != "*") {
+				fwrite($batfile, "ECHO Correcting chapter markers for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+				fwrite($batfile, "START \"Correcting chapter markers for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /D \"". $d2m_loc . "\" /wait /min \"" . $ce_loc . "\" \"--chapteredit\" \"" . $vob_destination[$i] . "\\\" \"CHAPTERS.txt\" \"". $chapter_list[$i] . "\"\r\n");
+			}
 			$i++;
 			echo ".";
 		}
 		$i = 1;
 	} else {
 		$chapter_file[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\CHAPTERS.txt";
-		fwrite($batfile, "ECHO Getting chapter markers for " . $content_title . "...\r\n");
-		fwrite($batfile, "START \"Getting chapter markers for " . $content_title . "...\" /wait /min \"" . $cx_loc . "\" \"" . $vob_destination[1] . "MAIN.ifo\" \"" . $chapter_file[1] . "\" -p5 -t" . $pgc_id[1] . "\r\n");
+		fwrite($batfile, "ECHO Getting chapter markers for " . ScriptSanitize($content_title) . "...\r\n");
+		fwrite($batfile, "START \"Getting chapter markers for " . ScriptSanitize($content_title) . "...\" /wait /min \"" . $cx_loc . "\" \"" . $vob_destination[1] . "MAIN.ifo\" \"" . $chapter_file[1] . "\" -p5 -t" . $pgc_id[1] . "\r\n");
+		if ($chapter_list[$i] != "*") {
+			fwrite($batfile, "ECHO Correcting chapter markers for " . ScriptSanitize($content_title) . "...\r\n");
+			fwrite($batfile, "START \"Correcting chapter markers for " . ScriptSanitize($content_title) . "...\" /D \"". $d2m_loc . "\" /wait /min \"" . $ce_loc . "\" \"--chapteredit\" \"" . $vob_destination[1] . "\\\" \"CHAPTERS.txt\" \"". $chapter_list[1] . "\"\r\n");
+		}
 		echo ".";
 	}
 
@@ -823,16 +834,16 @@ if ($complete == 1) {
 	if ($dvd_type == 1) {
 		while ($i <= $num_items) {
 			$d2v_destination[$i] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\SEASON" . $season . "\\EPISODE" . $episode_number[$i] . "\\MAIN";
-			fwrite($batfile, "ECHO Creating MPEG summary file for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-			fwrite($batfile, "START \"Creating MPEG summary file for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $dg_loc . "\" -i \"" . $m2v_destination[$i] . "\" -o \"" . $d2v_destination[$i] . "\" -ia 5 -fo 0 -yr 1 -om 0 -exit\r\n");
+			fwrite($batfile, "ECHO Creating MPEG summary file for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+			fwrite($batfile, "START \"Creating MPEG summary file for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min \"" . $dg_loc . "\" -i \"" . $m2v_destination[$i] . "\" -o \"" . $d2v_destination[$i] . "\" -ia 5 -fo 0 -yr 1 -om 0 -exit\r\n");
 			$i++;
 			echo ".";
 		}
 		$i = 1;
 	} else {
 		$d2v_destination[1] = $rd_loc . "\\RIPPED\\" . SanitizeName($content_title) . "\\MAIN";
-		fwrite($batfile, "ECHO Creating MPEG summary file for " . $content_title . "...\r\n");
-		fwrite($batfile, "START \"Creating MPEG summary file for " . $content_title . "...\" /wait /min \"" . $dg_loc . "\" -i \"" . $m2v_destination[1] . "\" -o \"" . $d2v_destination[1] . "\" -ia 5 -fo 0 -yr 1 -om 0 -exit\r\n");
+		fwrite($batfile, "ECHO Creating MPEG summary file for " . ScriptSanitize($content_title) . "...\r\n");
+		fwrite($batfile, "START \"Creating MPEG summary file for " . ScriptSanitize($content_title) . "...\" /wait /min \"" . $dg_loc . "\" -i \"" . $m2v_destination[1] . "\" -o \"" . $d2v_destination[1] . "\" -ia 5 -fo 0 -yr 1 -om 0 -exit\r\n");
 		echo ".";
 	}
 
@@ -938,8 +949,8 @@ if ($complete == 1) {
 			} else {
 				$x264_tune[$i] = "film";
 			}
-			fwrite($batfile, "ECHO Encoding episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-			fwrite($batfile, "START \"Encoding episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $a26x_loc . "\" --x26x-binary \"" . $x264_loc . "\" --seek-mode safe --profile high --preset slow --crf 19 --tune " . $x264_tune[$i] . " -o \"" . $x264_destination[$i] . "\" \"" . $avs_destination[$i] . "\"\r\n");
+			fwrite($batfile, "ECHO Encoding episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+			fwrite($batfile, "START \"Encoding episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min \"" . $a26x_loc . "\" --x26x-binary \"" . $x264_loc . "\" --seek-mode safe --profile high --preset slow --crf 19 --tune " . $x264_tune[$i] . " -o \"" . $x264_destination[$i] . "\" \"" . $avs_destination[$i] . "\"\r\n");
 			$i++;
 			echo ".";
 		}
@@ -951,8 +962,8 @@ if ($complete == 1) {
 			} else {
 				$x264_tune[1] = "film";
 			}
-		fwrite($batfile, "ECHO Encoding " . $content_title . "...\r\n");
-		fwrite($batfile, "START \"Encoding " . $content_title . "...\" /wait /min \"" . $a26x_loc . "\" --x26x-binary \"" . $x264_loc . "\" --seek-mode safe --profile high --preset slow --crf 19 --tune " . $x264_tune[1] . " -o \"" . $x264_destination[1] . "\" \"" . $avs_destination[1] . "\"\r\n");
+		fwrite($batfile, "ECHO Encoding " . ScriptSanitize($content_title) . "...\r\n");
+		fwrite($batfile, "START \"Encoding " . ScriptSanitize($content_title) . "...\" /wait /min \"" . $a26x_loc . "\" --x26x-binary \"" . $x264_loc . "\" --seek-mode safe --profile high --preset slow --crf 19 --tune " . $x264_tune[1] . " -o \"" . $x264_destination[1] . "\" \"" . $avs_destination[1] . "\"\r\n");
 		echo ".";
 	}
 	
@@ -1028,10 +1039,10 @@ if ($complete == 1) {
 				}
 				$m++;
 			}
-			$generator_options = " --track-order " . $track_order . " --attachment-name COMPILED_USING_DVD2MKV_" . $d2m_ver . " --attachment-mime-type text/plain --attach-file ^\"" . $version_destination[$i] . "^\" --title ^\"" . $episode_title[$i] . "^\"";
-			fwrite($batfile, "ECHO Compiling output for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\r\n");
-			fwrite($batfile, "START \"Compiling output for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $mk_loc . "\" --ui-language en --output ^\"" . $mkv_destination[$i] . "^\"" .  $video_options . $audio_options . $sub_options . $generator_options . $chapter_options . "\r\n");
-			fwrite($batfile, "START \"Modifying header properties for episode " . $episode_number[$i] . ": " . $episode_title[$i] . "...\" /wait /min \"" . $mp_loc . "\" \"" . $mkv_destination[$i] . "\" --edit track:v1 --set display-unit=3" . "\r\n");
+			$generator_options = " --track-order " . $track_order . " --attachment-name COMPILED_USING_DVD2MKV_" . $d2m_ver . " --attachment-mime-type text/plain --attach-file ^\"" . $version_destination[$i] . "^\" --title ^\"" . ScriptSanitize($episode_title[$i]) . "^\"";
+			fwrite($batfile, "ECHO Compiling output for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\r\n");
+			fwrite($batfile, "START \"Compiling output for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min \"" . $mk_loc . "\" --ui-language en --output ^\"" . $mkv_destination[$i] . "^\"" .  $video_options . $audio_options . $sub_options . $generator_options . $chapter_options . "\r\n");
+			fwrite($batfile, "START \"Modifying header properties for episode " . $episode_number[$i] . ": " . ScriptSanitize($episode_title[$i]) . "...\" /wait /min \"" . $mp_loc . "\" \"" . $mkv_destination[$i] . "\" --edit track:v1 --set display-unit=3" . "\r\n");
 			$i++;
 			$r = 1;
 			echo ".";
@@ -1081,10 +1092,10 @@ if ($complete == 1) {
 			}
 			$m++;
 		}
-		$generator_options = " --track-order " . $track_order . " --attachment-name COMPILED_USING_DVD2MKV_" . $d2m_ver . " --attachment-mime-type text/plain --attach-file ^\"" . $version_destination[1] . "^\" --title ^\"" . $content_title . "^\"";
-		fwrite($batfile, "ECHO Compiling output for " . $content_title . "...\r\n");
-		fwrite($batfile, "START \"Compiling output for " . $content_title . "...\" /wait /min \"" . $mk_loc . "\" --ui-language en --output ^\"" . $mkv_destination[1] . "^\"" .  $video_options . $audio_options . $sub_options . $generator_options . $chapter_options . "\r\n");
-		fwrite($batfile, "START \"Modifying header properties for " . $content_title . "...\" /wait /min \"" . $mp_loc . "\" \"" . $mkv_destination[1] . "\" --edit track:v1 --set display-unit=3" . "\r\n");
+		$generator_options = " --track-order " . $track_order . " --attachment-name COMPILED_USING_DVD2MKV_" . $d2m_ver . " --attachment-mime-type text/plain --attach-file ^\"" . $version_destination[1] . "^\" --title ^\"" . ScriptSanitize($content_title) . "^\"";
+		fwrite($batfile, "ECHO Compiling output for " . ScriptSanitize($content_title) . "...\r\n");
+		fwrite($batfile, "START \"Compiling output for " . ScriptSanitize($content_title) . "...\" /wait /min \"" . $mk_loc . "\" --ui-language en --output ^\"" . $mkv_destination[1] . "^\"" .  $video_options . $audio_options . $sub_options . $generator_options . $chapter_options . "\r\n");
+		fwrite($batfile, "START \"Modifying header properties for " . ScriptSanitize($content_title) . "...\" /wait /min \"" . $mp_loc . "\" \"" . $mkv_destination[1] . "\" --edit track:v1 --set display-unit=3" . "\r\n");
 		$r = 1;
 		echo ".";
 	}
